@@ -47,4 +47,11 @@ public class UserService {
     }
 
 
+    public boolean exist(int id) {
+        return userRepository.exists(id);
+    }
+
+    public long count() {
+        return userRepository.count();
+    }
 }

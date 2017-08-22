@@ -46,5 +46,12 @@ public class AuthorService {
         authorRepository.deleteAll();
     }
 
+    public boolean exist(int id) {
+        return authorRepository.exists(id);
+    }
+
+    public long count() {
+        return authorRepository.count();
+    }
 
 }

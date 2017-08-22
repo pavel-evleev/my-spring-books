@@ -3,9 +3,10 @@ package app.controller;
 import app.model.User;
 import app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 @RestController
@@ -14,17 +15,18 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/home")
-    public String home() {
-        return "home";
-    }
     @GetMapping("/addUser")
-    public String addUser(@RequestParam String name,
+    public void addUser(@RequestParam String name,
                           @RequestParam String phone,
-                          @RequestParam String password){
+                          @RequestParam String password,
+                          HttpServletResponse response){
         User user = new User(name,phone,password);
         userService.save(user);
-        return "ok";
+        try {
+            response.sendRedirect("/user?id="+user.getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @GetMapping("/allUser")
@@ -41,4 +43,26 @@ public class UserController {
     public String getUserBooks(@RequestParam int id){
         return userService.findOne(id).getBooks().toString();
     }
+
+    @RequestMapping(name = "/deleteUser", method = RequestMethod.DELETE)
+    public HttpServletResponse deleteUser(int id, HttpServletResponse response) {
+        userService.delete(id);
+        if (!userService.exist(id))
+            response.setStatus(HttpServletResponse.SC_OK);
+        else
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return response;
+    }
+
+    @RequestMapping(name = "/deleteUsers")
+    public HttpServletResponse deleteUsers(HttpServletResponse response) {
+        userService.deleteAll();
+        if (userService.count() == 0)
+            response.setStatus(HttpServletResponse.SC_OK);
+        else
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return response;
+    }
+
+
 }

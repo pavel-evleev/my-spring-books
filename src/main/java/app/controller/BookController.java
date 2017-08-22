@@ -3,10 +3,10 @@ package app.controller;
 import app.model.Book;
 import app.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -18,21 +18,45 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("/addBook")
-    public String addUser(@RequestParam String name,
-                          @RequestParam String publisher
-                          ){
-        Book book = new Book(name,publisher,Date.valueOf(LocalDate.now()));
+    public void addBook(@RequestParam String name,
+                        @RequestParam String publisher, HttpServletResponse response
+    ) {
+        Book book = new Book(name, publisher, Date.valueOf(LocalDate.now()));
         bookService.save(book);
-        return "ok";
+        try {
+            response.sendRedirect("/book?id=" + book.getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @GetMapping("/book")
+    public String getBookFromId(@RequestParam int id) {
+        return bookService.findOne(id).toString();
     }
 
     @GetMapping("/allBooks")
-    public String allUser(){
+    public String allBooks() {
         return bookService.findAll().toString();
     }
 
-    @GetMapping(value = "/Book")
-    public String getUserFromId(@RequestParam int id ){
-        return bookService.findOne(id).toString();
+    @RequestMapping(name = "/deleteBook", method = RequestMethod.DELETE)
+    public HttpServletResponse deleteBook(int id, HttpServletResponse response) {
+        bookService.delete(id);
+        if (!bookService.exist(id))
+            response.setStatus(HttpServletResponse.SC_OK);
+        else
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return response;
+    }
+
+    @RequestMapping(name = "/deleteBooks")
+    public HttpServletResponse deleteBook(HttpServletResponse response) {
+        bookService.deleteAll();
+        if (bookService.count() == 0)
+            response.setStatus(HttpServletResponse.SC_OK);
+        else
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return response;
     }
 }
