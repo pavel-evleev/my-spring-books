@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/addUser")
+    @PostMapping("/users")
     public void addUser(@RequestParam String name,
                           @RequestParam String phone,
                           @RequestParam String password,
@@ -29,32 +29,32 @@ public class UserController {
         }
     }
 
-    @GetMapping("/allUser")
+    @GetMapping("/users")
     public String allUser(){
         return userService.findAll().toString();
     }
 
-    @GetMapping("/user")
-    public String getUserFromId(@RequestParam int id ){
-        return userService.findOne(id).toString();
+    @GetMapping(name = "/users/{user_id}")
+    public String getUserFromId(@RequestParam int user_id ){
+        return userService.findOne(user_id).toString();
     }
 
-    @GetMapping("/userBooks")
-    public String getUserBooks(@RequestParam int id){
-        return userService.findOne(id).getBooks().toString();
+    @GetMapping(name = "/users/{user_id}/books")
+    public String getUserBooks(@RequestParam int user_id){
+        return userService.findOne(user_id).getBooks().toString();
     }
 
-    @RequestMapping(name = "/deleteUser", method = RequestMethod.DELETE)
-    public HttpServletResponse deleteUser(int id, HttpServletResponse response) {
-        userService.delete(id);
-        if (!userService.exist(id))
+    @DeleteMapping(name = "/users{user_id}")
+    public HttpServletResponse deleteUser(int user_id, HttpServletResponse response) {
+        userService.delete(user_id);
+        if (!userService.exist(user_id))
             response.setStatus(HttpServletResponse.SC_OK);
         else
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return response;
     }
 
-    @RequestMapping(name = "/deleteUsers")
+    @DeleteMapping(name = "/users")
     public HttpServletResponse deleteUsers(HttpServletResponse response) {
         userService.deleteAll();
         if (userService.count() == 0)

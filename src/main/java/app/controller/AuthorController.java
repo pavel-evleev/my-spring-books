@@ -16,40 +16,40 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
-    @GetMapping("/addAuthor")
+    @PostMapping(value = "/authors")
     public void addAuthor(@RequestParam String name,
                         HttpServletResponse response
     ) {
         Author book = new Author(name);
         authorService.save(book);
         try {
-            response.sendRedirect("/author?id=" + book.getId());
+            response.sendRedirect("/authors/" + book.getId());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @GetMapping("/author")
-    public String getAuthorFromId(@RequestParam int id) {
-        return authorService.findOne(id).toString();
+    @GetMapping(name = "/authors/{author_id}")
+    public String getAuthorFromId(@RequestParam int author_id) {
+        return authorService.findOne(author_id).toString();
     }
 
-    @GetMapping("/allAuthor")
+    @GetMapping("/authors")
     public String allAuthor() {
         return authorService.findAll().toString();
     }
 
-    @RequestMapping(name = "/deleteAuthor", method = RequestMethod.DELETE)
-    public HttpServletResponse deleteAuthor(int id, HttpServletResponse response) {
-        authorService.delete(id);
-        if (!authorService.exist(id))
+    @DeleteMapping(name = "/authors{author_id}")
+    public HttpServletResponse deleteAuthor(int author_id, HttpServletResponse response) {
+        authorService.delete(author_id);
+        if (!authorService.exist(author_id))
             response.setStatus(HttpServletResponse.SC_OK);
         else
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return response;
     }
 
-    @RequestMapping(name = "/deleteAuthors")
+    @DeleteMapping(name = "/authors")
     public HttpServletResponse deleteAuthors(HttpServletResponse response) {
         authorService.deleteAll();
         if (authorService.count() == 0)

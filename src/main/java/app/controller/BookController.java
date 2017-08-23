@@ -17,40 +17,40 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping("/addBook")
+    @PostMapping("/books")
     public void addBook(@RequestParam String name,
                         @RequestParam String publisher, HttpServletResponse response
     ) {
         Book book = new Book(name, publisher, Date.valueOf(LocalDate.now()));
         bookService.save(book);
         try {
-            response.sendRedirect("/book?id=" + book.getId());
+            response.sendRedirect("/books/" + book.getId());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @GetMapping("/book")
-    public String getBookFromId(@RequestParam int id) {
-        return bookService.findOne(id).toString();
+    @GetMapping(name = "/books/{book_id}")
+    public String getBookFromId(@RequestParam int book_id) {
+        return bookService.findOne(book_id).toString();
     }
 
-    @GetMapping("/allBooks")
+    @GetMapping("/books")
     public String allBooks() {
         return bookService.findAll().toString();
     }
 
-    @RequestMapping(name = "/deleteBook", method = RequestMethod.DELETE)
-    public HttpServletResponse deleteBook(int id, HttpServletResponse response) {
-        bookService.delete(id);
-        if (!bookService.exist(id))
+    @DeleteMapping(name = "/books/{book_id}")
+    public HttpServletResponse deleteBook(int book_id, HttpServletResponse response) {
+        bookService.delete(book_id);
+        if (!bookService.exist(book_id))
             response.setStatus(HttpServletResponse.SC_OK);
         else
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return response;
     }
 
-    @RequestMapping(name = "/deleteBooks")
+    @DeleteMapping(name = "/books")
     public HttpServletResponse deleteBook(HttpServletResponse response) {
         bookService.deleteAll();
         if (bookService.count() == 0)
