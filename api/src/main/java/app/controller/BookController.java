@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 
-
 @RestController
 public class BookController {
 
@@ -30,7 +29,7 @@ public class BookController {
         }
     }
 
-    @GetMapping(name = "/books/{book_id}")
+    @GetMapping("/books/{book_id}")
     public String getBookFromId(@RequestParam int book_id) {
         return bookService.findOne(book_id).toString();
     }
@@ -40,7 +39,7 @@ public class BookController {
         return bookService.findAll().toString();
     }
 
-    @DeleteMapping(name = "/books/{book_id}")
+    @DeleteMapping("/books/{book_id}")
     public HttpServletResponse deleteBook(int book_id, HttpServletResponse response) {
         bookService.delete(book_id);
         if (!bookService.exist(book_id))
@@ -50,7 +49,7 @@ public class BookController {
         return response;
     }
 
-    @DeleteMapping(name = "/books")
+    @DeleteMapping("/books")
     public HttpServletResponse deleteBook(HttpServletResponse response) {
         bookService.deleteAll();
         if (bookService.count() == 0)
