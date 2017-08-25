@@ -1,7 +1,6 @@
 package app.services;
 
 import app.model.Author;
-import app.model.User;
 import app.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 

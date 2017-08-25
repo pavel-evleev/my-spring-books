@@ -44,7 +44,7 @@ public class UserController {
         return userService.findOne(user_id).getBooks().toString();
     }
 
-    @DeleteMapping(name = "/users{user_id}")
+    @DeleteMapping(name = "/users/{user_id}")
     public HttpServletResponse deleteUser(int user_id, HttpServletResponse response) {
         userService.delete(user_id);
         if (!userService.exist(user_id))

@@ -39,7 +39,7 @@ public class AuthorController {
         return authorService.findAll().toString();
     }
 
-    @DeleteMapping(name = "/authors{author_id}")
+    @DeleteMapping(name = "/authors/{author_id}")
     public HttpServletResponse deleteAuthor(int author_id, HttpServletResponse response) {
         authorService.delete(author_id);
         if (!authorService.exist(author_id))
