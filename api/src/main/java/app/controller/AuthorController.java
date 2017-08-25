@@ -1,58 +1,47 @@
 package app.controller;
 
+import app.command.CreateAuthorCommand;
 import app.model.Author;
 import app.services.AuthorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class AuthorController {
 
-    @Autowired
-    private AuthorService authorService;
+    private final AuthorService authorService;
 
-    @PostMapping("/authors")
-    public void addAuthor(@RequestParam String name,
-                          HttpServletResponse response) {
-        Author book = new Author(name);
-        authorService.save(book);
-        try {
-            response.sendRedirect("/authors/" + book.getId());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
     }
 
-    @GetMapping("/authors/{author_id}")
-    public String getAuthorFromId(@RequestParam int author_id) {
-        return authorService.findOne(author_id).toString();
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/authors")
+    public Author create(@RequestBody CreateAuthorCommand createAuthorCommand) {
+        return authorService.create(createAuthorCommand);
+    }
+
+    @GetMapping("/authors/{authorId}")
+    public Author findById(@RequestParam int authorId) {
+        return authorService.findOne(authorId);
     }
 
     @GetMapping("/authors")
-    public String allAuthor() {
-        return authorService.findAll().toString();
+    public List<Author> findAll() {
+        return authorService.findAll();
     }
 
-    @DeleteMapping("/authors/{author_id}")
-    public HttpServletResponse deleteAuthor(int author_id, HttpServletResponse response) {
-        authorService.delete(author_id);
-        if (!authorService.exist(author_id))
-            response.setStatus(HttpServletResponse.SC_OK);
-        else
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return response;
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/authors/{authorId}")
+    public void deleteAuthor(int authorId) {
+        authorService.delete(authorId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/authors")
-    public HttpServletResponse deleteAuthors(HttpServletResponse response) {
+    public void deleteAuthors() {
         authorService.deleteAll();
-        if (authorService.count() == 0)
-            response.setStatus(HttpServletResponse.SC_OK);
-        else
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return response;
     }
 }

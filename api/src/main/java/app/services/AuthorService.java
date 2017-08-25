@@ -1,5 +1,6 @@
 package app.services;
 
+import app.command.CreateAuthorCommand;
 import app.model.Author;
 import app.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
@@ -17,40 +17,27 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public List<Author> findAll() {
-        return authorRepository.findAll();
-    }
-
     public Author findOne(int id) {
         return authorRepository.findOne(id);
     }
 
-    public void save(Author author) {
-        authorRepository.save(author);
+    public List<Author> findAll() {
+        return authorRepository.findAll();
     }
 
-    public void save(Iterable<Author> list) {
-        authorRepository.delete(list);
+    @Transactional
+    public Author create(CreateAuthorCommand createAuthorCommand) {
+        Author author = new Author(createAuthorCommand.getName());
+        return authorRepository.save(author);
     }
 
+    @Transactional
     public void delete(int id) {
         authorRepository.delete(id);
     }
 
-    public void delete(Author author) {
-        authorRepository.delete(author);
-    }
-
+    @Transactional
     public void deleteAll() {
         authorRepository.deleteAll();
     }
-
-    public boolean exist(int id) {
-        return authorRepository.exists(id);
-    }
-
-    public long count() {
-        return authorRepository.count();
-    }
-
 }
