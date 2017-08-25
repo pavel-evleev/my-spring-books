@@ -14,8 +14,8 @@ public class BookService {
 
     private BookRepository bookRepository;
 
-    public BookService(BookRepository bookRepository){
-        this.bookRepository=bookRepository;
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     public List<Book> findAll() {
@@ -44,5 +44,14 @@ public class BookService {
 
     public void save(Iterable<Book> list) {
         bookRepository.save(list);
+    }
+
+    public boolean exist(int id) {
+        return bookRepository.exists(id);
+
+    }
+
+    public long count() {
+        return bookRepository.count();
     }
 }
