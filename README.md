@@ -23,3 +23,22 @@ The application is in progress.
 * React
 * Material-UI
 
+### How to run
+
+Run locally on `http://localhost:8888`
+
+    npm install
+    npm start
+
+### How to build prod
+
+    npm run build
+    
+### How to check style
+
+    npm lint
+    
+### How to test
+
+    npm test
+        
