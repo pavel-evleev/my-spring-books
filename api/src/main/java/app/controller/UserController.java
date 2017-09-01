@@ -1,65 +1,56 @@
 package app.controller;
 
+import app.command.CreateUserCommand;
+import app.model.Book;
 import app.model.User;
 import app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
+    public UserController(UserService service){
+        this.userService=service;
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/users")
-    public void addUser(@RequestParam String name,
-                        @RequestParam String phone,
-                        @RequestParam String password,
-                        HttpServletResponse response) {
-        User user = new User(name, phone, password);
-        userService.save(user);
-        try {
-            response.sendRedirect("/user?id=" + user.getId());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public User create(@RequestBody CreateUserCommand createUserCommand) {
+        return userService.save(createUserCommand);
     }
 
     @GetMapping("/users")
-    public String allUser() {
-        return userService.findAll().toString();
+    public List<User> allUser() {
+        return userService.findAll();
     }
 
-    @GetMapping("/users/{user_id}")
-    public String getUserFromId(@RequestParam int user_id) {
-        return userService.findOne(user_id).toString();
+    @GetMapping("/users/{userId}")
+    public User getUserFromId(@RequestParam int userId) {
+        return userService.findOne(userId);
     }
 
-    @GetMapping("/users/{user_id}/books")
-    public String getUserBooks(@RequestParam int user_id) {
-        return userService.findOne(user_id).getBooks().toString();
+    @GetMapping("/users/{userId}/books")
+    public List<Book> getUserBooks(@RequestParam int userId) {
+        return userService.findOne(userId).getBooks();
     }
 
-    @DeleteMapping("/users/{user_id}")
-    public HttpServletResponse deleteUser(int user_id, HttpServletResponse response) {
-        userService.delete(user_id);
-        if (!userService.exist(user_id))
-            response.setStatus(HttpServletResponse.SC_OK);
-        else
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return response;
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/users/{userId}")
+    public void deleteUser(int userId) {
+        userService.delete(userId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/users")
-    public HttpServletResponse deleteUsers(HttpServletResponse response) {
+    public void deleteUsers() {
         userService.deleteAll();
-        if (userService.count() == 0)
-            response.setStatus(HttpServletResponse.SC_OK);
-        else
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return response;
     }
 }

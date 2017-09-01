@@ -26,7 +26,7 @@ public class AuthorService {
     }
 
     @Transactional
-    public Author create(CreateAuthorCommand createAuthorCommand) {
+    public Author save(CreateAuthorCommand createAuthorCommand) {
         Author author = new Author(createAuthorCommand.getName());
         return authorRepository.save(author);
     }
