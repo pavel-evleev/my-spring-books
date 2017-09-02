@@ -30,7 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/books/{bookId}")
-    public Book findById(@RequestParam int bookId) {
+    public Book findById(@PathVariable int bookId) {
         return bookService.findOne(bookId);
     }
 
@@ -41,7 +41,7 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/books/{bookId}")
-    public void deleteBook(int bookId) {
+    public void deleteBook(@PathVariable int bookId) {
         bookService.delete(bookId);
     }
 

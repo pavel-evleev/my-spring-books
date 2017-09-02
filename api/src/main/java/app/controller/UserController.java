@@ -33,18 +33,18 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public User getUserFromId(@RequestParam int userId) {
+    public User getUserFromId(@PathVariable int userId) {
         return userService.findOne(userId);
     }
 
     @GetMapping("/users/{userId}/books")
-    public List<Book> getUserBooks(@RequestParam int userId) {
+    public List<Book> getUserBooks(@PathVariable int userId) {
         return userService.findOne(userId).getBooks();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/users/{userId}")
-    public void deleteUser(int userId) {
+    public void deleteUser(@PathVariable int userId) {
         userService.delete(userId);
     }
 

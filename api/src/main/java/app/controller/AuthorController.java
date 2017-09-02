@@ -23,24 +23,25 @@ public class AuthorController {
     public Author create(@RequestBody CreateAuthorCommand createAuthorCommand) {
         return authorService.save(createAuthorCommand);
     }
+
     @GetMapping("/authors")
     public List<Author> findAll() {
         return authorService.findAll();
     }
 
     @GetMapping("/authors/{authorId}")
-    public Author findById(@RequestParam int authorId) {
+    public Author findById(@PathVariable int authorId) {
         return authorService.findOne(authorId);
     }
 
     @GetMapping("/authors/{authorId}/books")
-    public List<Book> findBooksAuthorById(@RequestParam int authorId){
+    public List<Book> findBooksAuthorById(@PathVariable int authorId) {
         return authorService.findOne(authorId).getWrittenBooks();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/authors/{authorId}")
-    public void deleteAuthor(int authorId) {
+    public void deleteAuthor(@PathVariable int authorId) {
         authorService.delete(authorId);
     }
 
