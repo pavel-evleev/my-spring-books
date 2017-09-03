@@ -16,7 +16,7 @@ public class Author {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "authors_books", joinColumns = {@JoinColumn(name = "id_author")}, inverseJoinColumns = {@JoinColumn(name = "id_book")})
-    private List<Book> writedBooks;
+    private List<Book> books;
 
     public Author() {
     }
@@ -41,12 +41,12 @@ public class Author {
         this.name = name;
     }
 
-    public List<Book> getWrittenBooks() {
-        return writedBooks;
+    public List<Book> getBooks() {
+        return books;
     }
 
-    public void setWritedBooks(List<Book> writedBooks) {
-        this.writedBooks = writedBooks;
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
     @Override
@@ -58,14 +58,14 @@ public class Author {
 
         if (id != author.id) return false;
         if (name != null ? !name.equals(author.name) : author.name != null) return false;
-        return writedBooks != null ? writedBooks.equals(author.writedBooks) : author.writedBooks == null;
+        return books != null ? books.equals(author.books) : author.books == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (writedBooks != null ? writedBooks.hashCode() : 0);
+        result = 31 * result + (books != null ? books.hashCode() : 0);
         return result;
     }
 
@@ -74,7 +74,7 @@ public class Author {
         return "Author{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-//                ", writedBooks=" + writedBooks +
+//                ", books=" + books +
                 '}';
     }
 }

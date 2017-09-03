@@ -17,8 +17,8 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService service){
-        this.userService=service;
+    public UserController(UserService service) {
+        this.userService = service;
     }
 
     @ResponseStatus(HttpStatus.CREATED)

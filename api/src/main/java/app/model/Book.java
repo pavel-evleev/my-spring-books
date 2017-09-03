@@ -25,7 +25,8 @@ public class Book {
     private List<Author> authors;
 
 
-    public Book(){}
+    public Book() {
+    }
 
     public Book(String name, String publisher, Date datePublished) {
         this.name = name;

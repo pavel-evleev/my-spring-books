@@ -35,8 +35,8 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/{authorId}/books")
-    public List<Book> findBooksAuthorById(@PathVariable int authorId) {
-        return authorService.findOne(authorId).getWrittenBooks();
+    public List<Book> findBooksByAuthorId(@PathVariable int authorId) {
+        return authorService.findOne(authorId).getBooks();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

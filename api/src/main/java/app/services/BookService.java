@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private BookRepository bookRepository;
-    private AuthorRepository authorRepository;
+    private AuthorService authorService;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
+    public BookService(BookRepository bookRepository, AuthorService authorService) {
         this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
+        this.authorService = authorService;
     }
 
     public List<Book> findAll() {
@@ -34,27 +34,32 @@ public class BookService {
         return bookRepository.findOne(id);
     }
 
+    @Transactional
     public Book save(CreateBookCommand book) {
         List<Integer> authorsId = book.getAuthorsIds();
-        List<Author> authors = authorsId.stream().map(id->authorRepository.findOne(id)).collect(Collectors.toList());
-        Book newBook = new Book(book.name,book.publisher, Date.valueOf(LocalDate.now()));
+        List<Author> authors = authorsId.stream().map(id -> authorService.findOne(id)).collect(Collectors.toList());
+        Book newBook = new Book(book.name, book.publisher, Date.valueOf(LocalDate.now()));
         newBook.setAuthors(authors);
         bookRepository.save(newBook);
         return newBook;
     }
 
+    @Transactional
     public void delete(int id) {
         bookRepository.delete(id);
     }
 
+    @Transactional
     public void delete(Book book) {
         bookRepository.delete(book);
     }
 
+    @Transactional
     public void deleteAll() {
         bookRepository.deleteAll();
     }
 
+    @Transactional
     public void save(Iterable<Book> list) {
         bookRepository.save(list);
     }

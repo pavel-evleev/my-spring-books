@@ -26,24 +26,29 @@ public class UserService {
         return userRepository.findOne(id);
     }
 
+    @Transactional
     public User save(CreateUserCommand user) {
-        User newUser = new User(user.getName(),user.getPhone(),user.getPassword());
+        User newUser = new User(user.getName(), user.getPhone(), user.getPassword());
         userRepository.save(newUser);
         return newUser;
     }
 
+    @Transactional
     public void delete(int id) {
         userRepository.delete(id);
     }
 
+    @Transactional
     public void delete(User user) {
         userRepository.delete(user);
     }
 
+    @Transactional
     public void deleteAll() {
         userRepository.deleteAll();
     }
 
+    @Transactional
     public void save(Iterable<User> list) {
         userRepository.save(list);
     }
