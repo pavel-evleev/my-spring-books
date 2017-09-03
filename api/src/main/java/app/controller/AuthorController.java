@@ -2,6 +2,7 @@ package app.controller;
 
 import app.command.CreateAuthorCommand;
 import app.model.Author;
+import app.model.Book;
 import app.services.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,7 @@ public class AuthorController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/authors")
     public Author create(@RequestBody CreateAuthorCommand createAuthorCommand) {
-        return authorService.create(createAuthorCommand);
-    }
-
-    @GetMapping("/authors/{authorId}")
-    public Author findById(@RequestParam int authorId) {
-        return authorService.findOne(authorId);
+        return authorService.save(createAuthorCommand);
     }
 
     @GetMapping("/authors")
@@ -33,9 +29,19 @@ public class AuthorController {
         return authorService.findAll();
     }
 
+    @GetMapping("/authors/{authorId}")
+    public Author findById(@PathVariable int authorId) {
+        return authorService.findOne(authorId);
+    }
+
+    @GetMapping("/authors/{authorId}/books")
+    public List<Book> findBooksAuthorById(@PathVariable int authorId) {
+        return authorService.findOne(authorId).getWrittenBooks();
+    }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/authors/{authorId}")
-    public void deleteAuthor(int authorId) {
+    public void deleteAuthor(@PathVariable int authorId) {
         authorService.delete(authorId);
     }
 

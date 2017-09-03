@@ -1,61 +1,53 @@
 package app.controller;
 
+import app.command.CreateBookCommand;
+import app.model.Author;
 import app.model.Book;
 import app.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 public class BookController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
 
-    @PostMapping("/books")
-    public void addBook(@RequestParam String name,
-                        @RequestParam String publisher, HttpServletResponse response
-    ) {
-        Book book = new Book(name, publisher, Date.valueOf(LocalDate.now()));
-        bookService.save(book);
-        try {
-            response.sendRedirect("/books/" + book.getId());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
     }
 
-    @GetMapping("/books/{book_id}")
-    public String getBookFromId(@RequestParam int book_id) {
-        return bookService.findOne(book_id).toString();
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/books")
+    public Book create(@RequestBody CreateBookCommand createBookCommand) {
+        return bookService.save(createBookCommand);
+    }
+
+    @GetMapping("/books/{bookId}")
+    public Book findById(@PathVariable int bookId) {
+        return bookService.findOne(bookId);
     }
 
     @GetMapping("/books")
-    public String allBooks() {
-        return bookService.findAll().toString();
+    public List<Book> findAll() {
+        return bookService.findAll();
     }
 
-    @DeleteMapping("/books/{book_id}")
-    public HttpServletResponse deleteBook(int book_id, HttpServletResponse response) {
-        bookService.delete(book_id);
-        if (!bookService.exist(book_id))
-            response.setStatus(HttpServletResponse.SC_OK);
-        else
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return response;
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/books/{bookId}")
+    public void deleteBook(@PathVariable int bookId) {
+        bookService.delete(bookId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/books")
-    public HttpServletResponse deleteBook(HttpServletResponse response) {
+    public void deleteBook() {
         bookService.deleteAll();
-        if (bookService.count() == 0)
-            response.setStatus(HttpServletResponse.SC_OK);
-        else
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return response;
     }
 }

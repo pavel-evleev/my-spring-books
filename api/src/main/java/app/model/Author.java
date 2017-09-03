@@ -14,7 +14,7 @@ public class Author {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "authors_books", joinColumns = {@JoinColumn(name = "id_author")}, inverseJoinColumns = {@JoinColumn(name = "id_book")})
     private List<Book> writedBooks;
 
@@ -41,7 +41,7 @@ public class Author {
         this.name = name;
     }
 
-    public List<Book> getWritedBooks() {
+    public List<Book> getWrittenBooks() {
         return writedBooks;
     }
 

@@ -1,5 +1,6 @@
 package app.services;
 
+import app.command.CreateUserCommand;
 import app.model.User;
 import app.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,6 @@ import java.util.List;
 
 
 @Service
-@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -26,8 +26,10 @@ public class UserService {
         return userRepository.findOne(id);
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public User save(CreateUserCommand user) {
+        User newUser = new User(user.getName(),user.getPhone(),user.getPassword());
+        userRepository.save(newUser);
+        return newUser;
     }
 
     public void delete(int id) {
