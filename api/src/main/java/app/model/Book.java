@@ -21,7 +21,7 @@ public class Book {
     @ManyToMany(mappedBy = "books")
     private List<User> users;
 
-    @ManyToMany(mappedBy = "writedBooks")
+    @ManyToMany(mappedBy = "books")
     private List<Author> authors;
 
 
