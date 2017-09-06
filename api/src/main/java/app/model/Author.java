@@ -1,5 +1,7 @@
 package app.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class Author {
     private int id;
 
     @Column(name = "name")
+    @NotEmpty
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL)

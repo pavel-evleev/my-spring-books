@@ -7,6 +7,7 @@ import app.services.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestController
@@ -49,5 +50,11 @@ public class AuthorController {
     @DeleteMapping("/authors")
     public void deleteAuthors() {
         authorService.deleteAll();
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleConstraintErrors(){
+
     }
 }

@@ -18,7 +18,9 @@ public class AuthorService {
     }
 
     public Author findOne(int id) {
-        return authorRepository.findOne(id);
+        Author author = authorRepository.findOne(id);
+        author.setId(123123);
+        return author;
     }
 
     public List<Author> findAll() {
