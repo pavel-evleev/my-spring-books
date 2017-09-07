@@ -1,13 +1,26 @@
 package app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "authors")
-public class Author {
+/**
+ * @see <a href="http://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion">
+ *     explain details</a>
+ *     this annotation need to resolve entity dependence
+ *     without this we can not get property which linked with other
+ */
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",scope = Author.class)
+public class Author implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +30,8 @@ public class Author {
     @NotEmpty
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinTable(name = "authors_books", joinColumns = {@JoinColumn(name = "id_author")}, inverseJoinColumns = {@JoinColumn(name = "id_book")})
     private List<Book> books;
 

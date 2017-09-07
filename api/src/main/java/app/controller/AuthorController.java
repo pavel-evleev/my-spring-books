@@ -54,7 +54,6 @@ public class AuthorController {
 
     @ExceptionHandler(value = ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleConstraintErrors(){
-
+    public void handleConstraintErrors() {
     }
 }
