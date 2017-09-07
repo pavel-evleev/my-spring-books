@@ -1,3 +1,5 @@
+package app.controller;
+
 import app.Application;
 import app.command.CreateAuthorCommand;
 import app.model.Author;
