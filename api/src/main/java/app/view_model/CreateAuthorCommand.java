@@ -1,4 +1,4 @@
-package app.command;
+package app.view_model;
 
 public class CreateAuthorCommand {
 

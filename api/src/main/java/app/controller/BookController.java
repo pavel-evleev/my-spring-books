@@ -1,17 +1,12 @@
 package app.controller;
 
-import app.command.CreateBookCommand;
-import app.model.Author;
+import app.view_model.BookInfo;
+import app.view_model.CreateBookCommand;
 import app.model.Book;
 import app.services.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -25,17 +20,17 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/books")
-    public Book create(@RequestBody CreateBookCommand createBookCommand) {
+    public BookInfo create(@RequestBody CreateBookCommand createBookCommand) {
         return bookService.save(createBookCommand);
     }
 
     @GetMapping("/books/{bookId}")
-    public Book findById(@PathVariable int bookId) {
+    public BookInfo findById(@PathVariable int bookId) {
         return bookService.findOne(bookId);
     }
 
     @GetMapping("/books")
-    public List<Book> findAll() {
+    public List<BookInfo> findAll() {
         return bookService.findAll();
     }
 

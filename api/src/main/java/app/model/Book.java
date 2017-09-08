@@ -1,12 +1,28 @@
 package app.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.annotations.NotFound;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "books")
-public class Book {
+/**
+ * @see <a href="http://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion">
+ *     explain details</a>
+ *     this annotation need to resolve entity dependence
+ *     without this we can not get property which linked with other
+ */
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id", scope = Book.class)
+public class Book implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -18,14 +34,22 @@ public class Book {
 
     @Column(name = "date_publisher")
     private Date datePublished;
-    @ManyToMany(mappedBy = "books")
-    private List<User> users;
 
-    @ManyToMany(mappedBy = "writedBooks")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "authors_books",
+            joinColumns = @JoinColumn(name = "id_book", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_author", referencedColumnName = "id"))
     private List<Author> authors;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "users_books",
+            joinColumns = @JoinColumn(name = "id_books", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"))
+    private List<User> users;
 
-    public Book(){}
+
+    public Book() {
+    }
 
     public Book(String name, String publisher, Date datePublished) {
         this.name = name;
