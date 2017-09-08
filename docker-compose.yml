@@ -1,0 +1,26 @@
+version: '2.1'
+services:
+  mysql:
+    image: healthcheck/mysql
+    environment:
+    - MYSQL_ROOT_PASSWORD=password
+    - MYSQL_DATABASE=mybooks
+    - MYSQL_USER=alex
+    - MYSQL_PASSWORD=password
+  api:
+    image: lehasvv2009/my-spring-books
+    depends_on:
+     mysql:
+       condition: service_healthy
+    ports:
+    - "8080:8080"
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=alex
+      - DB_PASSWORD=password
+      - DB_NAME=mybooks
+      - DB_PORT=3306
+  web:
+    image: lehasvv2009/my-spring-books-web
+    ports:
+    - "80:80"
