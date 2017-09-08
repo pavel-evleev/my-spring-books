@@ -1,6 +1,7 @@
 package app.service;
 
-import app.command.CreateAuthorCommand;
+import app.view_model.AuthorInfo;
+import app.view_model.CreateAuthorCommand;
 import app.model.Author;
 import app.repository.AuthorRepository;
 import app.services.AuthorService;
@@ -42,7 +43,7 @@ public class AuthorServiceTest {
         String expectedAuthorName = expectedAuthor.getName();
 
         // when
-        Author author = authorService.findOne(1);
+        AuthorInfo author = authorService.findOne(1);
 
         // then
         assertThat(author.getId()).isEqualTo(expectedAuthorId);
@@ -52,14 +53,14 @@ public class AuthorServiceTest {
     @Test
     public void should_call_author_repository_find_all_method_in_author_service() {
         List<Author> expectedAuthors = Arrays.asList(new Author("Ivan"), new Author("Peta"));
-        List<Author> a = new ArrayList<>();
-        a.addAll(expectedAuthors);
+        List<Author> compareAuthors = new ArrayList<>();
+        compareAuthors.addAll(expectedAuthors);
 
         given(authorRepository.findAll()).willReturn(expectedAuthors);
 
-        List<Author> returnedAuthors = authorService.findAll();
+        List<AuthorInfo> returnedAuthors = authorService.findAll();
 
-        assertThat(returnedAuthors).isEqualTo(a);
+        assertThat(returnedAuthors.size()).isEqualTo(compareAuthors.size());
     }
 
     @Test
@@ -73,9 +74,9 @@ public class AuthorServiceTest {
         //here all right?
         given(authorRepository.save(author)).willReturn(author);
 
-        Author returnedAuthors = authorService.save(creCMD);
+        AuthorInfo returnedAuthors = authorService.save(creCMD);
 
-        assertThat(returnedAuthors).isEqualTo(author);
+        assertThat(returnedAuthors.getName()).isEqualTo(author.getName());
         assertThat(returnedAuthors.getName()).isEqualTo(creCMD.getName());
     }
 

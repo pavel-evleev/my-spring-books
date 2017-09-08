@@ -1,9 +1,7 @@
 package app.controller;
 
 import app.Application;
-import app.command.CreateAuthorCommand;
-import app.command.CreateBookCommand;
-import app.model.Author;
+import app.view_model.CreateBookCommand;
 import app.model.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;

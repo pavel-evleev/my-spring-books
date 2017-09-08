@@ -1,23 +1,16 @@
 package app.service;
 
-import app.command.CreateBookCommand;
-import app.command.CreateUserCommand;
-import app.model.Author;
-import app.model.Book;
+import app.view_model.CreateUserCommand;
 import app.model.User;
-import app.repository.BookRepository;
 import app.repository.UserRepository;
-import app.services.AuthorService;
-import app.services.BookService;
 import app.services.UserService;
+import app.view_model.UserInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +43,7 @@ public class UserServiceTest {
 
         given(userRepository.findOne(1)).willReturn(expectedUser);
 
-        User returnedUser = userService.findOne(1);
+        UserInfo returnedUser = userService.findOne(1);
 
         assertThat(returnedUser.getId()).isEqualTo(1);
         assertThat(returnedUser.getName()).isEqualTo(name);
@@ -66,14 +59,14 @@ public class UserServiceTest {
             setId(2);
         }});
 
-        List<User> a = new ArrayList<>();
-        a.addAll(expectedUsers);
+        List<User> compareUsers = new ArrayList<>();
+        compareUsers.addAll(expectedUsers);
 
         given(userRepository.findAll()).willReturn(expectedUsers);
 
-        List<User> returnedUsers = userService.findAll();
+        List<UserInfo> returnedUsers = userService.findAll();
 
-        assertThat(returnedUsers).isEqualTo(a);
+        assertThat(returnedUsers.size()).isEqualTo(compareUsers.size());
     }
 
     @Test
@@ -89,7 +82,7 @@ public class UserServiceTest {
 
         given(userRepository.save(user)).willReturn(user);
 
-        User returnedUser = userService.save(creCMD);
+        UserInfo returnedUser = userService.save(creCMD);
 
         assertThat(returnedUser.getName()).isEqualTo(creCMD.getName());
         assertThat(returnedUser.getPassword()).isEqualTo(creCMD.getPassword());

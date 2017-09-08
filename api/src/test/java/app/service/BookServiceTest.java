@@ -1,10 +1,10 @@
 package app.service;
 
-import app.command.CreateAuthorCommand;
-import app.command.CreateBookCommand;
+import app.view_model.AuthorInfo;
+import app.view_model.BookInfo;
+import app.view_model.CreateBookCommand;
 import app.model.Author;
 import app.model.Book;
-import app.repository.AuthorRepository;
 import app.repository.BookRepository;
 import app.services.AuthorService;
 import app.services.BookService;
@@ -16,7 +16,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +50,7 @@ public class BookServiceTest {
         String expectedBookPublisher = book.getPublisher();
 
         // when
-        Book returnedBook = bookService.findOne(1);
+        BookInfo returnedBook = bookService.findOne(1);
 
         // then
         assertThat(returnedBook.getId()).isEqualTo(expectedBookId);
@@ -67,14 +66,14 @@ public class BookServiceTest {
             setId(2);
         }});
 
-        List<Book> a = new ArrayList<>();
-        a.addAll(expectedBooks);
+        List<Book> compareBooks = new ArrayList<>();
+        compareBooks.addAll(expectedBooks);
 
         given(bookRepository.findAll()).willReturn(expectedBooks);
 
-        List<Book> returnedAuthors = bookService.findAll();
+        List<BookInfo> returnedAuthors = bookService.findAll();
 
-        assertThat(returnedAuthors).isEqualTo(a);
+        assertThat(returnedAuthors.size()).isEqualTo(compareBooks.size());
     }
 
     @Test
@@ -87,18 +86,20 @@ public class BookServiceTest {
 
         Book book = new Book(creCMD.name,
                 creCMD.publisher, Date.valueOf("2017-03-01"));
+
+        book.setId(1);
         book.setAuthors(Arrays.asList(new Author()));
         Date expectedDate = book.getDatePublished();
 
-        given(bookRepository.save(book)).willReturn(book);
-        given(authorService.findOne(anyInt())).willReturn(new Author());
+        given(bookRepository.save(any(Book.class))).willReturn(book);
+        given(authorService.findOne(anyInt())).willReturn(new AuthorInfo());
 
-        Book returnedBooks = bookService.save(creCMD);
+        BookInfo returnedBooks = bookService.save(creCMD);
 
         assertThat(returnedBooks.getName()).isEqualTo(creCMD.name);
         assertThat(returnedBooks.getPublisher()).isEqualTo(creCMD.publisher);
         assertThat(returnedBooks.getDatePublished()).isEqualTo(expectedDate);
-        assertThat(returnedBooks.getAuthors()).isEqualTo(book.getAuthors());
+        assertThat(returnedBooks.getAuthors().size()).isEqualTo(book.getAuthors().size());
     }
 
     @Test

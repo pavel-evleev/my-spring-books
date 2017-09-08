@@ -2,6 +2,7 @@ package app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id",scope = Author.class)
+        property = "id", scope = Author.class)
 public class Author implements Serializable {
 
     @Id
@@ -30,9 +31,7 @@ public class Author implements Serializable {
     @NotEmpty
     private String name;
 
-
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinTable(name = "authors_books", joinColumns = {@JoinColumn(name = "id_author")}, inverseJoinColumns = {@JoinColumn(name = "id_book")})
+    @ManyToMany(mappedBy = "authors")
     private List<Book> books;
 
     public Author() {

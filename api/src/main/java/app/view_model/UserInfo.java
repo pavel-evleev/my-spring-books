@@ -1,12 +1,30 @@
-package app.command;
+package app.view_model;
 
-public class CreateUserCommand {
+import java.util.List;
+
+/**
+ * Created by Pavel on 08.09.2017.
+ */
+public class UserInfo {
+
+    private int id;
 
     private String name;
 
     private String phone;
 
     private String password;
+
+    private List<BookInfo> books;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -30,5 +48,13 @@ public class CreateUserCommand {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<BookInfo> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<BookInfo> books) {
+        this.books = books;
     }
 }

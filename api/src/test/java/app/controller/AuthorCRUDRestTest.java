@@ -1,7 +1,7 @@
 package app.controller;
 
 import app.Application;
-import app.command.CreateAuthorCommand;
+import app.view_model.CreateAuthorCommand;
 import app.model.Author;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;

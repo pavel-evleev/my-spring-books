@@ -35,10 +35,16 @@ public class Book implements Serializable {
     @Column(name = "date_publisher")
     private Date datePublished;
 
-    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "authors_books",
+            joinColumns = @JoinColumn(name = "id_book", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_author", referencedColumnName = "id"))
     private List<Author> authors;
 
-    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "users_books",
+            joinColumns = @JoinColumn(name = "id_books", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"))
     private List<User> users;
 
 
