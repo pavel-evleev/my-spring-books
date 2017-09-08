@@ -39,11 +39,11 @@ public class UserServiceTest {
         String password = "redRabbit";
 
         User expectedUser = new User(name, phone, password);
-        expectedUser.setId(1);
+        expectedUser.setId(1L);
 
-        given(userRepository.findOne(1)).willReturn(expectedUser);
+        given(userRepository.findOne(1L)).willReturn(expectedUser);
 
-        UserInfo returnedUser = userService.findOne(1);
+        UserInfo returnedUser = userService.findOne(1L);
 
         assertThat(returnedUser.getId()).isEqualTo(1);
         assertThat(returnedUser.getName()).isEqualTo(name);
@@ -54,9 +54,9 @@ public class UserServiceTest {
     @Test
     public void should_call_user_repository_find_all_method_in_user_service() {
         List<User> expectedUsers = Arrays.asList(new User() {{
-            setId(1);
+            setId(1L);
         }}, new User() {{
-            setId(2);
+            setId(2L);
         }});
 
         List<User> compareUsers = new ArrayList<>();
@@ -91,8 +91,8 @@ public class UserServiceTest {
 
     @Test
     public void should_call_user_repository_delete_by_id_method_in_user_service() {
-        userService.delete(1211);
-        verify(userRepository, times(1)).delete(anyInt());
+        userService.delete(1211L);
+        verify(userRepository, times(1)).delete(anyLong());
     }
 
     @Test
@@ -110,9 +110,9 @@ public class UserServiceTest {
     @Test
     public void should_call_user_repository_exist_user_by_id_method_in_user_service() {
 
-        given(userRepository.exists(1)).willReturn(true);
+        given(userRepository.exists(1L)).willReturn(true);
 
-        Boolean existed = userService.exist(1);
+        Boolean existed = userService.exist(1L);
 
         assertThat(existed).isTrue();
     }

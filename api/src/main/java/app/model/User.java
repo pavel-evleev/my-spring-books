@@ -1,30 +1,16 @@
 package app.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-
 @Entity
 @Table(name = "users")
-/**
- * @see <a href="http://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion">
- *     explain details</a>
- *     this annotation need to resolve entity dependence
- *     without this we can not get property which linked with other
- */
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id", scope = User.class)
 public class User implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -45,11 +31,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -92,7 +78,7 @@ public class User implements Serializable {
 
         User user = (User) o;
 
-        if (id != user.id) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
@@ -101,7 +87,7 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
@@ -116,7 +102,7 @@ public class User implements Serializable {
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
-//                ", books=" + books +
+                ", books=" + books +
                 '}';
     }
 }

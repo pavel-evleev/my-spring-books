@@ -2,7 +2,6 @@ package app.controller;
 
 import app.view_model.BookInfo;
 import app.view_model.CreateBookCommand;
-import app.model.Book;
 import app.services.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ public class BookController {
     }
 
     @GetMapping("/books/{bookId}")
-    public BookInfo findById(@PathVariable int bookId) {
+    public BookInfo findById(@PathVariable Long bookId) {
         return bookService.findOne(bookId);
     }
 
@@ -36,7 +35,7 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/books/{bookId}")
-    public void deleteBook(@PathVariable int bookId) {
+    public void deleteBook(@PathVariable Long bookId) {
         bookService.delete(bookId);
     }
 

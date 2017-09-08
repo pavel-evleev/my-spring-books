@@ -35,15 +35,15 @@ public class AuthorServiceTest {
     public void should_call_author_repository_find_one_method_in_author_service() {
         // given
         Author expectedAuthor = new Author();
-        expectedAuthor.setId(1);
+        expectedAuthor.setId(1L);
         expectedAuthor.setName("My Name");
         given(authorRepository.findOne(expectedAuthor.getId())).willReturn(expectedAuthor);
 
-        int expectedAuthorId = expectedAuthor.getId();
+        Long expectedAuthorId = expectedAuthor.getId();
         String expectedAuthorName = expectedAuthor.getName();
 
         // when
-        AuthorInfo author = authorService.findOne(1);
+        AuthorInfo author = authorService.findOne(1L);
 
         // then
         assertThat(author.getId()).isEqualTo(expectedAuthorId);
@@ -82,8 +82,8 @@ public class AuthorServiceTest {
 
     @Test
     public void should_call_author_repository_delete_by_id_method_in_author_service() {
-        authorService.delete(1211);
-        verify(authorRepository, times(1)).delete(anyInt());
+        authorService.delete(1211L);
+        verify(authorRepository, times(1)).delete(anyLong());
     }
 
     @Test

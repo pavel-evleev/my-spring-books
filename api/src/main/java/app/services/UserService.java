@@ -2,7 +2,6 @@ package app.services;
 
 import app.model.Author;
 import app.model.Book;
-import app.view_model.AuthorInfo;
 import app.view_model.BookInfo;
 import app.view_model.CreateUserCommand;
 import app.model.User;
@@ -30,7 +29,7 @@ public class UserService {
         return userInfos;
     }
 
-    public UserInfo findOne(int id) {
+    public UserInfo findOne(Long id) {
         User tmp = userRepository.findOne(id);
         return initUserInfo(tmp);
     }
@@ -67,7 +66,7 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(int id) {
+    public void delete(Long id) {
         userRepository.delete(id);
     }
 
@@ -87,7 +86,7 @@ public class UserService {
     }
 
 
-    public boolean exist(int id) {
+    public boolean exist(Long id) {
         return userRepository.exists(id);
     }
 

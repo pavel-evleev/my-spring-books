@@ -14,9 +14,9 @@ public class CreateBookCommand {
 
     public Date datePublished;
 
-    public List<Integer> authorsIds;
+    public List<Long> authorsIds;
 
-    public List<Integer> getAuthorsIds() {
+    public List<Long> getAuthorsIds() {
         return authorsIds;
     }
 }

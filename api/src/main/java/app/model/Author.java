@@ -1,9 +1,5 @@
 package app.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -12,20 +8,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "authors")
-/**
- * @see <a href="http://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion">
- *     explain details</a>
- *     this annotation need to resolve entity dependence
- *     without this we can not get property which linked with other
- */
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id", scope = Author.class)
 public class Author implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "name")
     @NotEmpty
@@ -41,11 +28,11 @@ public class Author implements Serializable {
         this.name = name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,14 +59,14 @@ public class Author implements Serializable {
 
         Author author = (Author) o;
 
-        if (id != author.id) return false;
+        if (id != null ? !id.equals(author.id) : author.id != null) return false;
         if (name != null ? !name.equals(author.name) : author.name != null) return false;
         return books != null ? books.equals(author.books) : author.books == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (books != null ? books.hashCode() : 0);
         return result;
@@ -90,7 +77,7 @@ public class Author implements Serializable {
         return "Author{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-//                ", books=" + books +
+                ", books=" + books +
                 '}';
     }
 }

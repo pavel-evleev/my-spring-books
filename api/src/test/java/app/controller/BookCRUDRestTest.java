@@ -37,7 +37,7 @@ public class BookCRUDRestTest {
         CreateBookCommand creCMD = new CreateBookCommand() {{
             name = "Piter Pen";
             publisher = "LSC";
-            authorsIds = Arrays.asList(1);
+            authorsIds = Arrays.asList(1L);
         }};
 
 
@@ -100,7 +100,7 @@ public class BookCRUDRestTest {
 //    }
 
 
-    private void deleteBook(final int id) throws Exception {
+    private void deleteBook(final Long id) throws Exception {
         mockMvc.perform(delete("/books/" + id));
     }
 
