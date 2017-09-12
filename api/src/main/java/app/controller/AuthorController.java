@@ -3,8 +3,6 @@ package app.controller;
 import app.view_model.AuthorInfo;
 import app.view_model.BookInfo;
 import app.view_model.CreateAuthorCommand;
-import app.model.Author;
-import app.model.Book;
 import app.services.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -33,18 +31,18 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/{authorId}")
-    public AuthorInfo findById(@PathVariable int authorId) {
+    public AuthorInfo findById(@PathVariable Long authorId) {
         return authorService.findOne(authorId);
     }
 
     @GetMapping("/authors/{authorId}/books")
-    public List<BookInfo> findBooksByAuthorId(@PathVariable int authorId) {
+    public List<BookInfo> findBooksByAuthorId(@PathVariable Long authorId) {
         return authorService.findOne(authorId).getBooks();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/authors/{authorId}")
-    public void deleteAuthor(@PathVariable int authorId) {
+    public void deleteAuthor(@PathVariable Long authorId) {
         authorService.delete(authorId);
     }
 

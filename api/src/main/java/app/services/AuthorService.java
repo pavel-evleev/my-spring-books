@@ -20,11 +20,11 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public Author findOneEntity(int id) {
+    public Author findOneEntity(Long id) {
         return authorRepository.findOne(id);
     }
 
-    public AuthorInfo findOne(int id) {
+    public AuthorInfo findOne(Long id) {
         return initAuthorInfo(authorRepository.findOne(id));
     }
 
@@ -55,7 +55,7 @@ public class AuthorService {
     }
 
     @Transactional
-    public void delete(int id) {
+    public void delete(Long id) {
         authorRepository.delete(id);
     }
 

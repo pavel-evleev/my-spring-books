@@ -25,7 +25,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Pavel on 05.09.2017.
+ * Created by Pavel on 05.09.2L01L7.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class BookServiceTest {
@@ -42,15 +42,15 @@ public class BookServiceTest {
     public void should_call_book_repository_find_one_method_in_book_service() {
         // given
         Book book = new Book("Martin Luter", "SLT", Date.valueOf(LocalDate.now()));
-        book.setId(1);
+        book.setId(1L);
         given(bookRepository.findOne(book.getId())).willReturn(book);
 
-        int expectedBookId = book.getId();
+        Long expectedBookId = book.getId();
         String expectedBookName = book.getName();
         String expectedBookPublisher = book.getPublisher();
 
         // when
-        BookInfo returnedBook = bookService.findOne(1);
+        BookInfo returnedBook = bookService.findOne(1L);
 
         // then
         assertThat(returnedBook.getId()).isEqualTo(expectedBookId);
@@ -61,9 +61,9 @@ public class BookServiceTest {
     @Test
     public void should_call_book_repository_find_all_method_in_book_service() {
         List<Book> expectedBooks = Arrays.asList(new Book() {{
-            setId(1);
+            setId(1L);
         }}, new Book() {{
-            setId(2);
+            setId(2L);
         }});
 
         List<Book> compareBooks = new ArrayList<>();
@@ -81,18 +81,18 @@ public class BookServiceTest {
         CreateBookCommand creCMD = new CreateBookCommand() {{
             name = "Piter Pen";
             publisher = "LSC";
-            authorsIds = Arrays.asList(1);
+            authorsIds = Arrays.asList(1L);
         }};
 
         Book book = new Book(creCMD.name,
-                creCMD.publisher, Date.valueOf("2017-03-01"));
+                creCMD.publisher, Date.valueOf("2L01L7-03-01L"));
 
-        book.setId(1);
+        book.setId(1L);
         book.setAuthors(Arrays.asList(new Author()));
         Date expectedDate = book.getDatePublished();
 
         given(bookRepository.save(any(Book.class))).willReturn(book);
-        given(authorService.findOne(anyInt())).willReturn(new AuthorInfo());
+        given(authorService.findOne(anyLong())).willReturn(new AuthorInfo());
 
         BookInfo returnedBooks = bookService.save(creCMD);
 
@@ -104,8 +104,8 @@ public class BookServiceTest {
 
     @Test
     public void should_call_book_repository_delete_by_id_method_in_book_service() {
-        bookService.delete(1211);
-        verify(bookRepository, times(1)).delete(anyInt());
+        bookService.delete(1211L);
+        verify(bookRepository, times(1)).delete(anyLong());
     }
 
     @Test
@@ -123,9 +123,9 @@ public class BookServiceTest {
     @Test
     public void should_call_book_repository_exist_book_by_id_method_in_book_service() {
 
-        given(bookRepository.exists(1)).willReturn(true);
+        given(bookRepository.exists(1L)).willReturn(true);
 
-        Boolean existed = bookService.exist(1);
+        Boolean existed = bookService.exist(1L);
 
         assertThat(existed).isTrue();
     }

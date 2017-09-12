@@ -28,7 +28,7 @@ public class BookService {
         return bookRepository.findAll().stream().map((i) -> initBookInfo(i)).collect(Collectors.toList());
     }
 
-    public BookInfo findOne(int id) {
+    public BookInfo findOne(Long id) {
         return initBookInfo(bookRepository.findOne(id));
     }
 
@@ -45,7 +45,7 @@ public class BookService {
 
     @Transactional
     public BookInfo save(CreateBookCommand book) {
-        List<Integer> authorsId = book.getAuthorsIds();
+        List<Long> authorsId = book.getAuthorsIds();
         List<Author> authors = authorsId.stream()
                 .map(id -> authorService.findOneEntity(id)).collect(Collectors.toList());
         Book newBook = new Book(book.name,
@@ -61,7 +61,7 @@ public class BookService {
     }
 
     @Transactional
-    public void delete(int id) {
+    public void delete(Long id) {
         bookRepository.delete(id);
     }
 
@@ -76,7 +76,7 @@ public class BookService {
     }
 
 
-    public boolean exist(int id) {
+    public boolean exist(Long id) {
         return bookRepository.exists(id);
 
     }

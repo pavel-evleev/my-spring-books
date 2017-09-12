@@ -2,8 +2,6 @@ package app.controller;
 
 import app.view_model.BookInfo;
 import app.view_model.CreateUserCommand;
-import app.model.Book;
-import app.model.User;
 import app.services.UserService;
 import app.view_model.UserInfo;
 import org.springframework.http.HttpStatus;
@@ -32,18 +30,18 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public UserInfo findById(@PathVariable int userId) {
+    public UserInfo findById(@PathVariable Long userId) {
         return userService.findOne(userId);
     }
 
     @GetMapping("/users/{userId}/books")
-    public List<BookInfo> getUserBooks(@PathVariable int userId) {
+    public List<BookInfo> getUserBooks(@PathVariable Long userId) {
         return userService.findOne(userId).getBooks();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/users/{userId}")
-    public void deleteUser(@PathVariable int userId) {
+    public void deleteUser(@PathVariable Long userId) {
         userService.delete(userId);
     }
 
