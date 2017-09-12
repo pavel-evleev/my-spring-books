@@ -1,7 +1,7 @@
 package app.services;
 
-import app.view_model.BookInfo;
-import app.view_model.CreateBookCommand;
+import app.rest.model.BookInfo;
+import app.rest.model.CreateBookCommand;
 import app.model.Author;
 import app.model.Book;
 import app.repository.BookRepository;
@@ -46,18 +46,18 @@ public class BookService {
     @Transactional
     public BookInfo save(CreateBookCommand book) {
         List<Long> authorsId = book.getAuthorsIds();
-        List<Author> authors = authorsId.stream()
-                .map(id -> authorService.findOneEntity(id)).collect(Collectors.toList());
-        Book newBook = new Book(book.name,
-                book.publisher, Date.valueOf("2017-03-01"));
-        newBook.setAuthors(authors);
+        Book newBook = new Book(book.name, book.publisher, Date.valueOf("2017-03-01"));
+        if (authorsId != null) {
+            List<Author> authors = authorsId.stream()
+                    .map(id -> authorService.findOneEntity(id)).collect(Collectors.toList());
+            newBook.setAuthors(authors);
+        }
         return initBookInfo(bookRepository.save(newBook));
-
     }
 
     @Transactional
     public List<BookInfo> save(Iterable<Book> list) {
-        return bookRepository.save(list).stream().map((i)->initBookInfo(i)).collect(Collectors.toList());
+        return bookRepository.save(list).stream().map((i) -> initBookInfo(i)).collect(Collectors.toList());
     }
 
     @Transactional

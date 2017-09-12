@@ -2,11 +2,11 @@ package app.services;
 
 import app.model.Author;
 import app.model.Book;
-import app.view_model.BookInfo;
-import app.view_model.CreateUserCommand;
 import app.model.User;
 import app.repository.UserRepository;
-import app.view_model.UserInfo;
+import app.rest.model.BookInfo;
+import app.rest.model.CreateUserCommand;
+import app.rest.model.UserInfo;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

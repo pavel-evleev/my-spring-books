@@ -1,10 +1,10 @@
 package app.service;
 
-import app.view_model.CreateUserCommand;
+import app.rest.model.CreateUserCommand;
 import app.model.User;
 import app.repository.UserRepository;
 import app.services.UserService;
-import app.view_model.UserInfo;
+import app.rest.model.UserInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

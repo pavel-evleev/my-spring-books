@@ -1,8 +1,9 @@
-package app.controller;
+package app.rest.controller;
 
-import app.view_model.AuthorInfo;
-import app.view_model.BookInfo;
-import app.view_model.CreateAuthorCommand;
+
+import app.rest.model.AuthorInfo;
+import app.rest.model.BookInfo;
+import app.rest.model.CreateAuthorCommand;
 import app.services.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
 package app.service;
 
-import app.view_model.AuthorInfo;
-import app.view_model.CreateAuthorCommand;
+import app.rest.model.AuthorInfo;
+import app.rest.model.CreateAuthorCommand;
 import app.model.Author;
 import app.repository.AuthorRepository;
 import app.services.AuthorService;

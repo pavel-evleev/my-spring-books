@@ -1,8 +1,8 @@
 package app.service;
 
-import app.view_model.AuthorInfo;
-import app.view_model.BookInfo;
-import app.view_model.CreateBookCommand;
+import app.rest.model.AuthorInfo;
+import app.rest.model.BookInfo;
+import app.rest.model.CreateBookCommand;
 import app.model.Author;
 import app.model.Book;
 import app.repository.BookRepository;
@@ -85,7 +85,7 @@ public class BookServiceTest {
         }};
 
         Book book = new Book(creCMD.name,
-                creCMD.publisher, Date.valueOf("2L01L7-03-01L"));
+                creCMD.publisher, Date.valueOf("2017-03-01"));
 
         book.setId(1L);
         book.setAuthors(Arrays.asList(new Author()));

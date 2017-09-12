@@ -1,5 +1,7 @@
 package app.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -12,11 +14,16 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @NotEmpty
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "phone")
+
+    @NotEmpty
+    @Column(name = "phone", nullable = false)
     private String phone;
-    @Column(name = "password")
+
+    @NotEmpty
+    @Column(name = "password", nullable = false)
     private String password;
 
     @ManyToMany(mappedBy = "users")

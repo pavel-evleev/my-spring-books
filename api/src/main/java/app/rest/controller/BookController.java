@@ -1,12 +1,15 @@
-package app.controller;
+package app.rest.controller;
 
-import app.view_model.BookInfo;
-import app.view_model.CreateBookCommand;
+
+import app.rest.model.BookInfo;
+import app.rest.model.CreateBookCommand;
 import app.services.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
+
 
 @RestController
 public class BookController {
@@ -43,5 +46,10 @@ public class BookController {
     @DeleteMapping("/books")
     public void deleteBook() {
         bookService.deleteAll();
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleConstraintErrors() {
     }
 }

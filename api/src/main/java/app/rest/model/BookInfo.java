@@ -1,4 +1,4 @@
-package app.view_model;
+package app.rest.model;
 
 import java.sql.Date;
 import java.util.List;

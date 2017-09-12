@@ -1,8 +1,8 @@
 package app.services;
 
-import app.view_model.AuthorInfo;
-import app.view_model.BookInfo;
-import app.view_model.CreateAuthorCommand;
+import app.rest.model.AuthorInfo;
+import app.rest.model.BookInfo;
+import app.rest.model.CreateAuthorCommand;
 import app.model.Author;
 import app.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
@@ -28,22 +28,6 @@ public class AuthorService {
         return initAuthorInfo(authorRepository.findOne(id));
     }
 
-    private AuthorInfo initAuthorInfo(Author author) {
-        return new AuthorInfo() {{
-            setName(author.getName());
-            setId(author.getId());
-            if (author.getBooks() != null)
-                setBooks(author.getBooks().stream().map((i) -> new BookInfo() {{
-                    setId(i.getId());
-                    setName(i.getName());
-                    setDatePublished(i.getDatePublished());
-                    setPublisher(i.getPublisher());
-                    if (i.getAuthors() != null)
-                        setAuthors(i.getAuthors().stream().map((n) -> n.getName()).collect(Collectors.toList()));
-                }}).collect(Collectors.toList()));
-        }};
-    }
-
     public List<AuthorInfo> findAll() {
         return authorRepository.findAll().stream().map((i) -> initAuthorInfo(i)).collect(Collectors.toList());
     }
@@ -62,5 +46,21 @@ public class AuthorService {
     @Transactional
     public void deleteAll() {
         authorRepository.deleteAll();
+    }
+
+    private AuthorInfo initAuthorInfo(Author author) {
+        return new AuthorInfo() {{
+            setName(author.getName());
+            setId(author.getId());
+            if (author.getBooks() != null)
+                setBooks(author.getBooks().stream().map((i) -> new BookInfo() {{
+                    setId(i.getId());
+                    setName(i.getName());
+                    setDatePublished(i.getDatePublished());
+                    setPublisher(i.getPublisher());
+                    if (i.getAuthors() != null)
+                        setAuthors(i.getAuthors().stream().map((n) -> n.getName()).collect(Collectors.toList()));
+                }}).collect(Collectors.toList()));
+        }};
     }
 }
