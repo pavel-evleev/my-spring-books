@@ -30,7 +30,7 @@ public class BookCRUDRestTest {
     public void createBookTest() throws Exception {
         String createAuthorJson = "{ \"name\": \"Ron\" }";
 
-        final ResultActions createAuthorResult = mockMvc.perform(post("/authors")
+        final ResultActions createAuthorResult = mockMvc.perform(post("/v1/authors")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(createAuthorJson));
 
         Integer idAuthor = read(createAuthorResult.andReturn().getResponse().getContentAsString(),"$.id");
@@ -43,7 +43,7 @@ public class BookCRUDRestTest {
         String publisherCreateBookJSON = read(createBookJSON, "$.publisher");
         List<Integer> authorsIdsCreateBookJSON = read(createBookJSON, "$.authorsIds");
 
-        final ResultActions createBookResult = mockMvc.perform(post("/books")
+        final ResultActions createBookResult = mockMvc.perform(post("/v1/books")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(createBookJSON));
 
         createBookResult.andExpect(status().isCreated());
@@ -61,14 +61,14 @@ public class BookCRUDRestTest {
         assertThat(authorsCreatedBook.size()).isEqualTo(authorsIdsCreateBookJSON.size());
 
         deleteBook(idCreatedBook.longValue());
-        mockMvc.perform(delete("/authors/" + idAuthor));
+        mockMvc.perform(delete("/v1/authors/" + idAuthor));
     }
 
     @Test
     public void shouldNotCreateBookWithEmptyField() throws Exception {
         String createBookJSON = "{\"name\":\" \"}";
 
-        final ResultActions createAuthorResult = mockMvc.perform(post("/books")
+        final ResultActions createAuthorResult = mockMvc.perform(post("/v1/books")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(createBookJSON));
 
@@ -80,7 +80,7 @@ public class BookCRUDRestTest {
 
         String createAuthorJson = "{ \"name\": \"Ron\" }";
 
-        final ResultActions createAuthorResult = mockMvc.perform(post("/authors")
+        final ResultActions createAuthorResult = mockMvc.perform(post("/v1/authors")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(createAuthorJson));
 
         Integer idAuthor = read(createAuthorResult.andReturn().getResponse().getContentAsString(),"$.id");
@@ -89,7 +89,7 @@ public class BookCRUDRestTest {
                 "\"publisher\":\"LSC\"," +
                 " \"authorsIds\":[\""+idAuthor+"\"]}";
 
-        final ResultActions createBookResult = mockMvc.perform(post("/books")
+        final ResultActions createBookResult = mockMvc.perform(post("/v1/books")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(createBookJSON));
 
@@ -100,7 +100,7 @@ public class BookCRUDRestTest {
         Integer idCreatedBook = read(createdBook, "$.id");
         String nameCreatedBook = read(createdBook, "$.name");
 
-        final ResultActions getById = mockMvc.perform(get("/books/" + idCreatedBook)
+        final ResultActions getById = mockMvc.perform(get("/v1/books/" + idCreatedBook)
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
 
         String getedById = getById.andReturn().getResponse().getContentAsString();
@@ -111,12 +111,12 @@ public class BookCRUDRestTest {
         assertThat(nameGetedBook).isEqualTo(nameCreatedBook);
 
         deleteBook(idgetedBook.longValue());
-        mockMvc.perform(delete("/authors/" + idAuthor));
+        mockMvc.perform(delete("/v1/authors/" + idAuthor));
     }
 
 
     private void deleteBook(final Long id) throws Exception {
-        mockMvc.perform(delete("/books/" + id));
+        mockMvc.perform(delete("/v1/books/" + id));
     }
 
 }

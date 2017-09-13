@@ -1,12 +1,12 @@
 package app.service;
 
+import app.repository.AuthorRepository;
 import app.rest.model.AuthorInfo;
 import app.rest.model.BookInfo;
 import app.rest.model.CreateBookCommand;
 import app.model.Author;
 import app.model.Book;
 import app.repository.BookRepository;
-import app.services.AuthorService;
 import app.services.BookService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +36,7 @@ public class BookServiceTest {
     @Mock
     BookRepository bookRepository;
     @Mock
-    AuthorService authorService;
+    AuthorRepository authorRepository;
 
     @Test
     public void should_call_book_repository_find_one_method_in_book_service() {
@@ -78,26 +78,28 @@ public class BookServiceTest {
 
     @Test
     public void should_call_book_repository_save_method_in_book_service() {
-        CreateBookCommand creCMD = new CreateBookCommand() {{
+        CreateBookCommand createBookCommand = new CreateBookCommand() {{
             name = "Piter Pen";
             publisher = "LSC";
             authorsIds = Arrays.asList(1L);
         }};
 
-        Book book = new Book(creCMD.name,
-                creCMD.publisher, Date.valueOf("2017-03-01"));
-
+        Book book = new Book(
+            createBookCommand.name,
+            createBookCommand.publisher,
+            Date.valueOf("2017-03-01")
+        );
         book.setId(1L);
         book.setAuthors(Arrays.asList(new Author()));
         Date expectedDate = book.getDatePublished();
 
         given(bookRepository.save(any(Book.class))).willReturn(book);
-        given(authorService.findOne(anyLong())).willReturn(new AuthorInfo());
+        given(authorRepository.findOne(anyLong())).willReturn(new Author());
 
-        BookInfo returnedBooks = bookService.save(creCMD);
+        BookInfo returnedBooks = bookService.save(createBookCommand);
 
-        assertThat(returnedBooks.getName()).isEqualTo(creCMD.name);
-        assertThat(returnedBooks.getPublisher()).isEqualTo(creCMD.publisher);
+        assertThat(returnedBooks.getName()).isEqualTo(createBookCommand.name);
+        assertThat(returnedBooks.getPublisher()).isEqualTo(createBookCommand.publisher);
         assertThat(returnedBooks.getDatePublished()).isEqualTo(expectedDate);
         assertThat(returnedBooks.getAuthors().size()).isEqualTo(book.getAuthors().size());
     }

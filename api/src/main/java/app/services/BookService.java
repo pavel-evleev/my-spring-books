@@ -17,8 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class BookService {
 
-    private BookRepository bookRepository;
-
+    private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
 
     public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
@@ -51,7 +50,8 @@ public class BookService {
         Book newBook = new Book(book.name, book.publisher, Date.valueOf("2017-03-01"));
         if (authorsId != null) {
             List<Author> authors = authorsId.stream()
-                    .map(id -> authorRepository.findOne(id)).collect(Collectors.toList());
+                .map(authorRepository::findOne)
+                .collect(Collectors.toList());
             newBook.setAuthors(authors);
         }
         return initBookInfo(bookRepository.save(newBook));

@@ -1,5 +1,6 @@
 package app.rest.controller;
 
+import app.rest.model.ApiError;
 import app.rest.model.BookInfo;
 import app.rest.model.CreateUserCommand;
 import app.rest.model.UserInfo;
@@ -11,6 +12,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/v1/users")
 public class UserController {
 
     private final UserService userService;
@@ -20,40 +22,41 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/users")
+    @PostMapping
     public UserInfo create(@RequestBody CreateUserCommand createUserCommand) {
         return userService.save(createUserCommand);
     }
 
-    @GetMapping("/users")
-    public List<UserInfo> allUser() {
+    @GetMapping
+    public List<UserInfo> findAll() {
         return userService.findAll();
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public UserInfo findById(@PathVariable Long userId) {
         return userService.findOne(userId);
     }
 
-    @GetMapping("/users/{userId}/books")
-    public List<BookInfo> getUserBooks(@PathVariable Long userId) {
+    @GetMapping("/{userId}/books")
+    public List<BookInfo> findBooks(@PathVariable Long userId) {
         return userService.findOne(userId).getBooks();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/users/{userId}")
-    public void deleteUser(@PathVariable Long userId) {
+    @DeleteMapping("/{userId}")
+    public void delete(@PathVariable Long userId) {
         userService.delete(userId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/users")
-    public void deleteUsers() {
+    @DeleteMapping
+    public void deleteAll() {
         userService.deleteAll();
     }
 
-    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleConstraintErrors() {
+    public ApiError handleConstraintViolationException(ConstraintViolationException exception) {
+        return new ApiError(exception.getMessage());
     }
 }
