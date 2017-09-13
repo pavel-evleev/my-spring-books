@@ -1,6 +1,7 @@
 package app.rest.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,15 +9,43 @@ import java.util.List;
  */
 public class CreateBookCommand {
 
-    public String name;
+    private String name;
 
-    public String publisher;
+    private String publisher;
 
-    public Date datePublished;
+    private Date datePublished;
 
-    public List<Long> authorsIds;
+    private List<Long> authorsIds = new ArrayList<>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public Date getDatePublished() {
+        return datePublished;
+    }
+
+    public void setDatePublished(Date datePublished) {
+        this.datePublished = datePublished;
+    }
 
     public List<Long> getAuthorsIds() {
         return authorsIds;
+    }
+
+    public void setAuthorsIds(List<Long> authorsIds) {
+        this.authorsIds = authorsIds;
     }
 }

@@ -79,14 +79,14 @@ public class BookServiceTest {
     @Test
     public void should_call_book_repository_save_method_in_book_service() {
         CreateBookCommand createBookCommand = new CreateBookCommand() {{
-            name = "Piter Pen";
-            publisher = "LSC";
-            authorsIds = Arrays.asList(1L);
+            setName("Piter Pen");
+            setPublisher("LSC");
+            setAuthorsIds(Arrays.asList(1L));
         }};
 
         Book book = new Book(
-            createBookCommand.name,
-            createBookCommand.publisher,
+            createBookCommand.getName(),
+            createBookCommand.getPublisher(),
             Date.valueOf("2017-03-01")
         );
         book.setId(1L);
@@ -98,8 +98,8 @@ public class BookServiceTest {
 
         BookInfo returnedBooks = bookService.save(createBookCommand);
 
-        assertThat(returnedBooks.getName()).isEqualTo(createBookCommand.name);
-        assertThat(returnedBooks.getPublisher()).isEqualTo(createBookCommand.publisher);
+        assertThat(returnedBooks.getName()).isEqualTo(createBookCommand.getName());
+        assertThat(returnedBooks.getPublisher()).isEqualTo(createBookCommand.getPublisher());
         assertThat(returnedBooks.getDatePublished()).isEqualTo(expectedDate);
         assertThat(returnedBooks.getAuthors().size()).isEqualTo(book.getAuthors().size());
     }
@@ -121,25 +121,4 @@ public class BookServiceTest {
         bookService.delete(new Book());
         verify(bookRepository, times(1)).delete(any(Book.class));
     }
-
-    @Test
-    public void should_call_book_repository_exist_book_by_id_method_in_book_service() {
-
-        given(bookRepository.exists(1L)).willReturn(true);
-
-        Boolean existed = bookService.exist(1L);
-
-        assertThat(existed).isTrue();
-    }
-
-    @Test
-    public void should_call_book_repository_count_books_method_in_book_service() {
-
-        given(bookRepository.count()).willReturn((long) 12);
-
-        long expectedCount = bookService.count();
-
-        assertThat(expectedCount).isEqualTo(12);
-    }
-
 }
