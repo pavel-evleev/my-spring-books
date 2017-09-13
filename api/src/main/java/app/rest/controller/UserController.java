@@ -1,12 +1,13 @@
-package app.controller;
+package app.rest.controller;
 
-import app.view_model.BookInfo;
-import app.view_model.CreateUserCommand;
+import app.rest.model.BookInfo;
+import app.rest.model.CreateUserCommand;
+import app.rest.model.UserInfo;
 import app.services.UserService;
-import app.view_model.UserInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestController
@@ -49,5 +50,10 @@ public class UserController {
     @DeleteMapping("/users")
     public void deleteUsers() {
         userService.deleteAll();
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleConstraintErrors() {
     }
 }

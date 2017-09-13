@@ -1,6 +1,10 @@
 package app.model;
 
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
@@ -13,21 +17,26 @@ public class Book implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_book")
+    @NotEmpty
+    @Column(name = "name_book", nullable = false)
     private String name;
-    @Column(name = "publisher")
+
+    @NotEmpty
+    @Column(name = "publisher", nullable = false)
     private String publisher;
 
-    @Column(name = "date_publisher")
+    @NotNull
+    @Column(name = "date_publisher", nullable = false)
     private Date datePublished;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @NotNull
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "authors_books",
             joinColumns = @JoinColumn(name = "id_book", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_author", referencedColumnName = "id"))
     private List<Author> authors;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "users_books",
             joinColumns = @JoinColumn(name = "id_books", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"))
