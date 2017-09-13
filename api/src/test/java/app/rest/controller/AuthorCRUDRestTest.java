@@ -1,7 +1,6 @@
 package app.rest.controller;
 
 import app.Application;
-import app.model.Author;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class AuthorCRUDRestTest {
         String name = read(json, "$.name");
         assertThat(name).isEqualTo("Ron");
 
-        deleteAuthor(createdAuthorId);
+        deleteAuthor(createdAuthorId.longValue());
     }
 
 
@@ -85,10 +84,10 @@ public class AuthorCRUDRestTest {
 
         assertThat(idAuthor).isEqualTo(idSavedAuthor);
 
-        deleteAuthor(idAuthor);
+        deleteAuthor(idAuthor.longValue());
     }
 
-    private void deleteAuthor(final Integer id) throws Exception {
+    private void deleteAuthor(final Long id) throws Exception {
         mockMvc.perform(delete("/authors/" + id));
     }
 

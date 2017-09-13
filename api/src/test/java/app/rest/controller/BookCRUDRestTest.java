@@ -28,10 +28,16 @@ public class BookCRUDRestTest {
 
     @Test
     public void createBookTest() throws Exception {
+        String createAuthorJson = "{ \"name\": \"Ron\" }";
+
+        final ResultActions createAuthorResult = mockMvc.perform(post("/authors")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(createAuthorJson));
+
+        Integer idAuthor = read(createAuthorResult.andReturn().getResponse().getContentAsString(),"$.id");
 
         String createBookJSON = "{\"name\":\"Piter Pen\"," +
                 "\"publisher\":\"LSC\"," +
-                " \"authorsIds\":[\"1\"]}";
+                " \"authorsIds\":[\""+idAuthor+"\"]}";
 
         String nameCreateBookJSON = read(createBookJSON, "$.name");
         String publisherCreateBookJSON = read(createBookJSON, "$.publisher");
@@ -55,6 +61,7 @@ public class BookCRUDRestTest {
         assertThat(authorsCreatedBook.size()).isEqualTo(authorsIdsCreateBookJSON.size());
 
         deleteBook(idCreatedBook.longValue());
+        mockMvc.perform(delete("/authors/" + idAuthor));
     }
 
     @Test
@@ -71,17 +78,24 @@ public class BookCRUDRestTest {
     @Test
     public void shouldReturnBookById() throws Exception {
 
+        String createAuthorJson = "{ \"name\": \"Ron\" }";
+
+        final ResultActions createAuthorResult = mockMvc.perform(post("/authors")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(createAuthorJson));
+
+        Integer idAuthor = read(createAuthorResult.andReturn().getResponse().getContentAsString(),"$.id");
+
         String createBookJSON = "{\"name\":\"Piter Pen\"," +
                 "\"publisher\":\"LSC\"," +
-                " \"authorsIds\":[\"7\"]}";
+                " \"authorsIds\":[\""+idAuthor+"\"]}";
 
-        final ResultActions createAuthorResult = mockMvc.perform(post("/books")
+        final ResultActions createBookResult = mockMvc.perform(post("/books")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(createBookJSON));
 
-        createAuthorResult.andExpect(status().isCreated());
+        createBookResult.andExpect(status().isCreated());
 
-        String createdBook = createAuthorResult.andReturn().
+        String createdBook = createBookResult.andReturn().
                 getResponse().getContentAsString();
         Integer idCreatedBook = read(createdBook, "$.id");
         String nameCreatedBook = read(createdBook, "$.name");
@@ -97,6 +111,7 @@ public class BookCRUDRestTest {
         assertThat(nameGetedBook).isEqualTo(nameCreatedBook);
 
         deleteBook(idgetedBook.longValue());
+        mockMvc.perform(delete("/authors/" + idAuthor));
     }
 
 

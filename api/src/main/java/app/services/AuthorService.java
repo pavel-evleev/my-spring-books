@@ -20,16 +20,14 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public Author findOneEntity(Long id) {
-        return authorRepository.findOne(id);
-    }
 
     public AuthorInfo findOne(Long id) {
         return initAuthorInfo(authorRepository.findOne(id));
     }
 
     public List<AuthorInfo> findAll() {
-        return authorRepository.findAll().stream().map((i) -> initAuthorInfo(i)).collect(Collectors.toList());
+        return authorRepository.findAll().stream()
+                .map((authorItem) -> initAuthorInfo(authorItem)).collect(Collectors.toList());
     }
 
     @Transactional
@@ -53,13 +51,14 @@ public class AuthorService {
             setName(author.getName());
             setId(author.getId());
             if (author.getBooks() != null)
-                setBooks(author.getBooks().stream().map((i) -> new BookInfo() {{
-                    setId(i.getId());
-                    setName(i.getName());
-                    setDatePublished(i.getDatePublished());
-                    setPublisher(i.getPublisher());
-                    if (i.getAuthors() != null)
-                        setAuthors(i.getAuthors().stream().map((n) -> n.getName()).collect(Collectors.toList()));
+                setBooks(author.getBooks().stream().map((bookItem) -> new BookInfo() {{
+                    setId(bookItem.getId());
+                    setName(bookItem.getName());
+                    setDatePublished(bookItem.getDatePublished());
+                    setPublisher(bookItem.getPublisher());
+                    if (bookItem.getAuthors() != null)
+                        setAuthors(bookItem.getAuthors().stream()
+                                .map((authorItem) -> authorItem.getName()).collect(Collectors.toList()));
                 }}).collect(Collectors.toList()));
         }};
     }

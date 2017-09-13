@@ -1,5 +1,6 @@
 package app.services;
 
+import app.repository.AuthorRepository;
 import app.rest.model.BookInfo;
 import app.rest.model.CreateBookCommand;
 import app.model.Author;
@@ -17,15 +18,16 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private BookRepository bookRepository;
-    private AuthorService authorService;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService) {
+    private final AuthorRepository authorRepository;
+
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
-        this.authorService = authorService;
+        this.authorRepository = authorRepository;
     }
 
     public List<BookInfo> findAll() {
-        return bookRepository.findAll().stream().map((i) -> initBookInfo(i)).collect(Collectors.toList());
+        return bookRepository.findAll().stream().map((bookItem) -> initBookInfo(bookItem)).collect(Collectors.toList());
     }
 
     public BookInfo findOne(Long id) {
@@ -39,7 +41,7 @@ public class BookService {
             setPublisher(book.getPublisher());
             setDatePublished(book.getDatePublished());
             if (book.getAuthors() != null)
-                setAuthors(book.getAuthors().stream().map((i) -> i.getName()).collect(Collectors.toList()));
+                setAuthors(book.getAuthors().stream().map((authorItem) -> authorItem.getName()).collect(Collectors.toList()));
         }};
     }
 
@@ -49,7 +51,7 @@ public class BookService {
         Book newBook = new Book(book.name, book.publisher, Date.valueOf("2017-03-01"));
         if (authorsId != null) {
             List<Author> authors = authorsId.stream()
-                    .map(id -> authorService.findOneEntity(id)).collect(Collectors.toList());
+                    .map(id -> authorRepository.findOne(id)).collect(Collectors.toList());
             newBook.setAuthors(authors);
         }
         return initBookInfo(bookRepository.save(newBook));
@@ -57,7 +59,7 @@ public class BookService {
 
     @Transactional
     public List<BookInfo> save(Iterable<Book> list) {
-        return bookRepository.save(list).stream().map((i) -> initBookInfo(i)).collect(Collectors.toList());
+        return bookRepository.save(list).stream().map((bookItem) -> initBookInfo(bookItem)).collect(Collectors.toList());
     }
 
     @Transactional

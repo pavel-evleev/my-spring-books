@@ -7,6 +7,7 @@ import app.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestController
@@ -49,5 +50,10 @@ public class UserController {
     @DeleteMapping("/users")
     public void deleteUsers() {
         userService.deleteAll();
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleConstraintErrors() {
     }
 }

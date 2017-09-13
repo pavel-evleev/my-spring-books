@@ -25,7 +25,7 @@ public class UserService {
 
     public List<UserInfo> findAll() {
         List<UserInfo> userInfos = userRepository.findAll().
-                stream().map((i)->initUserInfo(i)).collect(Collectors.toList());
+                stream().map((userItem)->initUserInfo(userItem)).collect(Collectors.toList());
         return userInfos;
     }
 
@@ -46,17 +46,17 @@ public class UserService {
     }
 
     private List<BookInfo> getBooks(List<Book> list) {
-        return list.stream().map((i) -> new BookInfo() {{
-            setId(i.getId());
-            setName(i.getName());
-            setPublisher(i.getPublisher());
-            setDatePublished(i.getDatePublished());
-            setAuthors(UserService.this.getAuthors(i.getAuthors()));
+        return list.stream().map((bookItem) -> new BookInfo() {{
+            setId(bookItem.getId());
+            setName(bookItem.getName());
+            setPublisher(bookItem.getPublisher());
+            setDatePublished(bookItem.getDatePublished());
+            setAuthors(UserService.this.getAuthors(bookItem.getAuthors()));
         }}).collect(Collectors.toList());
     }
 
     private List<String> getAuthors(List<Author> list) {
-        return list.stream().map((i) -> i.getName()).collect(Collectors.toList());
+        return list.stream().map((authorItem) -> authorItem.getName()).collect(Collectors.toList());
     }
 
     @Transactional
