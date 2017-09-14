@@ -1,12 +1,20 @@
 package app.rest.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Pavel on 08.09.2017.
  */
 public class BookInfo {
+
+    public BookInfo(Long id, String name, String publisher, Date datePublished) {
+        this.id = id;
+        this.name = name;
+        this.publisher = publisher;
+        this.datePublished = datePublished;
+    }
 
     private Long id;
 
@@ -16,7 +24,7 @@ public class BookInfo {
 
     private Date datePublished;
 
-    private List<String> authors;
+    private List<String> authors = new ArrayList<>();
 
     public Long getId() {
         return id;

@@ -38,7 +38,7 @@ public class UserCRUDRestTest {
                 "\"phone\":\"" + phone + "\"," +
                 "\"password\":\"" + pass + "\"}";
 
-        final ResultActions result = mockMvc.perform(post("/users")
+        final ResultActions result = mockMvc.perform(post("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(createUserJSON));
 
         String resultUser = result.andReturn().getResponse().getContentAsString();
@@ -60,7 +60,7 @@ public class UserCRUDRestTest {
         String createUserJSON = "{\"name\":\"\"," +
                 "\"phone\":\"\"," +
                 "\"password\":\"\"}";
-        final ResultActions createUserResult = mockMvc.perform(post("/users")
+        final ResultActions createUserResult = mockMvc.perform(post("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(createUserJSON));
 
         createUserResult.andExpect(status().isBadRequest());
@@ -77,7 +77,7 @@ public class UserCRUDRestTest {
                 "\"phone\":\"" + phone + "\"," +
                 "\"password\":\"" + pass + "\"}";
 
-        final ResultActions result = mockMvc.perform(post("/users")
+        final ResultActions result = mockMvc.perform(post("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(createUserJSON));
 
         String resultUser = result.andReturn().getResponse().getContentAsString();
@@ -86,7 +86,7 @@ public class UserCRUDRestTest {
 
         assertThat(idUser).isPositive();
 
-        final ResultActions getById = mockMvc.perform(get("/users/" + idUser)
+        final ResultActions getById = mockMvc.perform(get("/v1/users/" + idUser)
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
 
         String getedById = getById.andReturn().getResponse().getContentAsString();
@@ -100,6 +100,6 @@ public class UserCRUDRestTest {
 
 
     private void deleteUser(Long id) throws Exception {
-        mockMvc.perform(delete("/users/" + id));
+        mockMvc.perform(delete("/v1/users/" + id));
     }
 }

@@ -106,25 +106,4 @@ public class UserServiceTest {
         userService.delete(new User());
         verify(userRepository, times(1)).delete(any(User.class));
     }
-
-    @Test
-    public void should_call_user_repository_exist_user_by_id_method_in_user_service() {
-
-        given(userRepository.exists(1L)).willReturn(true);
-
-        Boolean existed = userService.exist(1L);
-
-        assertThat(existed).isTrue();
-    }
-
-    @Test
-    public void should_call_user_repository_count_books_method_in_user_service() {
-
-        given(userRepository.count()).willReturn((long) 12);
-
-        long expectedCount = userService.count();
-
-        assertThat(expectedCount).isEqualTo(12);
-    }
-
 }

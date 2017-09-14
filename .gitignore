@@ -53,3 +53,6 @@ public
 
 # Ignore yarn files
 yarn.lock
+
+# Ignore permission file
+*.pem

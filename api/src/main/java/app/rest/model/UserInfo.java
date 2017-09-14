@@ -1,11 +1,19 @@
 package app.rest.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Pavel on 08.09.2017.
  */
 public class UserInfo {
+
+    public UserInfo(Long id, String name, String phone, String password) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.password = password;
+    }
 
     private Long id;
 
@@ -15,7 +23,7 @@ public class UserInfo {
 
     private String password;
 
-    private List<BookInfo> books;
+    private List<BookInfo> books = new ArrayList<>();
 
 
     public Long getId() {

@@ -32,8 +32,7 @@ public class AuthorCRUDRestTest {
         String createAuthorJson = "{ \"name\": \"Ron\" }";
 
         // when
-        ResultActions result = mockMvc.perform(post("/authors")
-                .contentType(MediaType.APPLICATION_JSON_VALUE).content(createAuthorJson));
+        ResultActions result = mockMvc.perform(post("/v1/authors").contentType(MediaType.APPLICATION_JSON_VALUE).content(createAuthorJson));
 
         // then
         String json = result.andReturn().getResponse().getContentAsString();
@@ -52,7 +51,7 @@ public class AuthorCRUDRestTest {
     public void shouldNotCreateAuthorWithEmptyField() throws Exception {
 
         String createAuthorJSONEmpty = "{\"name\":\"\"}";
-        final ResultActions createAuthorResult = mockMvc.perform(post("/authors")
+        final ResultActions createAuthorResult = mockMvc.perform(post("/v1/authors")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(createAuthorJSONEmpty));
 
         createAuthorResult.andExpect(status().isBadRequest());
@@ -64,7 +63,7 @@ public class AuthorCRUDRestTest {
 
         String createAuthorJson = "{ \"name\": \"Ron\" }";
 
-        final ResultActions createAuthorResult = mockMvc.perform(post("/authors")
+        final ResultActions createAuthorResult = mockMvc.perform(post("/v1/authors")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(createAuthorJson));
 
         createAuthorResult.andExpect(status().isCreated());
@@ -75,7 +74,7 @@ public class AuthorCRUDRestTest {
 
         assertThat(idSavedAuthor).isPositive();
 
-        final ResultActions getById = mockMvc.perform(get("/authors/" + idSavedAuthor)
+        final ResultActions getById = mockMvc.perform(get("/v1/authors/" + idSavedAuthor)
                 .contentType(MediaType.APPLICATION_JSON_VALUE));
 
         String getedById = getById.andReturn().getResponse().getContentAsString();
@@ -88,7 +87,7 @@ public class AuthorCRUDRestTest {
     }
 
     private void deleteAuthor(final Long id) throws Exception {
-        mockMvc.perform(delete("/authors/" + id));
+        mockMvc.perform(delete("/v1/authors/" + id));
     }
 
 }

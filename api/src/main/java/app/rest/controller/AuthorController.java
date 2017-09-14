@@ -1,6 +1,7 @@
 package app.rest.controller;
 
 
+import app.rest.model.ApiError;
 import app.rest.model.AuthorInfo;
 import app.rest.model.BookInfo;
 import app.rest.model.CreateAuthorCommand;
@@ -12,6 +13,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/v1/authors")
 public class AuthorController {
 
     private final AuthorService authorService;
@@ -21,40 +23,41 @@ public class AuthorController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/authors")
+    @PostMapping
     public AuthorInfo create(@RequestBody CreateAuthorCommand createAuthorCommand) {
         return authorService.save(createAuthorCommand);
     }
 
-    @GetMapping("/authors")
+    @GetMapping
     public List<AuthorInfo> findAll() {
         return authorService.findAll();
     }
 
-    @GetMapping("/authors/{authorId}")
+    @GetMapping("/{authorId}")
     public AuthorInfo findById(@PathVariable Long authorId) {
         return authorService.findOne(authorId);
     }
 
-    @GetMapping("/authors/{authorId}/books")
-    public List<BookInfo> findBooksByAuthorId(@PathVariable Long authorId) {
-        return authorService.findOne(authorId).getBooks();
-    }
-
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/authors/{authorId}")
-    public void deleteAuthor(@PathVariable Long authorId) {
+    @DeleteMapping("/{authorId}")
+    public void delete(@PathVariable Long authorId) {
         authorService.delete(authorId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/authors")
-    public void deleteAuthors() {
+    @DeleteMapping
+    public void deleteAll() {
         authorService.deleteAll();
     }
 
-    @ExceptionHandler(value = ConstraintViolationException.class)
+    @GetMapping("/{authorId}/books")
+    public List<BookInfo> findBooks(@PathVariable Long authorId) {
+        return authorService.findOne(authorId).getBooks();
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleConstraintErrors() {
+    public ApiError handleConstraintViolationException(ConstraintViolationException exception) {
+        return new ApiError(exception.getMessage());
     }
 }

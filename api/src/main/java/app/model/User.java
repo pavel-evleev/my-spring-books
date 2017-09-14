@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,7 +28,7 @@ public class User implements Serializable {
     private String password;
 
     @ManyToMany(mappedBy = "users")
-    private List<Book> books;
+    private List<Book> books = new ArrayList<>();
 
     public User() {
     }

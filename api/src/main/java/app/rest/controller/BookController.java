@@ -1,6 +1,7 @@
 package app.rest.controller;
 
 
+import app.rest.model.ApiError;
 import app.rest.model.BookInfo;
 import app.rest.model.CreateBookCommand;
 import app.services.BookService;
@@ -12,6 +13,7 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping("/v1/books")
 public class BookController {
 
     private final BookService bookService;
@@ -21,35 +23,36 @@ public class BookController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/books")
+    @PostMapping
     public BookInfo create(@RequestBody CreateBookCommand createBookCommand) {
         return bookService.save(createBookCommand);
     }
 
-    @GetMapping("/books/{bookId}")
+    @GetMapping("/{bookId}")
     public BookInfo findById(@PathVariable Long bookId) {
         return bookService.findOne(bookId);
     }
 
-    @GetMapping("/books")
+    @GetMapping
     public List<BookInfo> findAll() {
         return bookService.findAll();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/books/{bookId}")
-    public void deleteBook(@PathVariable Long bookId) {
+    @DeleteMapping("/{bookId}")
+    public void delete(@PathVariable Long bookId) {
         bookService.delete(bookId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/books")
-    public void deleteBook() {
+    @DeleteMapping
+    public void deleteAll() {
         bookService.deleteAll();
     }
 
-    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleConstraintErrors() {
+    public ApiError handleConstraintViolationException(ConstraintViolationException exception) {
+        return new ApiError(exception.getMessage());
     }
 }

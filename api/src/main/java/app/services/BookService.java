@@ -17,8 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class BookService {
 
-    private BookRepository bookRepository;
-
+    private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
 
     public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
@@ -27,39 +26,24 @@ public class BookService {
     }
 
     public List<BookInfo> findAll() {
-        return bookRepository.findAll().stream().map((bookItem) -> initBookInfo(bookItem)).collect(Collectors.toList());
+        return bookRepository.findAll().stream()
+            .map(BookService::toBookInfo)
+            .collect(Collectors.toList());
     }
 
     public BookInfo findOne(Long id) {
-        return initBookInfo(bookRepository.findOne(id));
-    }
-
-    private BookInfo initBookInfo(Book book) {
-        return new BookInfo() {{
-            setId(book.getId());
-            setName(book.getName());
-            setPublisher(book.getPublisher());
-            setDatePublished(book.getDatePublished());
-            if (book.getAuthors() != null)
-                setAuthors(book.getAuthors().stream().map((authorItem) -> authorItem.getName()).collect(Collectors.toList()));
-        }};
+        return toBookInfo(bookRepository.findOne(id));
     }
 
     @Transactional
     public BookInfo save(CreateBookCommand book) {
-        List<Long> authorsId = book.getAuthorsIds();
-        Book newBook = new Book(book.name, book.publisher, Date.valueOf("2017-03-01"));
-        if (authorsId != null) {
-            List<Author> authors = authorsId.stream()
-                    .map(id -> authorRepository.findOne(id)).collect(Collectors.toList());
-            newBook.setAuthors(authors);
-        }
-        return initBookInfo(bookRepository.save(newBook));
-    }
-
-    @Transactional
-    public List<BookInfo> save(Iterable<Book> list) {
-        return bookRepository.save(list).stream().map((bookItem) -> initBookInfo(bookItem)).collect(Collectors.toList());
+        Book newBook = new Book(book.getName(), book.getPublisher(), Date.valueOf("2017-03-01"));
+        newBook.setAuthors(
+            book.getAuthorsIds().stream()
+                .map(authorRepository::findOne)
+                .collect(Collectors.toList())
+        );
+        return toBookInfo(bookRepository.save(newBook));
     }
 
     @Transactional
@@ -77,13 +61,13 @@ public class BookService {
         bookRepository.deleteAll();
     }
 
-
-    public boolean exist(Long id) {
-        return bookRepository.exists(id);
-
-    }
-
-    public long count() {
-        return bookRepository.count();
+    public static BookInfo toBookInfo(Book book) {
+        BookInfo bookInfo = new BookInfo(book.getId(), book.getName(), book.getPublisher(), book.getDatePublished());
+        bookInfo.setAuthors(
+            book.getAuthors().stream()
+                .map(Author::getName)
+                .collect(Collectors.toList())
+        );
+        return bookInfo;
     }
 }

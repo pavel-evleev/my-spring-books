@@ -1,5 +1,6 @@
 package app.rest.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,11 +8,16 @@ import java.util.List;
  */
 public class AuthorInfo {
 
+    public AuthorInfo(Long id, String name) {
+      this.id = id;
+      this.name = name;
+    }
+
     private Long id;
 
     private String name;
 
-    private List<BookInfo> books;
+    private List<BookInfo> books = new ArrayList<>();
 
     public Long getId() {
         return id;

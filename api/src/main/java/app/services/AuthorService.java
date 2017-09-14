@@ -22,18 +22,19 @@ public class AuthorService {
 
 
     public AuthorInfo findOne(Long id) {
-        return initAuthorInfo(authorRepository.findOne(id));
+        return toAuthorInfo(authorRepository.findOne(id));
     }
 
     public List<AuthorInfo> findAll() {
         return authorRepository.findAll().stream()
-                .map((authorItem) -> initAuthorInfo(authorItem)).collect(Collectors.toList());
+            .map(AuthorService::toAuthorInfo)
+            .collect(Collectors.toList());
     }
 
     @Transactional
     public AuthorInfo save(CreateAuthorCommand createAuthorCommand) {
         Author author = new Author(createAuthorCommand.getName());
-        return initAuthorInfo(authorRepository.save(author));
+        return toAuthorInfo(authorRepository.save(author));
     }
 
     @Transactional
@@ -46,20 +47,13 @@ public class AuthorService {
         authorRepository.deleteAll();
     }
 
-    private AuthorInfo initAuthorInfo(Author author) {
-        return new AuthorInfo() {{
-            setName(author.getName());
-            setId(author.getId());
-            if (author.getBooks() != null)
-                setBooks(author.getBooks().stream().map((bookItem) -> new BookInfo() {{
-                    setId(bookItem.getId());
-                    setName(bookItem.getName());
-                    setDatePublished(bookItem.getDatePublished());
-                    setPublisher(bookItem.getPublisher());
-                    if (bookItem.getAuthors() != null)
-                        setAuthors(bookItem.getAuthors().stream()
-                                .map((authorItem) -> authorItem.getName()).collect(Collectors.toList()));
-                }}).collect(Collectors.toList()));
-        }};
+    public static AuthorInfo toAuthorInfo(Author author) {
+        AuthorInfo authorInfo = new AuthorInfo(author.getId(), author.getName());
+        authorInfo.setBooks(
+            author.getBooks().stream()
+                .map(BookService::toBookInfo)
+                .collect(Collectors.toList())
+        );
+        return authorInfo;
     }
 }

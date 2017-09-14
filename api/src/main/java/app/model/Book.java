@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,13 +35,13 @@ public class Book implements Serializable {
     @JoinTable(name = "authors_books",
             joinColumns = @JoinColumn(name = "id_book", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_author", referencedColumnName = "id"))
-    private List<Author> authors;
+    private List<Author> authors = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "users_books",
             joinColumns = @JoinColumn(name = "id_books", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"))
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
 
     public Book() {
