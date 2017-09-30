@@ -11,7 +11,8 @@ export default class AddAuthor extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            name: ''
+            name: '',
+            hidden: "",
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -28,14 +29,14 @@ export default class AddAuthor extends React.Component{
       api.fetchAddAuthor({name: this.state.name})
       .then((response) =>{
           if(response.status==201)
-          return(<div>sucess</div>);
+          this.setState({hidden: "none"})
       });
     };
   
 
    render(){
        return(
-           <form>
+           <form style={{display: this.state.hidden}}>
            <div style={{margin: "0 25%"}}>
                 <TextField id="name"
                 hintText="Hint Text"
