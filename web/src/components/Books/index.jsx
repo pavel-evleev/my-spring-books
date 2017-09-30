@@ -42,11 +42,14 @@ export default class Books extends React.Component {
     }
 
     return (
-      <div>
+      <div style={{ margin: "0 25%" }}>
         <h2>Books</h2>
         {this.state.books.map(
           (book, index) => 
-            <BookItem key={index} book={book}/>
+            <div key={index}>
+              <BookItem book={book}/>
+              <hr/>
+            </div>
           )
         }
       </div>

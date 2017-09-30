@@ -7,13 +7,16 @@ export default class BookItem extends React.Component {
   render() {
     return (
       <div>
-        Name: {this.props.book.id}
+        Name: {this.props.book.name}
         <br/>
-        Authors: {this.props.book.authors.map(
+        Authors: 
+        <ol>
+          {this.props.book.authors.map(
           (author, index) => 
-            <span key={index}>{author.name}</span>
+            <li key={index}>{author} </li>
           )
         }
+        </ol>
       </div>
     )
   }

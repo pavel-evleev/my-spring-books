@@ -9,7 +9,7 @@ export const validateStatus = (status) => {
 }
 
 export const client = axios.create({
-  baseURL: 'http://demo7668243.mockable.io',
+  baseURL: 'http://localhost:8080',
   headers: DEFAULT_HTTP_HEADERS,
   validateStatus: validateStatus
 })
@@ -18,5 +18,13 @@ export const client = axios.create({
  * API endpoint to fetch all user books.
  */
 export const fetchBooks = () => {
-  return client.get(`/books`)
+  return client.get(`/v1/books`)
+}
+
+export const fetchAuthors=()=>{
+  return client.get('/v1/authors')
+}
+
+export const fetchAddAuthor = ( name )=>{
+return client.post('/v1/authors', name);
 }
