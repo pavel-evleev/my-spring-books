@@ -37,22 +37,31 @@ export default class AddBook extends React.Component{
         });
     }
 
-    handleDateChange = (event)=>{
-        this.setState({publishedDate: event.target.value});
+    handleDateChange = (objNull, date) => {
+        this.setState({publishedDate: date});
+    }
+
+    handleNameChange = (event)=>{
+        this.setState({name: event.target.value});
     }
 
     handleSelectedChange = (event, index, value)=>{
-        let i = index;
-        if(this.state.arraySelectedAuthors.length == 0)
-            this.state.arraySelectedAuthors.push(i);
+        debugger;
+        let arr = this.state.arraySelectedAuthors;
+        let i = value;
+        if(arr.length == 0)
+        {
+            arr.push(i);
+            this.setState({arraySelectedAuthors: arr});
+        }
         else{
-            if(this.state.arraySelectedAuthors.indexOf(i)!=-1){
-                this.state.arraySelectedAuthors.push(i);
+            if(-1==arr.indexOf(i)){
+                arr.push(i);
+                this.setState({arraySelectedAuthors: arr});
             }
         }
-        debugger;
-        this.setState({selectedAuthors: this.state.arraySelectedAuthors, value: value});
-
+        this.setState({value});
+        console.log(this.state.arraySelectedAuthors);   
     }
 
     render(){
@@ -62,7 +71,7 @@ export default class AddBook extends React.Component{
                 <TextField id="name"
                 hintText="Hint Text"
                 floatingLabelText="Book Name"
-                onChange = {this.handleChange}
+                onChange = {this.handleNameChange}
                 value = {this.state.name}
                 />
                 <br />
