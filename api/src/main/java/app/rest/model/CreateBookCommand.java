@@ -17,6 +17,8 @@ public class CreateBookCommand {
 
     private List<Long> authorsIds = new ArrayList<>();
 
+    private List<String> newAuthors = new ArrayList<>();
+
     public String getName() {
         return name;
     }
@@ -47,5 +49,13 @@ public class CreateBookCommand {
 
     public void setAuthorsIds(List<Long> authorsIds) {
         this.authorsIds = authorsIds;
+    }
+
+    public List<String> getNewAuthors() {
+        return newAuthors;
+    }
+
+    public void setNewAuthors(List<String> newAuthors) {
+        this.newAuthors = newAuthors;
     }
 }

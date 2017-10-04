@@ -44,7 +44,7 @@ export default class AddUser extends React.Component{
                     this.props.history.push("/users")
                     },1001);
             }).catch((error)=>{
-                this.setState({result: "not add becouse: "+error, styleResult: "bad"});
+                this.setState({result: "not add because: "+error, styleResult: "bad"});
             });
         setTimeout(()=>{
             this.setState({

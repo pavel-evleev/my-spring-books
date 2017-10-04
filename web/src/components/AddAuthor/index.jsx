@@ -1,6 +1,7 @@
 import React from 'react'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
+import Snackbar from 'material-ui/Snackbar'
 import * as api from '../../services/API'
 
 const style = {
@@ -14,9 +15,8 @@ export default class AddAuthor extends React.Component{
         this.state={
             name: '',
             hidden: "",
-            result: "not add",
-            displayResult: "none",
-            styleResult: "succes"
+            open: false,
+            message:''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -34,30 +34,33 @@ export default class AddAuthor extends React.Component{
       .then((response) =>{
           if(response.status==201)
           this.setState({hidden: "none",
-          displayResult: "block",
-          result: "succes!"
+          open: true,
+          message: "succes!"
         });
         else{
-            this.setState({hidden: "none",
-            displayResult: "block"
-          });
+            this.setState({hidden: "none"});
         }
         setTimeout(()=>{
-            this.setState({hidden: "block", displayResult: "none", name: ""});
+            this.setState({hidden: "block", name: ""});
             },1000);
         setTimeout(()=>{
             this.props.history.push("/authors")
             },1001);
       })
       .catch((error)=>{
-          this.setState({result: "not add becouse: "+error, styleResult: "bad"});
+          this.setState({message: "not add because: "+error, open: true});
       });
     };
   
+    handleRequestClose = () => {
+        this.setState({
+          open: false,
+        });
+      };
 
    render(){
        return(
-           <form>
+           <div>
             <div style={{margin: "0 25%", display: this.state.hidden }}>
                 <TextField id="name"
                 hintText="Hint Text"
@@ -69,10 +72,13 @@ export default class AddAuthor extends React.Component{
                 <RaisedButton label="Default" style={style} onClick={this.handleAddClick} />
                     
             </div>
-            <div style={{margin: "0 25%", display: this.state.displayResult}}>
-                <span className={this.state.styleResult}>{this.state.result}</span>
-            </div>
-           </form>
+            <Snackbar
+                open={this.state.open}
+                message={this.state.message}
+                autoHideDuration={3000}
+                onRequestClose={this.handleRequestClose}
+            />
+           </div>
         )
     }  
 }

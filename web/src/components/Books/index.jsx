@@ -3,9 +3,10 @@ import React from 'react'
 // import BookItem from '../BookItem'
 import * as api from '../../services/API'
 
-import {List, ListItem} from 'material-ui/List'
+import BookItem from '../BookItem'
 import IconButton from 'material-ui/IconButton'
 import ActionDelete from 'material-ui/svg-icons/action/delete'
+
 
 /*
  * View for listing books.
@@ -65,19 +66,11 @@ export default class Books extends React.Component {
     return (
       <div style={{ margin: "0 25%" }}>
         <h2>Books</h2>
-        <List>
-        {this.state.books.map(
-          (book, index) => 
-              <ListItem key={index} primaryText={book.name}
-              rightIconButton={
-                             <IconButton onClick = {()=>{this.deleteBook(book.id)}} tooltip="Delite">
-                                <ActionDelete />
-                            </IconButton>
-                        }/>
-          )
+        {
+          this.state.books.map((book, index)=>{
+            return (<BookItem key={index} book={book}/>)
+          })
         }
-
-    </List>
       </div>
     )
   }

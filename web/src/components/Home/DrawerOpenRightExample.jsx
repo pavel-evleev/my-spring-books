@@ -2,7 +2,7 @@ import React from 'react'
 import Drawer from 'material-ui/Drawer'
 import AppBar from 'material-ui/AppBar'
 import MenuItem from 'material-ui/MenuItem';
-// import Link from 'react-router-dom'
+import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 import { withRouter } from 'react-router-dom'
 
 
@@ -68,9 +68,16 @@ class DrawerOpenRightExample extends React.Component {
         <MenuItem onClick={this.handleUsersClick}>Users</MenuItem>
         <MenuItem onClick={this.handleBooksClick}>Books</MenuItem>
         <MenuItem onClick={this.handleAuthorsClick}>Authors</MenuItem>
-        <MenuItem onClick={this.handleAddAuthorClick}> Add Author</MenuItem>
-        <MenuItem onClick={this.handleAddUserClick}> Add User</MenuItem>
-        <MenuItem onClick={this.handleAddBookClick}> Add Book</MenuItem>
+        <MenuItem
+              primaryText="Add Entity"
+              rightIcon={<ArrowDropRight />}
+              menuItems={[
+                <MenuItem onClick={this.handleAddAuthorClick}> Add Author</MenuItem>,
+                <MenuItem onClick={this.handleAddUserClick}> Add User</MenuItem>,
+                <MenuItem onClick={this.handleAddBookClick}> Add Book</MenuItem>
+              ]}
+            />
+        
       </Drawer>
       </div>
     );
