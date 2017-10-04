@@ -1,7 +1,10 @@
 import React from 'react'
-
-import AuthorItem from '../AuthorItem'
+import CircularProgress from 'material-ui/CircularProgress'
+import IconButton from 'material-ui/IconButton'
+import ActionDelete from 'material-ui/svg-icons/action/delete'
+// import AuthorItem from '../AuthorItem'
 import * as api from '../../services/API'
+import {List, ListItem} from 'material-ui/List'
 
 
 export default class Authors extends React.Component{
@@ -26,9 +29,25 @@ export default class Authors extends React.Component{
             })
     }
 
+    deleteAuthor = (id) =>{
+        api.DeleteAuthor(id)
+        .then((response)=>{
+            if(response.status<299){
+            let tmp = this.state.authors;
+            let v=0;
+            tmp.forEach((author,index)=>{
+                    if(author.id == id)
+                    v = index;
+                });
+                tmp.splice(v,1);
+                this.setState({authors: tmp});
+            }
+        });
+    }
+
     render(){
         if(this.state.authorLoading){
-            return(<div>Loading...</div>)
+            return(<CircularProgress />)
         }
 
         if(this.state.error){
@@ -37,14 +56,17 @@ export default class Authors extends React.Component{
         return(
             <div style={{ margin: "0 25%" }}>
             <h2>Authors</h2>
-            {this.state.authors.map(
-              (author, index) => 
-                <div key={index}>
-                  <AuthorItem author={author}/>
-                  <hr/>
-                </div>
-              )
-            }
+            <List>
+                {this.state.authors.map(
+                    (author, index)=>
+                        <ListItem key={index} primaryText={author.name}
+                         rightIconButton={
+                             <IconButton onClick = {()=>{this.deleteAuthor(author.id)}} tooltip="Delite">
+                                <ActionDelete />
+                            </IconButton>
+                        }/>
+                )}
+            </List>
           </div>
         )
     }

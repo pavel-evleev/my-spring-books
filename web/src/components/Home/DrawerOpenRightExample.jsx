@@ -2,7 +2,7 @@ import React from 'react'
 import Drawer from 'material-ui/Drawer'
 import AppBar from 'material-ui/AppBar'
 import MenuItem from 'material-ui/MenuItem';
-import Link from 'react-router-dom'
+// import Link from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
 
 
@@ -39,21 +39,38 @@ class DrawerOpenRightExample extends React.Component {
     this.handleTouchTap();
   }
 
-  handleAddAuthorsClick = () =>{
+  handleAddAuthorClick = () =>{
     this.props.history.push('/add-author');
+    this.handleTouchTap();
+  }
+  handleAddUserClick = () =>{
+    this.props.history.push('/add-user');
+    this.handleTouchTap();
+  }
+
+  handleAddBookClick = () =>{
+    this.props.history.push('/add-book');
+    this.handleTouchTap();
+  }
+
+  handleUsersClick = ()=>{
+    this.props.history.push('/users');
     this.handleTouchTap();
   }
   
   render() {
     return (
       <div>
-      <Drawer width={200} open={this.props.open} >
+      <Drawer width={200} open={this.props.open} docked={false} onRequestChange={() =>this.handleTouchTap()} >
         <AppBar title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
         <MenuItem onClick={this.handleHomeClick}>Home</MenuItem>
         <MenuItem onClick={this.handleAboutClick} >About</MenuItem>
+        <MenuItem onClick={this.handleUsersClick}>Users</MenuItem>
         <MenuItem onClick={this.handleBooksClick}>Books</MenuItem>
         <MenuItem onClick={this.handleAuthorsClick}>Authors</MenuItem>
-        <MenuItem onClick={this.handleAddAuthorsClick}> Add Authors</MenuItem>
+        <MenuItem onClick={this.handleAddAuthorClick}> Add Author</MenuItem>
+        <MenuItem onClick={this.handleAddUserClick}> Add User</MenuItem>
+        <MenuItem onClick={this.handleAddBookClick}> Add Book</MenuItem>
       </Drawer>
       </div>
     );

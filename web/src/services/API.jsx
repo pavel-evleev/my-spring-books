@@ -21,10 +21,34 @@ export const fetchBooks = () => {
   return client.get(`/v1/books`)
 }
 
-export const fetchAuthors=()=>{
+export const fetchAuthors = ()=>{
   return client.get('/v1/authors')
 }
 
-export const fetchAddAuthor = ( name )=>{
-return client.post('/v1/authors', name);
+export const fetchUsers = ()=>{
+  return client.get('/v1/users')
+}
+
+export const CreateAuthor = ( name )=>{
+  return client.post('/v1/authors', name);
+}
+
+export const DeleteAuthor = ( id )=>{
+  return client.delete('/v1/authors/' + id);
+}
+
+export const CreateBook = ( book )=>{
+  return client.post('/v1/books', book);
+}
+
+export const DeleteBook = ( id )=>{
+  return client.delete('/v1/books/' + id);
+}
+
+export const CreateUser = ( user )=>{
+  return client.post('/v1/users', user);
+}
+
+export const DeleteUser = ( id )=>{
+  return client.delete('/v1/users/' + id);
 }

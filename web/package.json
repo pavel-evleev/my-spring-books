@@ -4,7 +4,7 @@
     "description": "The app stores books that have been already read by user",
     "repository": {
         "type": "git",
-        "url": "https://github.com/PavelEvleev/MyReadedBooks"
+        "url": "https://github.com/PavelEvleev/my-spring-books"
     },
     "author": {
         "name": "Pavel Evleev",
