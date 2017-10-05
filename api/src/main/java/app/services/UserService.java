@@ -57,11 +57,8 @@ public class UserService {
     @Transactional
     public void patch(Long id, Long bookId) {
        User user = userRepository.findOne(id);
-       Book toDelete = user.getBooks().stream().filter((book)->book.getId() == bookId).findAny().orElse(null);
-       if(toDelete!=null){
-           user.getBooks().remove(toDelete);
-       }
-       userRepository.save(user);
+       user.setBooks(user.getBooks().stream().filter(book -> !book.getId().equals(bookId)).collect(Collectors.toList()));
+       User u = userRepository.saveAndFlush(user);
     }
 
 
