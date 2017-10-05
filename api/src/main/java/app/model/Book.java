@@ -135,8 +135,8 @@ public class Book implements Serializable {
                 ", name='" + name + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", datePublished=" + datePublished +
-                ", authors=" + authors +
-                ", users=" + users +
+//                ", authors=" + authors +
+//                ", users=" + users +
                 '}';
     }
 }

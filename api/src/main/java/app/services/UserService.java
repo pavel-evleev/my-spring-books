@@ -1,5 +1,6 @@
 package app.services;
 
+import app.model.Book;
 import app.model.User;
 import app.repository.UserRepository;
 import app.rest.model.CreateUserCommand;
@@ -50,6 +51,19 @@ public class UserService {
     public void delete(Long id) {
         userRepository.delete(id);
     }
+
+
+//    нифига не обновляет связи!!!!
+    @Transactional
+    public void patch(Long id, Long bookId) {
+       User user = userRepository.findOne(id);
+       Book toDelete = user.getBooks().stream().filter((book)->book.getId() == bookId).findAny().orElse(null);
+       if(toDelete!=null){
+           user.getBooks().remove(toDelete);
+       }
+       userRepository.save(user);
+    }
+
 
     @Transactional
     public void delete(User user) {

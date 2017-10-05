@@ -69,6 +69,7 @@ export default class Users extends React.Component {
         {this.state.users.map(
           (user, index) => 
               <ListItem key={index} primaryText={user.name}
+              onClick={ ()=>this.props.history.push(`/user/${user.id}`)}
               rightIconButton={
                 <IconButton onClick = {()=>{this.deleteUser(user.id)}} tooltip="Delite">
                     <ActionDelete />

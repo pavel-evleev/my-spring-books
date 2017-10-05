@@ -110,7 +110,7 @@ public class User implements Serializable {
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
-                ", books=" + books +
+//                ", books=" + books +
                 '}';
     }
 }

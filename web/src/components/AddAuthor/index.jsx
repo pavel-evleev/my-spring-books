@@ -13,10 +13,13 @@ export default class AddAuthor extends React.Component{
     constructor(props){
         super(props);
         this.state={
+            authors:[],
             name: '',
             hidden: "",
             open: false,
-            message:''
+            message:'',
+            errorValidation: '',
+            buttonDisable: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -24,12 +27,27 @@ export default class AddAuthor extends React.Component{
 
     }
 
+    componentDidMount(){
+        api.fetchAuthors().then((response)=>{
+            this.setState({authors: response.data})
+        });
+
+    }
+
     handleChange = (event) =>{
-        this.setState({name: event.target.value});
+        const authorName = event.target.value;
+        this.setState({name: authorName, buttonDisable: false, errorValidation:''});
+        this.state.authors.forEach((author)=>{
+            if(author.name.localeCompare(authorName)==0){
+                this.setState({errorValidation: "This name already existed", buttonDisable: true});
+                return;
+            }
+        })
+        
     }
 
     handleAddClick = () =>{
-        console.log(this.state.name);
+        // console.log(this.state.name);
       api.CreateAuthor({name: this.state.name})
       .then((response) =>{
           if(response.status==201)
@@ -63,13 +81,14 @@ export default class AddAuthor extends React.Component{
            <div>
             <div style={{margin: "0 25%", display: this.state.hidden }}>
                 <TextField id="name"
-                hintText="Hint Text"
+                hintText="Name"
                 floatingLabelText="Author Name"
                 onChange = {this.handleChange}
                 value = {this.state.name}
+                errorText={this.state.errorValidation}
                 />
                 <br />
-                <RaisedButton label="Default" style={style} onClick={this.handleAddClick} />
+                <RaisedButton label="Add Author" disabled={this.state.buttonDisable} style={style} onClick={this.handleAddClick} />
                     
             </div>
             <Snackbar
@@ -82,8 +101,3 @@ export default class AddAuthor extends React.Component{
         )
     }  
 }
-/*TODO 
-добавление книги
-с выподающим списком всех возможных авторов
-если нету в списке, то добавить.
-*/

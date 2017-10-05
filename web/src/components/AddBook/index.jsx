@@ -36,7 +36,7 @@ export default class AddBook extends React.Component{
     getAuthors = ()=>{
         api.fetchAuthors().then((response)=>{
             this.setState({authors: response.data});
-            console.log(this.state.authors);
+            // console.log(this.state.authors);
         })
         .catch((error) => {
             this.setState({ authors: [], error: error.toString() })            
@@ -89,10 +89,6 @@ export default class AddBook extends React.Component{
             }).catch((error)=>{
                 this.setState({message: "not add because: "+error, open: true});
             });
-            // setTimeout(()=>{
-            //     this.setState({hidden: 'block', name: '', publisher: '', publishedDate: {}, arraySelectedAuthors: []});
-            //     this.getAuthors();
-            //     },2000);
     }
 
     handleRequestClose = () => {
@@ -103,17 +99,17 @@ export default class AddBook extends React.Component{
 
     render(){
         return(
-           <form>
+           <div>
             <div style={{margin: "0 25%", display: this.state.hidden }}>
                 <TextField 
-                hintText="Hint Text"
+                hintText="Book Name"
                 floatingLabelText="Book Name"
                 onChange = {this.handleNameChange}
                 value = {this.state.name}
                 />
                 <br />
                 <TextField
-                hintText="Hint Text"
+                hintText="Publisher"
                 floatingLabelText="Publisher"
                 onChange = {this.handlePublisherChange}
                 value = {this.state.publisher}
@@ -122,7 +118,7 @@ export default class AddBook extends React.Component{
 
                 <div>Add Authors....</div>
                 <SelectField
-                    floatingLabelText="Frequency"
+                    floatingLabelText="Authors"
                     value={this.state.value}
                     onChange={this.handleSelectedChange}
                     multiple={true}
@@ -153,7 +149,7 @@ export default class AddBook extends React.Component{
                 autoHideDuration={3000}
                 onRequestClose={this.handleRequestClose}
             />
-           </form>
+           </div>
         )
     }
 }

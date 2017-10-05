@@ -68,7 +68,7 @@ export default class Books extends React.Component {
         <h2>Books</h2>
         {
           this.state.books.map((book, index)=>{
-            return (<BookItem key={index} book={book}/>)
+            return (<BookItem key={index} book={book} deleteBook={()=>this.deleteBook(book.id)}/>)
           })
         }
       </div>

@@ -42,6 +42,12 @@ public class UserController {
         return userService.findOne(userId).getBooks();
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{userId}/books/{bookId}")
+    public void deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId){
+        userService.patch(userId, bookId);
+    }
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable Long userId) {

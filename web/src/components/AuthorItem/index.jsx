@@ -11,13 +11,13 @@ export default class AuthorItem extends React.Component{
         return(
             <span>
                 Name: {this.props.author.name}
-                {/* Written books:
+                Written books:
                 <ol>
                 {this.props.author.books.map(
                     (book, index) => 
                     <li key={index}>{book.name}</li>
                 )}
-                </ol> */}
+                </ol>
             </span>
 
         )

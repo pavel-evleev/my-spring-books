@@ -11,6 +11,7 @@ import Users from './components/Users'
 import AddAuthor from './components/AddAuthor'
 import AddUser from './components/AddUser'
 import AddBook from './components/AddBook'
+import User from './components/User'
 
 /**
  * Hash url router.
@@ -51,6 +52,7 @@ export default class Routes extends React.Component {
             <Route path="/add-author" component={AddAuthor} />
             <Route path="/add-user" component={AddUser} />
             <Route path="/add-book" component={AddBook} />
+            <Route path="/user/:id" component={User} />
           </div>
       </div>
     )
