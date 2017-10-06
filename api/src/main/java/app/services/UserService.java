@@ -53,12 +53,14 @@ public class UserService {
     }
 
 
-//    нифига не обновляет связи!!!!
+//    нифига не обновляет связи в базе данных!!!!
     @Transactional
     public void patch(Long id, Long bookId) {
        User user = userRepository.findOne(id);
        user.setBooks(user.getBooks().stream().filter(book -> !book.getId().equals(bookId)).collect(Collectors.toList()));
        User u = userRepository.saveAndFlush(user);
+       User user1 = userRepository.findOne(id);
+
     }
 
 
