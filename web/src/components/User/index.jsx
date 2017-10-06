@@ -30,7 +30,7 @@ export default class User extends React.Component {
         });
         
         api.fetchBooks().then((response)=>{
-            debugger;
+            // debugger;
           this.setState({allBooks: this.deleteExistedBooks(response.data)});
         });
     }
@@ -64,7 +64,7 @@ export default class User extends React.Component {
             api.addBooksToUser({userId: this.state.user.id, ids: this.state.arraySelectedAuthors})
             .then((response)=>{
                 this.setState({user: response.data});
-                debugger;
+                // debugger;
                 this.setState({allBooks: this.deleteExistedBooks(this.state.allBooks), arraySelectedAuthors: ''});
             })
         }
@@ -72,6 +72,8 @@ export default class User extends React.Component {
     } 
 
     deleteBook = (userId, bookId) =>{
+        // debugger;
+        let removedBook='';
         api.removeBookFromUser(userId, bookId)
         .then((response)=>{
             if(response.status<299){
@@ -82,14 +84,15 @@ export default class User extends React.Component {
                         if(book.id == bookId)
                         v = index;
                     });
-                    tmp.splice(v,1);
+                    removedBook = tmp.splice(v,1);
                     this.setState({user});
             }
         });
         //получаем список всех книг заново, вдруг изменилось
         api.fetchBooks().then((response)=>{
-            debugger;
-          this.setState({allBooks: this.deleteExistedBooks(response.data)});
+            // debugger;
+            let returnedBooks = this.deleteExistedBooks(response.data)
+          this.setState({allBooks: returnedBooks});
         });
     }
 
