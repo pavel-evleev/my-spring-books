@@ -1,8 +1,10 @@
 import React from 'react'
-
-import * as api from '../../services/API'
-import {Card, CardTitle,CardActions, CardHeader, CardText} from 'material-ui/Card'
 import BookItem from '../BookItem'
+import * as api from '../../services/API'
+import MenuItem from 'material-ui/MenuItem'
+import SelectField from 'material-ui/SelectField'
+import RaisedButton from 'material-ui/RaisedButton'
+import {Card, CardTitle,CardActions, CardHeader, CardText} from 'material-ui/Card'
 
 
 
@@ -11,7 +13,10 @@ export default class User extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            user: ''
+            user: '',
+            allBooks: [],
+            arraySelectedAuthors: '',
+            value: ''
         }
     }
 
@@ -19,33 +24,79 @@ export default class User extends React.Component {
     componentDidMount(){
        const id = this.props.match.params.id;
        
-        this.setState({ user: [], books: []})
+        this.setState({ user: [], allBooks: []});
         api.fetchUser(id).then((response)=>{
             this.setState({user: response.data});
-        })
+        });
+        
+        api.fetchBooks().then((response)=>{
+            debugger;
+          this.setState({allBooks: this.deleteExistedBooks(response.data)});
+        });
     }
+
+    handleSelectedChange = (event, index, value)=>{
+        this.setState({arraySelectedAuthors: value});
+        this.setState({value});
+    }
+
+    deleteExistedBooks = (books)=>{
+        let booksMap = new Map();
+        books.forEach((book)=>{
+            booksMap.set(book.id, book);
+        });
+        this.state.user.books.forEach(
+            (book)=>{
+                if(booksMap.has(book.id)){
+                    booksMap.delete(book.id);
+                }
+            });
+        let arBooks = [];
+        booksMap.forEach((value, key, map)=>{
+                arBooks.push(value);
+        });
+        return arBooks;
+    } 
+
+    handleAddClick = ()=>{
+
+        if(this.state.arraySelectedAuthors!=null && this.state.arraySelectedAuthors!=undefined){
+            api.addBooksToUser({userId: this.state.user.id, ids: this.state.arraySelectedAuthors})
+            .then((response)=>{
+                this.setState({user: response.data});
+                debugger;
+                this.setState({allBooks: this.deleteExistedBooks(this.state.allBooks), arraySelectedAuthors: ''});
+            })
+        }
+
+    } 
 
     deleteBook = (userId, bookId) =>{
         api.removeBookFromUser(userId, bookId)
         .then((response)=>{
             if(response.status<299){
-                let tmp = this.state.user.books;
+                let user = this.state.user;
+                let tmp = user.books;
                 let v=0;
                 tmp.forEach((book, index)=>{
                         if(book.id == bookId)
                         v = index;
                     });
                     tmp.splice(v,1);
-                    this.setState({books: tmp});
+                    this.setState({user});
             }
         });
-        
-            
+        //получаем список всех книг заново, вдруг изменилось
+        api.fetchBooks().then((response)=>{
+            debugger;
+          this.setState({allBooks: this.deleteExistedBooks(response.data)});
+        });
     }
 
     render() {
         
         return (
+            <div>
             <Card>
                 <CardHeader
                     title={`User name ${this.state.user.name}`}
@@ -62,21 +113,26 @@ export default class User extends React.Component {
                     }
                 </CardText>
                 <CardActions>
-                {/* <SelectField
-                    floatingLabelText="Authors"
+                <SelectField
+                    floatingLabelText="Books to add"
                     value={this.state.value}
                     onChange={this.handleSelectedChange}
                     multiple={true}
                     >
                     {
-                        this.state.authors.map(
-                            (author, index)=>
-                                <MenuItem key={index} value={author.id} primaryText={author.name}/>
+                        //почему в этот блок мы спускаемся 3 раза, и только на 4 видим что это массив?
+                        Array.isArray(this.state.allBooks)&&
+                        this.state.allBooks.map(
+                            (book, index)=>
+                            <MenuItem key={index} value={book.id} primaryText={book.name}/>
                             )
                     }
-                </SelectField> */}
+                </SelectField>
+                <RaisedButton label="Add books" onClick={this.handleAddClick} />
                 </CardActions>
           </Card>
+        
+        </div>
      )
    }
  }

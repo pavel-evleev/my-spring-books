@@ -1,9 +1,6 @@
 package app.rest.controller;
 
-import app.rest.model.ApiError;
-import app.rest.model.BookInfo;
-import app.rest.model.CreateUserCommand;
-import app.rest.model.UserInfo;
+import app.rest.model.*;
 import app.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +22,12 @@ public class UserController {
     @PostMapping
     public UserInfo create(@RequestBody CreateUserCommand createUserCommand) {
         return userService.save(createUserCommand);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{userId}")
+    public UserInfo addBooks(@RequestBody AddingBooks books){
+        return userService.addBooks(books);
     }
 
     @GetMapping

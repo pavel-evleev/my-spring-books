@@ -41,6 +41,10 @@ export const CreateAuthor = ( name )=>{
   return client.post('/v1/authors', name);
 }
 
+export const addBooksToUser = (books)=>{
+  return client.post('/v1/users/' + books.userId, books);
+}
+
 export const DeleteAuthor = ( id )=>{
   return client.delete('/v1/authors/' + id);
 }
