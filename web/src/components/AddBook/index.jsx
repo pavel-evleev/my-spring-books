@@ -65,7 +65,6 @@ export default class AddBook extends React.Component{
     }
 
     handleAddClick = ()=>{
-        debugger;
         api.CreateBook(
             {
                 name: this.state.name, 
