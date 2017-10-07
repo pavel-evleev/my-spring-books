@@ -37,10 +37,7 @@ public class Book implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "id_author", referencedColumnName = "id"))
     private List<Author> authors = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinTable(name = "users_books",
-            joinColumns = @JoinColumn(name = "id_books", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "books")
     private List<User> users = new ArrayList<>();
 
 
@@ -135,8 +132,8 @@ public class Book implements Serializable {
                 ", name='" + name + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", datePublished=" + datePublished +
-                ", authors=" + authors +
-                ", users=" + users +
+//                ", authors=" + authors +
+//                ", users=" + users +
                 '}';
     }
 }

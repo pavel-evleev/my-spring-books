@@ -1,9 +1,14 @@
 import React from 'react'
 
-import BookItem from '../BookItem'
+// import BookItem from '../BookItem'
 import * as api from '../../services/API'
 
-/**
+import BookItem from '../BookItem'
+import IconButton from 'material-ui/IconButton'
+import ActionDelete from 'material-ui/svg-icons/action/delete'
+
+
+/*
  * View for listing books.
  */
 export default class Books extends React.Component {
@@ -16,7 +21,7 @@ export default class Books extends React.Component {
     }
   }
 
-  /**
+  /*
    * Load all books when component is created.
    */
   componentDidMount() {
@@ -30,6 +35,23 @@ export default class Books extends React.Component {
       })
   }
 
+
+  deleteBook = (id) =>{
+    api.DeleteBook(id)
+    .then((response)=>{
+        if(response.status<299){
+        let tmp = this.state.books;
+        let v=0;
+        tmp.forEach((books,index)=>{
+                if(books.id == id)
+                v = index;
+            });
+            tmp.splice(v,1);
+            this.setState({books: tmp});
+        }
+    });
+}
+
   render() {
     // Show loading bar if HTTP request is not completed
     if (this.state.booksLoading) {
@@ -42,12 +64,12 @@ export default class Books extends React.Component {
     }
 
     return (
-      <div>
+      <div style={{ margin: "0 25%" }}>
         <h2>Books</h2>
-        {this.state.books.map(
-          (book, index) => 
-            <BookItem key={index} book={book}/>
-          )
+        {
+          this.state.books.map((book, index)=>{
+            return (<BookItem key={index} book={book} deleteBook={()=>this.deleteBook(book.id)}/>)
+          })
         }
       </div>
     )

@@ -1,9 +1,6 @@
 package app.rest.controller;
 
-import app.rest.model.ApiError;
-import app.rest.model.BookInfo;
-import app.rest.model.CreateUserCommand;
-import app.rest.model.UserInfo;
+import app.rest.model.*;
 import app.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +24,12 @@ public class UserController {
         return userService.save(createUserCommand);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{userId}")
+    public UserInfo addBooks(@RequestBody AddingBooks books){
+        return userService.addBooks(books);
+    }
+
     @GetMapping
     public List<UserInfo> findAll() {
         return userService.findAll();
@@ -40,6 +43,12 @@ public class UserController {
     @GetMapping("/{userId}/books")
     public List<BookInfo> findBooks(@PathVariable Long userId) {
         return userService.findOne(userId).getBooks();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{userId}/books/{bookId}")
+    public void deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId){
+        userService.patch(userId, bookId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

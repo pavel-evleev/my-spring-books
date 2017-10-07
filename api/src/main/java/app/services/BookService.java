@@ -7,6 +7,7 @@ import app.model.Author;
 import app.model.Book;
 import app.repository.BookRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
@@ -37,12 +38,20 @@ public class BookService {
 
     @Transactional
     public BookInfo save(CreateBookCommand book) {
+        // Get existing authors
+        List<Author> authors = book.getAuthorsIds().stream()
+            .map(authorRepository::findOne)
+            .collect(Collectors.toList());
+
+        // Create new authors
+        if (!CollectionUtils.isEmpty(book.getNewAuthors())) {
+            authors.addAll(authorRepository.save(book.getNewAuthors().stream()
+                .map(Author::new)
+                .collect(Collectors.toList())));
+        }
+
         Book newBook = new Book(book.getName(), book.getPublisher(), Date.valueOf("2017-03-01"));
-        newBook.setAuthors(
-            book.getAuthorsIds().stream()
-                .map(authorRepository::findOne)
-                .collect(Collectors.toList())
-        );
+        newBook.setAuthors(authors);
         return toBookInfo(bookRepository.save(newBook));
     }
 

@@ -1,3 +1,32 @@
-body {
-  background: lightgray;
+.menu>li {
+    display: inline-block;
+    padding: 0 5px;
+}
+
+.succes {
+    font-size: xx-large;
+    color: rgba(44, 194, 19, 0.84);
+    text-shadow: 0px 0px 1px lawngreen;
+    display: block;
+    margin: 20px 35%;
+    text-align: center;
+    box-shadow: 0px 2px 13px;
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.bad {
+    font-size: xx-large;
+    color: rgba(194, 19, 28, 0.84);
+    text-shadow: 0px 0px 1px #555E5C;
+    display: block;
+    margin: 20px 35%;
+    text-align: center;
+    box-shadow: 0px 2px 13px;
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.left {
+    float: left
 }
