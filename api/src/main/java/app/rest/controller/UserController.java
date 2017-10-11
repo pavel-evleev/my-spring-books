@@ -35,6 +35,11 @@ public class UserController {
         return userService.findAll();
     }
 
+    @GetMapping("/find/{name}")
+    public List<String> findNameLike(@PathVariable String name){
+        return userService.findNameLike(name);
+    }
+
     @GetMapping("/{userId}")
     public UserInfo findById(@PathVariable Long userId) {
         return userService.findOne(userId);

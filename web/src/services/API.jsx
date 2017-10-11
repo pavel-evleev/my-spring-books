@@ -31,7 +31,10 @@ export const fetchUsers = ()=>{
 
 export const removeBookFromUser = (userId, bookId)=>{
   return client.patch('/v1/users/' + userId + '/books/' + bookId)
-        // client.patch('/v1/users/:userId/books/:bookId')
+}
+
+export const test = (p)=>{
+  return client.get('/v1/users/find/' + p);
 }
 
 export const fetchUser = (id)=>{

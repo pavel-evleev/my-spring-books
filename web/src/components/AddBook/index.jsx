@@ -11,8 +11,12 @@ import * as api from '../../services/API'
 export default class AddBook extends React.Component{
 
     constructor(props){
-        super(props)
+        super(props);
+        const maxDate = new Date();
+        maxDate.setFullYear(maxDate.getFullYear());
+
         this.state={
+            maxDate: maxDate,
             hidden: '',
             name: '',
             authors: [],
@@ -36,7 +40,6 @@ export default class AddBook extends React.Component{
     getAuthors = ()=>{
         api.fetchAuthors().then((response)=>{
             this.setState({authors: response.data});
-            // console.log(this.state.authors);
         })
         .catch((error) => {
             this.setState({ authors: [], error: error.toString() })            
@@ -138,7 +141,12 @@ export default class AddBook extends React.Component{
                     value = {this.state.newAuthors}
                 />
                 <br />
-                <DatePicker hintText="Published Date" floatingLabelText="Published Date" value={this.state.publishedDate} onChange={this.handleDateChange} />
+                <DatePicker hintText="Published Date"
+                            floatingLabelText="Published Date"
+                            autoOk={true}
+                            maxDate={this.state.maxDate}
+                            value={this.state.publishedDate}
+                            onChange={this.handleDateChange} />
                 <RaisedButton label="Add" onClick={this.handleAddClick} />
                     
             </div>

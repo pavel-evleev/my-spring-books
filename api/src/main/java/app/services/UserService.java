@@ -36,6 +36,10 @@ public class UserService {
         return toUserInfo(userRepository.findOne(id));
     }
 
+    public List<String> findNameLike(String name){
+        return userRepository.findByNameLike(name);
+    }
+
     public static UserInfo toUserInfo(User user) {
         UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getPhone(), user.getPassword());
         userInfo.setBooks(

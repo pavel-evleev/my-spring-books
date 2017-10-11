@@ -12,7 +12,12 @@ import AddAuthor from './components/AddAuthor'
 import AddUser from './components/AddUser'
 import AddBook from './components/AddBook'
 import User from './components/User'
+import {
+  ToastContainer,
+  ToastMessage,
+} from 'react-toastr'
 
+const ToastMessageFactory = React.createFactory(ToastMessage.animation);
 /**
  * Hash url router.
  * Connect components with browser url links.
@@ -24,6 +29,19 @@ export default class Routes extends React.Component {
     this.state = {
       open: false
     }
+  }
+
+  addAlert = this.addAlert.bind(this);
+  clearAlert = this.clearAlert.bind(this);
+
+  addAlert() {
+    this.refs.container.success(`hi! Now is ${new Date()}`, `///title\\\\\\`, {
+      closeButton: true,
+    });
+  }
+
+  clearAlert() {
+    this.refs.container.clear();
   }
 
   handleTouchTap = () => {
@@ -54,6 +72,27 @@ export default class Routes extends React.Component {
             <Route path="/add-book" component={AddBook} />
             <Route path="/user/:id" component={User} />
           </div>
+
+          <ToastContainer
+            toastMessageFactory={ToastMessageFactory}
+            ref="container"
+            className="toast-top-right"
+          />
+
+        <h1>
+          React-Toastr
+          <small>React.js toastr component</small>
+        </h1>
+
+        <div className="btn-container">
+          <button className="primary" onClick={this.addAlert}>
+            Hello
+          </button>
+          <button className="primary" onClick={this.clearAlert}>
+            CLEAR
+          </button>
+        </div>
+
       </div>
     )
   }

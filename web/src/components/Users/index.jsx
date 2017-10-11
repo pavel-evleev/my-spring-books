@@ -1,7 +1,7 @@
 import React from 'react'
 
 import * as api from '../../services/API'
-
+import CircularProgress from 'material-ui/CircularProgress'
 import {List, ListItem} from 'material-ui/List'
 import IconButton from 'material-ui/IconButton'
 import ActionDelete from 'material-ui/svg-icons/action/delete'
@@ -32,6 +32,10 @@ export default class Users extends React.Component {
       .catch((error) => {
         this.setState({ users: [], usersLoading: false, error: error.toString() })            
       })
+
+      api.test("P").then((response)=>{
+        console.log(response.data);
+      })
   }
 
 
@@ -54,7 +58,7 @@ export default class Users extends React.Component {
   render() {
     // Show loading bar if HTTP request is not completed
     if (this.state.usersLoading) {
-      return (<div>Loading...</div>)
+      return (<CircularProgress />)
     }
 
     // Show error if HTTP request failed

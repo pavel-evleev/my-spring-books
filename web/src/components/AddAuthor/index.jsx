@@ -18,7 +18,7 @@ export default class AddAuthor extends React.Component{
             hidden: "",
             open: false,
             message:'',
-            errorValidation: '',
+            validName: '',
             buttonDisable: false
         };
 
@@ -36,10 +36,10 @@ export default class AddAuthor extends React.Component{
 
     handleChange = (event) =>{
         const authorName = event.target.value;
-        this.setState({name: authorName, buttonDisable: false, errorValidation:''});
+        this.setState({name: authorName, buttonDisable: false, validName:''});
         this.state.authors.forEach((author)=>{
             if(author.name.localeCompare(authorName)==0){
-                this.setState({errorValidation: "This name already existed", buttonDisable: true});
+                this.setState({validName: "This name already existed", buttonDisable: true});
                 return;
             }
         })
@@ -85,7 +85,7 @@ export default class AddAuthor extends React.Component{
                 floatingLabelText="Author Name"
                 onChange = {this.handleChange}
                 value = {this.state.name}
-                errorText={this.state.errorValidation}
+                errorText={this.state.validName}
                 />
                 <br />
                 <RaisedButton label="Add Author" disabled={this.state.buttonDisable} style={style} onClick={this.handleAddClick} />
