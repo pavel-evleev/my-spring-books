@@ -2,6 +2,7 @@ import React from 'react'
 import {Route} from 'react-router-dom'
 import AppBar from 'material-ui/AppBar'
 import DrawerOpenRightExample from './components/Home/DrawerOpenRightExample'
+import Notifications from 'react-notify-toast'
 
 import About from './components/About'
 import Books from './components/Books'
@@ -12,12 +13,8 @@ import AddAuthor from './components/AddAuthor'
 import AddUser from './components/AddUser'
 import AddBook from './components/AddBook'
 import User from './components/User'
-import {
-  ToastContainer,
-  ToastMessage,
-} from 'react-toastr'
 
-const ToastMessageFactory = React.createFactory(ToastMessage.animation);
+
 /**
  * Hash url router.
  * Connect components with browser url links.
@@ -31,19 +28,6 @@ export default class Routes extends React.Component {
     }
   }
 
-  addAlert = this.addAlert.bind(this);
-  clearAlert = this.clearAlert.bind(this);
-
-  addAlert() {
-    this.refs.container.success(`hi! Now is ${new Date()}`, `///title\\\\\\`, {
-      closeButton: true,
-    });
-  }
-
-  clearAlert() {
-    this.refs.container.clear();
-  }
-
   handleTouchTap = () => {
     this.setState({ open: !this.state.open})
   }
@@ -53,7 +37,7 @@ export default class Routes extends React.Component {
     return (
       <div>
         <AppBar
-          title="Title"
+          title="MySpringBooks"
           onLeftIconButtonTouchTap={this.handleTouchTap}
           iconClassNameRight="muidocs-icon-navigation-expand-more"
         />
@@ -72,27 +56,7 @@ export default class Routes extends React.Component {
             <Route path="/add-book" component={AddBook} />
             <Route path="/user/:id" component={User} />
           </div>
-
-          <ToastContainer
-            toastMessageFactory={ToastMessageFactory}
-            ref="container"
-            className="toast-top-right"
-          />
-
-        <h1>
-          React-Toastr
-          <small>React.js toastr component</small>
-        </h1>
-
-        <div className="btn-container">
-          <button className="primary" onClick={this.addAlert}>
-            Hello
-          </button>
-          <button className="primary" onClick={this.clearAlert}>
-            CLEAR
-          </button>
-        </div>
-
+          <Notifications options={{zIndex: 5000}}/>
       </div>
     )
   }

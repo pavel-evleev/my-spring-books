@@ -1,10 +1,9 @@
 import React from 'react'
-
-import * as api from '../../services/API'
 import CircularProgress from 'material-ui/CircularProgress'
 import {List, ListItem} from 'material-ui/List'
-import IconButton from 'material-ui/IconButton'
-import ActionDelete from 'material-ui/svg-icons/action/delete'
+
+import * as api from '../../services/API'
+
 
 /*
  * View for listing books.
@@ -17,7 +16,6 @@ export default class Users extends React.Component {
       usersLoading: false,
       error: null
     }
-    this.deleteUser = this.deleteUser.bind(this);
   }
 
   /*
@@ -32,28 +30,7 @@ export default class Users extends React.Component {
       .catch((error) => {
         this.setState({ users: [], usersLoading: false, error: error.toString() })            
       })
-
-      api.test("P").then((response)=>{
-        console.log(response.data);
-      })
   }
-
-
-  deleteUser = (id) =>{
-    api.DeleteUser(id)
-    .then((response)=>{
-        if(response.status<299){
-        let tmp = this.state.users;
-        let v=0;
-        tmp.forEach((user, index)=>{
-                if(user.id == id)
-                v = index;
-            });
-            tmp.splice(v,1);
-            this.setState({users: tmp});
-        }
-    });
-}
 
   render() {
     // Show loading bar if HTTP request is not completed
@@ -73,12 +50,8 @@ export default class Users extends React.Component {
         {this.state.users.map(
           (user, index) => 
               <ListItem key={index} primaryText={user.name}
-              onClick={ ()=>this.props.history.push(`/user/${user.id}`)}
-              rightIconButton={
-                <IconButton onClick = {()=>{this.deleteUser(user.id)}} tooltip="Delite">
-                    <ActionDelete />
-                </IconButton>
-                }/>
+                onClick={ ()=>this.props.history.push(`/user/${user.id}`)}
+              />
           )
         }
     </List>

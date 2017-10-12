@@ -3,6 +3,7 @@ import {Card, CardTitle, CardActions, CardHeader, CardText} from 'material-ui/Ca
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
 import SelectField from 'material-ui/SelectField'
+import {notify} from 'react-notify-toast'
 
 import BookItem from '../BookItem'
 import * as api from '../../services/API'
@@ -44,7 +45,14 @@ export default class User extends React.Component {
 
     api.addBooksToUser({ userId: user.id, ids: selectedBooks })
       .then((response) => {
-        this.setState({user: response.data});
+        this.setState({user: response.data})
+        if(selectedBooks.length > 1){
+          notify.show('Books add', 'success', 2000)
+        }else{
+          notify.show('Book add', 'success', 2000)
+        }
+      }).catch((error)=>{
+        notify.show(error, 'error', 2000)
       })
 
     this.setState({ selectedBooks: [] })
@@ -55,8 +63,22 @@ export default class User extends React.Component {
     api.removeBookFromUser(userId, bookId)
       .then((response) => {
         user.books = user.books.filter(book => book.id != bookId);
-        this.setState({user});
-      });
+        this.setState({user})
+        notify.show('Book removed', 'success', 2000)
+      }).catch((error)=>{
+        notify.show(error, 'error', 2000)
+      })
+  }
+
+  deleteUser = (id) =>{
+    api.DeleteUser(id)
+    .then((response)=>{
+      notify.show('User delete', 'success', 2000)
+      setTimeout(()=>{this.props.history.push(`/users`)}, 1000)
+    })
+    .catch((error)=>{
+      notify.show(error, 'error', 2000)
+    })
   }
 
   render() {
@@ -70,17 +92,19 @@ export default class User extends React.Component {
       <Card>
         <CardHeader
         title={`User name ${this.state.user.name}`}
-        />
+        >
+        <RaisedButton label="Delete user" onClick = {()=>{this.deleteUser(user.id)}}/>
+        </CardHeader>
         <CardTitle title="Readed Books"/>
         <CardText>
         {
             Array.isArray(user.books) &&
             user.books.map((book, index) => 
-            <BookItem 
-                key={index}
-                book={book}
-                deleteBook={() => {this.handleDeleteBook(user.id, book.id)}}
-            />
+              <BookItem 
+                  key={index}
+                  book={book}
+                  deleteBook={() => {this.handleDeleteBook(user.id, book.id)}}
+              />
             )
         }
         </CardText>
@@ -92,20 +116,20 @@ export default class User extends React.Component {
             multiple={true}
         >
           {
-            //почему в этот блок мы спускаемся 3 раза, и только на 4 видим что это массив?
             Array.isArray(allBooks) &&
             allBooks
                 .filter(book => !user.books.map(userBook => userBook.id).includes(book.id))
                 .map((book, index) =>
-                <MenuItem 
-                    key={index} 
-                    value={book.id} 
-                    primaryText={book.name}
-                />
+                  <MenuItem 
+                      key={index} 
+                      value={book.id} 
+                      primaryText={book.name}
+                  />
                 )
           }
         </SelectField>
         <RaisedButton label="Add books" onClick={this.handleAddClick}/>
+
         </CardActions>
       </Card>
     )

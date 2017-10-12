@@ -30,9 +30,9 @@
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-input-mask": "^1.0.7",
+    "react-notify-toast": "^0.3.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-toastr": "^2.9.5",
     "sass-loader": "^6.0.6"
   },
   "devDependencies": {

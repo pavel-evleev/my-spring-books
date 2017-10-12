@@ -64,7 +64,6 @@ class DrawerOpenRightExample extends React.Component {
       <Drawer width={200} open={this.props.open} docked={false} onRequestChange={() =>this.handleTouchTap()} >
         <AppBar title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
         <MenuItem onClick={this.handleHomeClick}>Home</MenuItem>
-        <MenuItem onClick={this.handleAboutClick} >About</MenuItem>
         <MenuItem onClick={this.handleUsersClick}>Users</MenuItem>
         <MenuItem onClick={this.handleBooksClick}>Books</MenuItem>
         <MenuItem onClick={this.handleAuthorsClick}>Authors</MenuItem>
@@ -77,7 +76,7 @@ class DrawerOpenRightExample extends React.Component {
                 <MenuItem onClick={this.handleAddBookClick}> Add Book</MenuItem>
               ]}
             />
-        
+        <MenuItem onClick={this.handleAboutClick} >About</MenuItem>
       </Drawer>
       </div>
     );

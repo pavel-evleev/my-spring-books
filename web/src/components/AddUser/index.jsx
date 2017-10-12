@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import InputMask from 'react-input-mask'
 import * as api from '../../services/API'
-import Snackbar from 'material-ui/Snackbar'
+import {notify} from 'react-notify-toast'
 
 const requiredPass = "This field is required";
 const nameExisted = "This name already existed"; 
@@ -18,15 +18,12 @@ export default class AddUser extends React.Component{
             userName: '',
             userPassword: '',
             phone: '',
-            message: '',
             validName: '',
             validPassword: '',
             validPhone: '',
             disabledButton: true,
-            open: false
         }
     }
-
     
     handleSubmit = ()=>{
         api.CreateUser(
@@ -34,45 +31,41 @@ export default class AddUser extends React.Component{
                 name: this.state.userName,
                 phone: this.state.phone,
                 password: this.state.userPassword 
-            }).then((response)=>{
-                this.setState({
-                    message: "User successfully add",
-                    userName: '',
-                    phone: '',
-                    userPassword: '',
-                    open: true
-                });
-                setTimeout(()=>{
-                    this.props.history.push(`/user/${response.data.id}`)
-                    },1001);
-            }).catch((error)=>{
-                this.setState({message: "not add because: " + error});
-            });
+            }
+        ).then((response)=>{
+                notify.show('User successfully add','success', 1000)
+                setTimeout(()=>{this.props.history.push(`/user/${response.data.id}`)},1001)
+        }).catch((error)=>{
+                notify.show(error,'error')
+        });
     }
 
     handleUserNameChange = (event)=>{
-        const userName = event.target.value;
-        if(userName.length == 1)
-        api.test(userName).then((response)=>{
-            this.setState({users: response.data});
-        });
+        const userNameEvent = event.target.value;
+        if(userNameEvent.length == 1){
+            api.test(userNameEvent).then((response)=>{
+                this.setState({users: response.data});
+            });
+        }
         let error = '';
-        this.setState({userName: userName, validName: ''});
+        this.setState({userName: userNameEvent, validName: ''});
         this.state.users.forEach((user)=>{
-            if(!userName.localeCompare(user)){
+            if(!userNameEvent.localeCompare(user)){
                 this.setState({validName: nameExisted});
                 error = nameExisted; 
             }
         });
-        this.disabledButton(userName, undefined, undefined, error);
+        this.disabledButton(userNameEvent, undefined, undefined, error);
     }
 
     handlePasswordChange = (event)=>{
         const password = event.target.value;
-        if(password != '')
-            this.setState({userPassword: password, validPassword: ''});
-        else
+        if(password != ''){
+            this.setState({userPassword: password, validPassword: ''})
+        }
+        else{
             this.setState({userPassword: password, validPassword: requiredPass, disabledButton: true})
+        }
         this.disabledButton(undefined, password, undefined);
     }
 
@@ -80,14 +73,15 @@ export default class AddUser extends React.Component{
         let numberPhone = event.target.value;
         this.setState({phone: event.target.value});
         this.disabledButton(undefined, undefined, event.target.value);
-        console.log(numberPhone.length);
     }
 
     handleBlur = ()=>{
-        if (this.state.phone.length < 17)
-            this.setState({validPhone: shortPhone});
-        else
-            this.setState({validPhone: ''});
+        if (this.state.phone.length < 17){
+            this.setState({validPhone: shortPhone})
+        }
+        else{
+            this.setState({validPhone: ''})
+        }
     }
 
     disabledButton = (name = this.state.userName, password = this.state.userPassword, phone = this.state.phone, validity = this.state.validName )=>{
@@ -105,15 +99,8 @@ export default class AddUser extends React.Component{
             this.setState({disabledButton: false});
     }
 
-    handleRequestClose = () => {
-        this.setState({
-          open: false,
-        });
-      }
-
     render(){
         return(
-           <div>
             <div style={{margin: "0 25%", display: this.state.hidden }}>
                 <TextField id="name"
                 hintText="Name"
@@ -140,13 +127,6 @@ export default class AddUser extends React.Component{
                 <br />
                 <RaisedButton label="Add User" disabled={this.state.disabledButton} onClick={this.handleSubmit}/>
             </div>
-            <Snackbar
-                open={this.state.open}
-                message={this.state.message}
-                autoHideDuration={3000}
-                onRequestClose={this.handleRequestClose}
-            />
-           </div>
         )
     }
 }
