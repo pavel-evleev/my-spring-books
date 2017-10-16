@@ -16,6 +16,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <springsecurity.version>4.1.1.RELEASE</springsecurity.version>
+        <springsecurityoauth2.version>2.0.10.RELEASE</springsecurityoauth2.version>
     </properties>
 
     <dependencies>
@@ -66,6 +68,26 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${springsecurity.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${springsecurity.version}</version>
+        </dependency>
+
+        <!-- Spring Security OAuth2-->
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>${springsecurityoauth2.version}</version>
+        </dependency>
+
     </dependencies>
 
 
@@ -94,6 +116,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>1.5.6.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>4.3.9.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

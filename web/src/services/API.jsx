@@ -14,7 +14,7 @@ export const client = axios.create({
   validateStatus: validateStatus
 })
 
-/**
+/*
  * API endpoint to fetch all user books.
  */
 export const fetchBooks = () => {
@@ -66,4 +66,8 @@ export const CreateUser = ( user )=>{
 
 export const DeleteUser = ( id )=>{
   return client.delete('/v1/users/' + id);
+}
+
+export const OAuth2 = ()=>{
+  return client.post("http://localhost:8080/oauth/token?grant_type=password&username=gigy&password=secret", {username: "gigy", password: "secret"});
 }

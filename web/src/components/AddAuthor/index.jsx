@@ -24,6 +24,8 @@ export default class AddAuthor extends React.Component{
     componentDidMount(){
         api.fetchAuthors().then((response)=>{
             this.setState({authors: response.data})
+        }).catch((error)=>{
+            notify.show(error,"error");
         });
     }
 
@@ -38,16 +40,17 @@ export default class AddAuthor extends React.Component{
     }
 
     handleAddClick = () =>{
-      api.CreateAuthor({name: this.state.name})
-      .then((response) =>{
-                notify.show('Author success add','success', 3000);
-                setTimeout(()=>{
-                    this.setState({name: ""});
-                    },1000);
-        })
-        .catch((error)=>{
-            notify.show(error,'error');
-        });
+        api.OAuth2();
+    //   api.CreateAuthor({name: this.state.name})
+    //   .then((response) =>{
+    //             notify.show('Author success add','success', 3000);
+    //             setTimeout(()=>{
+    //                 this.setState({name: ""});
+    //                 },1000);
+    //     })
+    //     .catch((error)=>{
+    //         notify.show(error,'error');
+    //     });
     };
 
    render(){
