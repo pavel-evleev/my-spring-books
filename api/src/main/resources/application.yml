@@ -10,3 +10,7 @@ spring:
     properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
 
 logging.level.org.hibernate.SQL: debug
+
+auth0:
+  audience: https://my-spring-books-auth/
+  issuer: https://my-spring-books.eu.auth0.com/

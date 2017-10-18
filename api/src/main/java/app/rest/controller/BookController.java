@@ -6,7 +6,6 @@ import app.rest.model.BookInfo;
 import app.rest.model.CreateBookCommand;
 import app.services.BookService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
@@ -23,7 +22,6 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BookInfo create(@RequestBody CreateBookCommand createBookCommand) {
