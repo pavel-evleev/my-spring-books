@@ -9,10 +9,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable, UserDetails {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +38,20 @@ public class User implements Serializable, UserDetails {
             inverseJoinColumns = @JoinColumn(name = "id_books", referencedColumnName = "id"))
     private List<Book> books = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
     public User() {
+    }
+
+    public User(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.password = user.getPassword();
+        this.phone = user.getPhone();
+        this.books = user.getBooks();
+        this.roles = user.getRoles();
     }
 
     public User(String name, String phone, String password) {
@@ -45,6 +59,7 @@ public class User implements Serializable, UserDetails {
         this.phone = phone;
         this.password = password;
     }
+
 
     public Long getId() {
         return id;
@@ -70,45 +85,8 @@ public class User implements Serializable, UserDetails {
         this.phone = phone;
     }
 
-
     public String getPassword() {
         return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return getName();
-    }
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return asList("ADMIN");
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        return authorities;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        // we never lock accounts
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        // credentials never expire
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 
     public void setPassword(String password) {
@@ -121,6 +99,14 @@ public class User implements Serializable, UserDetails {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

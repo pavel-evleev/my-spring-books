@@ -7,6 +7,7 @@ import app.repository.UserRepository;
 import app.rest.model.AddingBooks;
 import app.rest.model.CreateUserCommand;
 import app.rest.model.UserInfo;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,12 +20,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    public UserService(UserRepository userRepository, BookRepository bookRepository) {
+    public UserService(UserRepository userRepository, BookRepository bookRepository, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
+        this.encoder = encoder;
     }
-
 
     public List<UserInfo> findAll() {
         return userRepository.findAll().stream()
@@ -52,7 +54,7 @@ public class UserService {
 
     @Transactional
     public UserInfo save(CreateUserCommand user) {
-        User newUser = new User(user.getName(), user.getPhone(), user.getPassword());
+        User newUser = new User(user.getName(), user.getPhone(), encoder.encode(user.getPassword()));
         return toUserInfo(userRepository.save(newUser));
     }
 
