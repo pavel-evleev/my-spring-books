@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route} from 'react-router-dom'
+import {Redirect, Route} from 'react-router-dom'
 import AppBar from 'material-ui/AppBar'
 import DrawerOpenRightExample from './components/Home/DrawerOpenRightExample'
 import Notifications from 'react-notify-toast'
@@ -28,11 +28,20 @@ export default class Routes extends React.Component {
     }
   }
 
+  privateRender = (component) => {
+    return this.requireAuth() ? component : this.redirectToLogin
+  }
+
+  requireAuth = () => {
+    return localStorage.getItem("isLoggedIn")
+  }
+
+  redirectToLogin = () => <Redirect to="/login" />
+
   handleTouchTap = () => {
     this.setState({ open: !this.state.open})
   }
 
- 
   render() {
     return (
       <div>
@@ -46,11 +55,12 @@ export default class Routes extends React.Component {
           open={this.state.open}
         />
           <div>
-            <Route exact path="/" component={Home}/>
+            <Route path="/" exact render={this.privateRender(<Home/>)}/>
+            <Route path="/login" component={About}/>
             <Route path="/about" component={About}/>
-            <Route path="/users" component={Users}/>
+            <Route path="/users"  render={this.requireAuth() ? <Users/> : this.redirectToLogin}/>
             <Route path="/books" component={Books}/>
-            <Route path="/authors" component={Authors} />
+            <Route path="/authors" component={Authors}/>
             <Route path="/add-author" component={AddAuthor} />
             <Route path="/add-user" component={AddUser} />
             <Route path="/add-book" component={AddBook} />

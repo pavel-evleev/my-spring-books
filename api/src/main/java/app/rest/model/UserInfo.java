@@ -3,16 +3,15 @@ package app.rest.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Pavel on 08.09.2017.
- */
+
 public class UserInfo {
 
-    public UserInfo(Long id, String name, String phone, String password) {
+    public UserInfo(Long id, String name, String phone, String password, String email) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.password = password;
+        this.email = email;
     }
 
     private Long id;
@@ -22,6 +21,8 @@ public class UserInfo {
     private String phone;
 
     private String password;
+
+    private String email;
 
     private List<BookInfo> books = new ArrayList<>();
 
@@ -64,5 +65,13 @@ public class UserInfo {
 
     public void setBooks(List<BookInfo> books) {
         this.books = books;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

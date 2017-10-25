@@ -43,7 +43,7 @@ public class UserService {
     }
 
     public static UserInfo toUserInfo(User user) {
-        UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getPhone(), user.getPassword());
+        UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getPhone(), user.getPassword(), user.getEmail());
         userInfo.setBooks(
             user.getBooks().stream()
                 .map(BookService::toBookInfo)
@@ -54,7 +54,7 @@ public class UserService {
 
     @Transactional
     public UserInfo save(CreateUserCommand user) {
-        User newUser = new User(user.getName(), user.getPhone(), encoder.encode(user.getPassword()));
+        User newUser = new User(user.getName(), user.getPhone(), encoder.encode(user.getPassword()), user.getEmail());
         return toUserInfo(userRepository.save(newUser));
     }
 

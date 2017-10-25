@@ -6,10 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -31,6 +28,17 @@ public class User implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @NotEmpty
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @NotEmpty
+    @Column(name = "active", nullable = false)
+    private boolean active;
+
+    @NotEmpty
+    @Column(name = "uuid", nullable = false)
+    private String uuid;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "users_books",
@@ -42,6 +50,8 @@ public class User implements Serializable {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+
+
     public User() {
     }
 
@@ -52,12 +62,17 @@ public class User implements Serializable {
         this.phone = user.getPhone();
         this.books = user.getBooks();
         this.roles = user.getRoles();
+        this.email = user.getEmail();
+        this.active = user.isActive();
     }
 
-    public User(String name, String phone, String password) {
+    public User(String name, String phone, String password, String email) {
         this.name = name;
         this.phone = phone;
         this.password = password;
+        this.active = false;
+        this.email = email;
+        this.uuid = UUID.randomUUID().toString();
     }
 
 
@@ -105,8 +120,32 @@ public class User implements Serializable {
         return roles;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     @Override
@@ -116,11 +155,15 @@ public class User implements Serializable {
 
         User user = (User) o;
 
+        if (active != user.active) return false;
         if (id != null ? !id.equals(user.id) : user.id != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        return books != null ? books.equals(user.books) : user.books == null;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (uuid != null ? !uuid.equals(user.uuid) : user.uuid != null) return false;
+        if (books != null ? !books.equals(user.books) : user.books != null) return false;
+        return roles != null ? roles.equals(user.roles) : user.roles == null;
     }
 
     @Override
@@ -129,7 +172,11 @@ public class User implements Serializable {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (active ? 1 : 0);
+        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
         result = 31 * result + (books != null ? books.hashCode() : 0);
+        result = 31 * result + (roles != null ? roles.hashCode() : 0);
         return result;
     }
 

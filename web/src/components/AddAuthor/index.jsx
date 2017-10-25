@@ -40,7 +40,7 @@ export default class AddAuthor extends React.Component{
     }
 
     handleAddClick = () =>{
-        api.OAuth2();
+        api.Login();
     //   api.CreateAuthor({name: this.state.name})
     //   .then((response) =>{
     //             notify.show('Author success add','success', 3000);
