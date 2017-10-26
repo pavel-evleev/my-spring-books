@@ -1,6 +1,7 @@
 package app.rest.controller;
 
 import app.rest.model.*;
+import app.services.EmailVerifyService;
 import app.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -31,7 +32,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{userId}")
-    public UserInfo addBooks(@RequestBody AddingBooks books){
+    public UserInfo addBooks(@RequestBody AddingBooks books) {
         return userService.addBooks(books);
     }
 
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @GetMapping("/find/{name}")
-    public List<String> findNameLike(@PathVariable String name){
+    public List<String> findNameLike(@PathVariable String name) {
         return userService.findNameLike(name);
     }
 
@@ -57,7 +58,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{userId}/books/{bookId}")
-    public void deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId){
+    public void deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId) {
         userService.patch(userId, bookId);
     }
 
@@ -79,12 +80,19 @@ public class UserController {
         return new ApiError(exception.getMessage());
     }
 
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "logout";
+    }
+
+    @RequestMapping("/verify/{uuid}")
+    public String confirmEmail(@PathVariable String uuid, HttpServletRequest request) {
+        return userService.confirmEmail(uuid)
+                ? "redirect:" + request.getScheme() + "://localhost:8888"
+                : "redirect:" + request.getScheme() + "://localhost:8888/login";
     }
 }

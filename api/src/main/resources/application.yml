@@ -8,20 +8,6 @@ spring:
     show-sql: true
     hibernate.ddl-auto: update
     properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: beworm.readedbooks@gmail.com
-    password: al199315al
-    properties.mail.smtp:
-      starttls.enable: true
-      starttls.required: true
-      auth: true
-      connectiontimeout: 5000
-      timeout: 5000
-      writetimeout: 5000
-
-
-
-
+  profiles:
+    include: 'email'
 logging.level.org.hibernate.SQL: debug

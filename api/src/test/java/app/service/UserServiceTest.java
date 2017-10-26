@@ -37,8 +37,9 @@ public class UserServiceTest {
         String name = "Pavel";
         String phone = "3777";
         String password = "redRabbit";
+        String email = "mr.maadsc@gmail.com";
 
-        User expectedUser = new User(name, phone, password);
+        User expectedUser = new User(name, phone, password, email);
         expectedUser.setId(1L);
 
         given(userRepository.findOne(1L)).willReturn(expectedUser);
@@ -49,6 +50,7 @@ public class UserServiceTest {
         assertThat(returnedUser.getName()).isEqualTo(name);
         assertThat(returnedUser.getPassword()).isEqualTo(password);
         assertThat(returnedUser.getPhone()).isEqualTo(phone);
+        assertThat(returnedUser.getEmail()).isEqualTo(email);
     }
 
     @Test
@@ -75,10 +77,11 @@ public class UserServiceTest {
             setName("Piter Pen");
             setPassword("asdd");
             setPhone("46123");
+            setEmail("mr.masdsac@gmail.com");
         }};
 
         User user = new User(creCMD.getName(),
-                creCMD.getPhone(), creCMD.getPassword());
+                creCMD.getPhone(), creCMD.getPassword(), creCMD.getEmail());
 
         given(userRepository.save(user)).willReturn(user);
 

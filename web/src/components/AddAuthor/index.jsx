@@ -40,17 +40,16 @@ export default class AddAuthor extends React.Component{
     }
 
     handleAddClick = () =>{
-        api.Login();
-    //   api.CreateAuthor({name: this.state.name})
-    //   .then((response) =>{
-    //             notify.show('Author success add','success', 3000);
-    //             setTimeout(()=>{
-    //                 this.setState({name: ""});
-    //                 },1000);
-    //     })
-    //     .catch((error)=>{
-    //         notify.show(error,'error');
-    //     });
+      api.CreateAuthor({name: this.state.name})
+      .then((response) =>{
+                notify.show('Author success add','success', 3000);
+                setTimeout(()=>{
+                    this.setState({name: ""});
+                    },1000);
+        })
+        .catch((error)=>{
+            notify.show(error,'error');
+        });
     };
 
    render(){
