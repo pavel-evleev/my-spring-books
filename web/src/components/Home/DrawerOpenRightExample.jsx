@@ -44,7 +44,7 @@ class DrawerOpenRightExample extends React.Component {
     this.handleTouchTap();
   }
   handleAddUserClick = () =>{
-    this.props.history.push('/add-user');
+    this.props.history.push('/registration');
     this.handleTouchTap();
   }
 

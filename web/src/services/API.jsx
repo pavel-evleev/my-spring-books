@@ -34,11 +34,15 @@ export const removeBookFromUser = (userId, bookId)=>{
 }
 
 export const test = (p)=>{
-  return client.get('/v1/users/find/' + p);
+  return client.get('/v1/users/findNames/' + p);
 }
 
 export const fetchUser = (id)=>{
   return client.get('/v1/users/' + id)
+}
+
+export const fetchEmail = (email) =>{
+  return client.post('/v1/users/findEmail', email);
 }
 export const CreateAuthor = ( name )=>{
   return client.post('/v1/authors', name);
@@ -76,7 +80,7 @@ export const updateAuth = (username, password) => {
 }
 export const Login = (username, password) => {
   updateAuth(username, password)
-  return client.get('/')
+  return client.get('/v1/users/login')
 }
 
 export const logout = () => {

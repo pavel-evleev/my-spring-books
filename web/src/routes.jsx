@@ -1,5 +1,5 @@
 import React from 'react'
-import {Redirect, Route} from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar'
 import DrawerOpenRightExample from './components/Home/DrawerOpenRightExample'
 import Notifications from 'react-notify-toast'
@@ -8,66 +8,55 @@ import About from './components/About'
 import Books from './components/Books'
 import Home from './components/Home'
 import Authors from './components/Authors'
-import Users from './components/Users'
-import AddAuthor from './components/AddAuthor'
 import AddUser from './components/AddUser'
-import AddBook from './components/AddBook'
-import User from './components/User'
+import Login from './components/Login'
+import NoMatch from './routes/NoMatch'
+import PrivateRoutes from './routes/PrivateRoutes'
 
 
 /**
- * Hash url router.
- * Connect components with browser url links.
- */
+	* Hash url router.
+	* Connect components with browser url links.
+	*/
 export default class Routes extends React.Component {
- 
-  constructor(props) {
-    super(props)
-    this.state = {
-      open: false
-    }
-  }
 
-  privateRender = (component) => {
-    return this.requireAuth() ? component : this.redirectToLogin
-  }
+	constructor(props) {
+		super(props)
+		this.state = {
+			open: false
+		}
+	}
 
-  requireAuth = () => {
-    return localStorage.getItem("isLoggedIn")
-  }
+	handleTouchTap = () => {
+		this.setState({ open: !this.state.open })
+	}
 
-  redirectToLogin = () => <Redirect to="/login" />
-
-  handleTouchTap = () => {
-    this.setState({ open: !this.state.open})
-  }
-
-  render() {
-    return (
-      <div>
-        <AppBar
-          title="MySpringBooks"
-          onLeftIconButtonTouchTap={this.handleTouchTap}
-          iconClassNameRight="muidocs-icon-navigation-expand-more"
-        />
-        <DrawerOpenRightExample
-          onClose={this.handleTouchTap}
-          open={this.state.open}
-        />
-          <div>
-            <Route path="/" exact render={this.privateRender(<Home/>)}/>
-            <Route path="/login" component={About}/>
-            <Route path="/about" component={About}/>
-            <Route path="/users"  render={this.requireAuth() ? <Users/> : this.redirectToLogin}/>
-            <Route path="/books" component={Books}/>
-            <Route path="/authors" component={Authors}/>
-            <Route path="/add-author" component={AddAuthor} />
-            <Route path="/add-user" component={AddUser} />
-            <Route path="/add-book" component={AddBook} />
-            <Route path="/user/:id" component={User} />
-          </div>
-          <Notifications options={{zIndex: 5000}}/>
-      </div>
-    )
-  }
+	render() {
+		return (
+			<div>
+				<AppBar
+					title="MySpringBooks"
+					onLeftIconButtonTouchTap={this.handleTouchTap}
+					iconClassNameRight="muidocs-icon-navigation-expand-more"
+				/>
+				<DrawerOpenRightExample
+					onClose={this.handleTouchTap}
+					open={this.state.open}
+				/>
+				<div>
+					<Switch>
+						<Route path="/" exact component={Home} />
+						<Route path="/login" component={Login} />
+						<Route path="/about" component={About} />
+						<Route path="/books" component={Books} />
+						<Route path="/authors" component={Authors} />
+						<Route path="/registration" component={AddUser} />
+						<Route path="/users" component={PrivateRoutes} />
+						<Route component={NoMatch} />
+					</Switch>
+				</div>
+				<Notifications options={{ zIndex: 5000 }} />
+			</div>
+		)
+	}
 }

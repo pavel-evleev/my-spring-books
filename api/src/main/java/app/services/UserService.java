@@ -63,7 +63,6 @@ public class UserService {
         User user = optionalUser.get();
         user.setActive(true);
         userRepository.saveAndFlush(user);
-
         return true;
     }
 
@@ -75,7 +74,9 @@ public class UserService {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
-        return toUserInfo(userRepository.save(newUser));
+        newUser = userRepository.save(newUser);
+        System.out.println(newUser.getId());
+        return toUserInfo(newUser);
     }
 
     @Transactional
@@ -107,5 +108,10 @@ public class UserService {
     @Transactional
     public void deleteAll() {
         userRepository.deleteAll();
+    }
+
+    public UserInfo findEmail(String email) {
+        Optional<User> optional = userRepository.findByEmail(email);
+        return toUserInfo(optional.get());
     }
 }

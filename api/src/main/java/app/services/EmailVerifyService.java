@@ -22,7 +22,7 @@ public class EmailVerifyService {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        String host = "http://localhost/v1/users/verify/" + user.getUuid();
+        String host = "http://localhost:8080/v1/users/verify/" + user.getUuid();
         helper.setTo(user.getEmail());
         helper.setText("<html><body>Pleas confirm your email! <a href=" + host + ">Confirm<a/><body></html>", true);
         helper.setSubject("Confirm email for BeWorm service");

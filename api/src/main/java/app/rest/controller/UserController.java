@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,7 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping("/find/{name}")
+    @GetMapping("/findNames/{name}")
     public List<String> findNameLike(@PathVariable String name) {
         return userService.findNameLike(name);
     }
@@ -49,6 +50,11 @@ public class UserController {
     @GetMapping("/{userId}")
     public UserInfo findById(@PathVariable Long userId) {
         return userService.findOne(userId);
+    }
+
+    @PostMapping("findEmail")
+    public UserInfo findEmail(@RequestBody CreateUserCommand userCommand) {
+        return userService.findEmail(userCommand.getEmail());
     }
 
     @GetMapping("/{userId}/books")
@@ -81,18 +87,31 @@ public class UserController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+    public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "logout";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public void loginPage() {
     }
 
     @RequestMapping("/verify/{uuid}")
-    public String confirmEmail(@PathVariable String uuid, HttpServletRequest request) {
-        return userService.confirmEmail(uuid)
-                ? "redirect:" + request.getScheme() + "://localhost:8888"
-                : "redirect:" + request.getScheme() + "://localhost:8888/login";
+    public void confirmEmail(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) {
+        if (userService.confirmEmail(uuid)) {
+            try {
+                response.sendRedirect("//localhost:8888");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                response.sendRedirect("//localhost:8888/login");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

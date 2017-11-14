@@ -32,9 +32,8 @@ public class User implements Serializable {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @NotEmpty
     @Column(name = "active", nullable = false)
-    private boolean active;
+    private Boolean active;
 
     @NotEmpty
     @Column(name = "uuid", nullable = false)
