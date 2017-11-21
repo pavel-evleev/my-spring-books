@@ -1,6 +1,8 @@
 import React from 'react'
 import CircularProgress from 'material-ui/CircularProgress'
 import { List, ListItem } from 'material-ui/List'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import * as api from '../../services/API'
 
@@ -8,7 +10,7 @@ import * as api from '../../services/API'
 /*
  * View for listing books.
  */
-export default class Users extends React.Component {
+class Users extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -59,3 +61,18 @@ export default class Users extends React.Component {
 		)
 	}
 }
+
+const mapStateToProps = (state) => {
+	console.log(state.userReducer)
+	return{
+		users: state.userReducer.users
+	}
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return{
+		// loginTrue: bindActionCreators(loginTrue, dispatch)
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users)

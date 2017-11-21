@@ -5,6 +5,8 @@ import InputMask from 'react-input-mask'
 import * as api from '../../services/API'
 import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { loginTrue} from '../../ducks/action'
 
 class Login extends React.Component {
 	constructor(props) {
@@ -42,11 +44,10 @@ class Login extends React.Component {
 	handleLogin = () => {
 		// api.Login(this.state.email, this.state.password)
 		// 	.then((responce) => {
-				this.props.tryLogin(true)
-				this.props.history.push('/users/add-author')
+				this.props.loginTrue(true)
+				this.props.history.push('/users')
 				// api.fetchEmail({ email: this.state.email })
 				// 	.then((responce) => {
-				// 		console.log(responce.data.id);
 				// 		this.props.history.push(`/user/${responce.data.id}`)
 				// 	})
 			// })
@@ -80,7 +81,6 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	console.log(state)
 	return{
 		login: state.loginReducer.login
 	}
@@ -88,7 +88,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return{
-		tryLogin: (responce) => dispatch({type: 'LOGIN_USER_TRUE', responce})
+		loginTrue: bindActionCreators(loginTrue, dispatch)
 	}
 }
 

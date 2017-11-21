@@ -1,5 +1,6 @@
 import Immutable from 'seamless-immutable'
 import { combineReducers } from 'redux'
+import * as UserAction from './action'
 
 
 const loginState = Immutable({
@@ -13,8 +14,8 @@ const userState = Immutable({
 
 
 const loginReducer = (state = loginState, action) => {
-	if(action.type === 'LOGIN_USER_TRUE'){
-		return state.merge({login: action.responce})
+	if(action.type === UserAction.LOGIN_USER_TRUE){
+		return state.merge({login: action.payload})
 	}
 	return state
 }
@@ -25,7 +26,8 @@ const userReducer = (state = userState, action) =>{
 
 
 export default combineReducers(	
-{
-	loginReducer,
-	userReducer
-})
+	{
+		loginReducer,
+		userReducer
+	}
+)
