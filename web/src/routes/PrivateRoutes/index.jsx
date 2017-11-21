@@ -1,14 +1,16 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import AddBook from '../../components/AddBook'
 import User from '../../components/User'
 import Users from '../../components/Users'
 import AddAuthor from '../../components/AddAuthor'
 
-export default class PrivateRoutes extends React.Component {
+ class PrivateRoutes extends React.Component {
 	render() {
-		if (localStorage.getItem("isLoggedIn") == "true") {
+    console.log(this.props)
+		if (this.props.login == true) {
 			return (
 				<Switch>
 					<Route exact path="/users" component={Users} />
@@ -26,3 +28,9 @@ export default class PrivateRoutes extends React.Component {
 		}
 	}
 }
+
+export default connect(state =>{
+  return{
+    login: state.loginReducer.login
+  }
+})(PrivateRoutes)

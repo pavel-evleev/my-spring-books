@@ -100,18 +100,14 @@ public class UserController {
 
     @RequestMapping("/verify/{uuid}")
     public void confirmEmail(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) {
-        if (userService.confirmEmail(uuid)) {
-            try {
+        try {
+            if (userService.confirmEmail(uuid))
                 response.sendRedirect("//localhost:8888");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
+            else
                 response.sendRedirect("//localhost:8888/login");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+
         }
     }
 }

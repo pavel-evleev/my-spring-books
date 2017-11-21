@@ -4,8 +4,9 @@ import TextField from 'material-ui/TextField'
 import InputMask from 'react-input-mask'
 import * as api from '../../services/API'
 import { notify } from 'react-notify-toast'
+import { connect } from 'react-redux'
 
-export default class Login extends React.Component {
+class Login extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -16,7 +17,6 @@ export default class Login extends React.Component {
 		}
 
 	}
-
 	handleRegistration = () => {
 		this.props.history.push(`/registration`)
 	}
@@ -40,16 +40,16 @@ export default class Login extends React.Component {
 	}
 
 	handleLogin = () => {
-		localStorage.setItem("isLoggedIn", true);
-		api.Login(this.state.email, this.state.password)
-			.then((responce) => {
-				localStorage.setItem("isLoggedIn", true);
-				api.fetchEmail({ email: this.state.email })
-					.then((responce) => {
-						console.log(responce.data.id);
-						this.props.history.push(`/user/${responce.data.id}`)
-					})
-			})
+		// api.Login(this.state.email, this.state.password)
+		// 	.then((responce) => {
+				this.props.tryLogin(true)
+				this.props.history.push('/users/add-author')
+				// api.fetchEmail({ email: this.state.email })
+				// 	.then((responce) => {
+				// 		console.log(responce.data.id);
+				// 		this.props.history.push(`/user/${responce.data.id}`)
+				// 	})
+			// })
 	}
 
 	render() {
@@ -73,9 +73,23 @@ export default class Login extends React.Component {
 
 				<div>
 					<RaisedButton label="Registration" onClick={this.handleRegistration} />
-
 				</div>
 			</div>
 		)
 	}
 }
+
+const mapStateToProps = (state) => {
+	console.log(state)
+	return{
+		login: state.loginReducer.login
+	}
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return{
+		tryLogin: (responce) => dispatch({type: 'LOGIN_USER_TRUE', responce})
+	}
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Login)
