@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import AppBar from 'material-ui/AppBar'
 import DrawerOpenRightExample from './components/Home/DrawerOpenRightExample'
 import Notifications from 'react-notify-toast'
 
@@ -12,6 +11,7 @@ import AddUser from './components/AddUser'
 import Login from './components/Login'
 import NoMatch from './routes/NoMatch'
 import PrivateRoutes from './routes/PrivateRoutes'
+import MyAppBar from './components/MyAppBar'
 
 
 /**
@@ -34,11 +34,7 @@ export default class Routes extends React.Component {
 	render() {
 		return (
 			<div>
-				<AppBar
-					title="MySpringBooks"
-					onLeftIconButtonTouchTap={this.handleTouchTap}
-					iconClassNameRight="muidocs-icon-navigation-expand-more"
-				/>
+        <MyAppBar onLeftIconButtonTouchTap={this.handleTouchTap}/>
 				<DrawerOpenRightExample
 					onClose={this.handleTouchTap}
 					open={this.state.open}

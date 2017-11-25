@@ -2,11 +2,12 @@ import React from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import InputMask from 'react-input-mask'
-import * as api from '../../services/API'
 import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { loginTrue} from '../../ducks/action'
+
+import * as api from '../../services/API'
+import * as ActionCreators from '../../ducks/action'
 
 class Login extends React.Component {
 	constructor(props) {
@@ -88,7 +89,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return{
-		loginTrue: bindActionCreators(loginTrue, dispatch)
+		loginTrue: bindActionCreators(ActionCreators.loginTrue, dispatch)
 	}
 }
 

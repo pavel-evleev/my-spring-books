@@ -3,6 +3,7 @@ import CircularProgress from 'material-ui/CircularProgress'
 import { List, ListItem } from 'material-ui/List'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import * as UsersAction from './../../ducks/action'
 
 import * as api from '../../services/API'
 
@@ -14,7 +15,6 @@ class Users extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			users: [],
 			usersLoading: false,
 			error: null
 		}
@@ -24,13 +24,14 @@ class Users extends React.Component {
 	 * Load all books when component is created.
 	 */
 	componentDidMount() {
-		this.setState({ users: [], usersLoading: true, error: null })
+		this.setState({usersLoading: true, error: null })
 		api.fetchUsers()
 			.then((response) => {
-				this.setState({ users: response.data, usersLoading: false })
+        this.props.loadingUsers(response.data)
+				this.setState({usersLoading: false })
 			})
 			.catch((error) => {
-				this.setState({ users: [], usersLoading: false, error: error.toString() })
+				this.setState({usersLoading: false, error: error.toString() })
 			})
 	}
 
@@ -49,7 +50,7 @@ class Users extends React.Component {
 			<div style={{ margin: "0 25%" }}>
 				<h2>Users</h2>
 				<List>
-					{this.state.users.map(
+					{this.props.users.map(
 						(user, index) =>
 							<ListItem key={index} primaryText={user.name}
 								onClick={() => this.props.history.push(`/users/${user.id}`)}
@@ -71,7 +72,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return{
-		// loginTrue: bindActionCreators(loginTrue, dispatch)
+		loadingUsers: bindActionCreators(UsersAction.loadingUsers, dispatch)
 	}
 }
 
