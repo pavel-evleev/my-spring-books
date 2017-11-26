@@ -29,9 +29,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(
                         "/v1/books",
-                        "/v1/users",
+//                        "/v1/users",
 //Some path need only for developing
-                        "/v1/users/*",
+//                        "/v1/users/*",
                         "/v1/users/verify/*",
                         "/simpleemail").permitAll()
                 .antMatchers(HttpMethod.POST, "/v1/users").permitAll()

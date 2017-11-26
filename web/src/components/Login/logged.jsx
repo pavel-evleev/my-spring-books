@@ -6,6 +6,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as LoggedAction from '../../ducks/action'
+import * as api from './../../services/API'
 
 
 class Logged extends Component{
@@ -13,11 +14,16 @@ class Logged extends Component{
     super(props)
   }
   
+
+  loggoutHandle = ()=>{
+    api.logout()
+    this.props.loggoutUser()
+  }
+
   render(){
     console.log(this.props)
     return(
       <IconMenu
-        {...this.props}
         iconButtonElement={
           <IconButton><MoreVertIcon /></IconButton>
         }
@@ -25,7 +31,7 @@ class Logged extends Component{
         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
       >
         <MenuItem primaryText="Help" />
-        <MenuItem primaryText="Sign out" onClick = {this.props.loggoutHandle} />
+        <MenuItem primaryText="Sign out" onClick = {this.loggoutHandle} />
       </IconMenu>
     )
   }
@@ -39,7 +45,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return{
-		loggoutHandle: bindActionCreators(LoggedAction.loggoutUser, dispatch)
+		loggoutUser: bindActionCreators(LoggedAction.loggoutUser, dispatch)
 	}
 }
 

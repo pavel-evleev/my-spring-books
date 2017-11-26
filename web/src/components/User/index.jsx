@@ -66,7 +66,7 @@ export default class User extends React.Component {
         this.setState({user})
         notify.show('Book removed', 'success', 2000)
       }).catch((error)=>{
-        notify.show(error, 'error', 2000)
+        notify.show("error", 'error', 2000)
       })
   }
 

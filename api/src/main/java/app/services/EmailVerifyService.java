@@ -24,7 +24,7 @@ public class EmailVerifyService {
 
         String host = "http://localhost:8080/v1/users/verify/" + user.getUuid();
         helper.setTo(user.getEmail());
-        helper.setText("<html><body>Pleas confirm your email! <a href=" + host + ">Confirm<a/><body></html>", true);
+        helper.setText("<html><body>Please confirm your email! <a href=" + host + ">Confirm<a/><body></html>", true);
         helper.setSubject("Confirm email for BeWorm service");
 
         sender.send(message);

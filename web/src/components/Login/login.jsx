@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import FlatButton from 'material-ui/FlatButton'
+import { withRouter } from 'react-router-dom'
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props){
     super(props)
   }
@@ -9,13 +10,14 @@ export default class Login extends Component {
   static muiName = 'FlatButton';
 
   handleClickLogin = ()=>{
-    console.log(this.props)
-    // this.props.history.push(`/login`)
+    this.props.history.push(`/login`)
   }
 
   render() {
     return (
-      <FlatButton {...this.props} label="Login" onClick={this.handleClickLogin} />
+      <FlatButton style={this.props.style} label="Login" onClick={this.handleClickLogin} />
     );
   }
 }
+
+export default withRouter(Login)
