@@ -43,15 +43,15 @@ class Login extends React.Component {
 	}
 
 	handleLogin = () => {
-		api.Login(this.state.email, this.state.password)
-			.then((responce) => {
+		// api.Login(this.state.email, this.state.password)
+		// 	.then((responce) => {
 				this.props.loginTrue(true)
-				// this.props.history.push('/users')
-				api.fetchEmail({ email: this.state.email })
-					.then((responce) => {
-						this.props.history.push(`/users/${responce.data.id}`)
-					})
-			})
+				this.props.history.push('/books')
+			// 	api.fetchEmail({ email: this.state.email })
+			// 		.then((responce) => {
+			// 			this.props.history.push(`/users/${responce.data.id}`)
+			// 		})
+			// })
 	}
 
 	render() {

@@ -4,14 +4,12 @@ import DrawerOpenRightExample from './components/Home/DrawerOpenRightExample'
 import Notifications from 'react-notify-toast'
 
 import About from './components/About'
-import Books from './components/Books'
 import Home from './components/Home'
-import Authors from './components/Authors'
 import AddUser from './components/AddUser'
 import Login from './components/Login'
 import NoMatch from './routes/NoMatch'
-import PrivateRoutes from './routes/PrivateRoutes'
 import MyAppBar from './components/MyAppBar'
+import WrappHome from './routes/WrappHome'
 
 
 /**
@@ -41,13 +39,10 @@ export default class Routes extends React.Component {
 				/>
 				<div>
 					<Switch>
-						<Route path="/" exact component={Home} />
+						<Route path="/" exact component={WrappHome} />
 						<Route path="/login" component={Login} />
 						<Route path="/about" component={About} />
-						<Route path="/books" component={Books} />
-						<Route path="/authors" component={Authors} />
 						<Route path="/registration" component={AddUser} />
-						<Route path="/users" component={PrivateRoutes} />
 						<Route component={NoMatch} />
 					</Switch>
 				</div>
