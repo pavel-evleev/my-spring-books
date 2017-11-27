@@ -16,12 +16,15 @@ import PrivateRoutes from './../PrivateRoutes'
           <Route path='/authors' component={Authors} />
 					<Route path='/books' component={Books} />
 					{/*Route with param should be the last in list*/}
+					{/* <Route path='/users' component={PrivateRoutes} /> */}
 				</Switch>
 			)
 		}
 		else {
 			return (
         <Switch>
+            <Route exact path="/" component={Home} />
+            <Route  path='/authors' component={Authors} />
         </Switch>
 			)
 		}
