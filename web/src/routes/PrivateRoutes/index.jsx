@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import AddBook from '../../components/AddBook'
 import User from '../../components/User'
+import CurrentUser from '../../components/CurrentUser'
 import Users from '../../components/Users'
 import AddAuthor from '../../components/AddAuthor'
 
@@ -15,6 +16,7 @@ import AddAuthor from '../../components/AddAuthor'
 					<Route exact path="/users" component={Users} />
 					<Route path='/users/add-book' component={AddBook} />
 					<Route path='/users/add-author' component={AddAuthor} />
+          <Route path='/users/my-page' component={CurrentUser} />
 					{/*Route with param should be the last in list*/}
 					<Route path='/users/:id' component={User} />
 				</Switch>

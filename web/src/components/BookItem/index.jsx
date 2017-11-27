@@ -13,6 +13,18 @@ export default class BookItem extends React.Component {
     this.props.deleteBook();
   }
   
+  handleEdit = (edit)=>{
+      if(edit){
+        return(
+          <CardActions>
+          <IconButton onClick={this.handleDeleteBook}>
+            <ActionDelete />
+          </IconButton>
+        </CardActions>
+        )
+      }
+  }
+  
   render() {
     const book = this.props.book;
     return (
@@ -24,11 +36,7 @@ export default class BookItem extends React.Component {
             actAsExpander={true}
             showExpandableButton={true}
             />
-            <CardActions>
-              <IconButton onClick={this.handleDeleteBook}>
-                <ActionDelete />
-              </IconButton>
-            </CardActions>
+            { this.handleEdit(this.props.edit) }
             <CardText expandable={true}>
              Description
             </CardText>
