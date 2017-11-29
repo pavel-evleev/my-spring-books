@@ -29,10 +29,19 @@ const loginReducer = (state = loginState, action) => {
 }
 
 const userReducer = (state = userState, action) =>{
-  if(action.type === UserAction.LOADING_USERS){
-    return state.merge({users: action.payload})
+  
+  switch (action.type) {
+    case UserAction.SET_CURRENT_USER:
+      return state.merge({currentUser: action.payload})
+      break;
+    case UserAction.LOADING_USERS:
+      return state.merge({users: action.payload})
+      break;
+    default:
+      return state  
+      break;
   }
-	return state
+
 }
 
 
