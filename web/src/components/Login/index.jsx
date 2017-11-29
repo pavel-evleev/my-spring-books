@@ -46,7 +46,7 @@ class Login extends React.Component {
 		api.Login(this.state.email, this.state.password)
 			.then((responce) => {
 				this.props.loginTrue(true)
-				// this.props.history.push('/users')
+				this.props.history.push('/books')
 				api.fetchEmail({ email: this.state.email })
 					.then((responce) => {
             this.props.setCurrentUser(responce.data.id)
