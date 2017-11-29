@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import DrawerOpenRightExample from './components/Home/DrawerOpenRightExample'
+import LeftBar from './components/Home/LeftBar'
 import Notifications from 'react-notify-toast'
 
 import About from './components/About'
@@ -38,7 +38,7 @@ export default class Routes extends React.Component {
 		return (
 			<div>
         <MyAppBar onLeftIconButtonTouchTap={this.handleTouchTap}/>
-				<DrawerOpenRightExample
+				<LeftBar
 					onClose={this.handleTouchTap}
 					open={this.state.open}
 				/>

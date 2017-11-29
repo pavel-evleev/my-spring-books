@@ -6,7 +6,7 @@ import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-class DrawerOpenRightExample extends React.Component {
+class LeftBar extends React.Component {
 
   constructor(props) {
     super(props)
@@ -62,36 +62,32 @@ class DrawerOpenRightExample extends React.Component {
 
     if(this.props.login){
       return (
-        <div>
-        <Drawer width={200} open={this.props.open} docked={false} onRequestChange={() =>this.handleTouchTap()} >
-          <AppBar title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
-          <MenuItem onClick={this.handleHomeClick}>Home</MenuItem>
-          <MenuItem onClick={this.handleUsersClick}>Users</MenuItem>
-          <MenuItem onClick={this.handleBooksClick}>Books</MenuItem>
-          <MenuItem onClick={this.handleAuthorsClick}>Authors</MenuItem>
-          <MenuItem
-                primaryText="Add Entity"
-                rightIcon={<ArrowDropRight />}
-                menuItems={[
-                  <MenuItem onClick={this.handleAddAuthorClick}> Add Author</MenuItem>,
-                  <MenuItem onClick={this.handleAddUserClick}> Add User</MenuItem>,
-                  <MenuItem onClick={this.handleAddBookClick}> Add Book</MenuItem>
-                ]}
-              />
-          <MenuItem onClick={this.handleAboutClick} >About</MenuItem>
-        </Drawer>
-        </div>
+          <Drawer width={200} open={this.props.open} docked={false} onRequestChange={() =>this.handleTouchTap()} >
+            <AppBar title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
+            <MenuItem onClick={this.handleHomeClick}>Home</MenuItem>
+            <MenuItem onClick={this.handleUsersClick}>Users</MenuItem>
+            <MenuItem onClick={this.handleBooksClick}>Books</MenuItem>
+            <MenuItem onClick={this.handleAuthorsClick}>Authors</MenuItem>
+            <MenuItem
+                  primaryText="Add Entity"
+                  rightIcon={<ArrowDropRight />}
+                  menuItems={[
+                    <MenuItem onClick={this.handleAddAuthorClick}> Add Author</MenuItem>,
+                    <MenuItem onClick={this.handleAddUserClick}> Add User</MenuItem>,
+                    <MenuItem onClick={this.handleAddBookClick}> Add Book</MenuItem>
+                  ]}
+                />
+            <MenuItem onClick={this.handleAboutClick} >About</MenuItem>
+          </Drawer>
       );
     }
     
     return (
-      <div>
-      <Drawer width={200} open={this.props.open} docked={false} onRequestChange={() =>this.handleTouchTap()} >
-        <AppBar title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
-        <MenuItem onClick={this.handleHomeClick}>Home</MenuItem>
-        <MenuItem onClick={this.handleAboutClick} >About</MenuItem>
-      </Drawer>
-      </div>
+        <Drawer width={200} open={this.props.open} docked={false} onRequestChange={() =>this.handleTouchTap()} >
+          <AppBar title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
+          <MenuItem onClick={this.handleHomeClick}>Home</MenuItem>
+          <MenuItem onClick={this.handleAboutClick} >About</MenuItem>
+        </Drawer>
     );
     
   }
@@ -105,4 +101,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default withRouter(connect(mapStateToProps)(DrawerOpenRightExample))
+export default withRouter(connect(mapStateToProps)(LeftBar))
