@@ -40,7 +40,7 @@ class DrawerOpenRightExample extends React.Component {
   }
 
   handleAddAuthorClick = () =>{
-    this.props.history.push('/add-author');
+    this.props.history.push('/users/add-author');
     this.handleTouchTap();
   }
   handleAddUserClick = () =>{
@@ -49,7 +49,7 @@ class DrawerOpenRightExample extends React.Component {
   }
 
   handleAddBookClick = () =>{
-    this.props.history.push('/add-book');
+    this.props.history.push('/users/add-book');
     this.handleTouchTap();
   }
 
