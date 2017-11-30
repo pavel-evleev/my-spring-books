@@ -4,29 +4,29 @@ export const LOGGOUT_USER = 'LOGGOUT_USER'
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 
 export function loginTrue(responce){
-  return{
-    type: LOGIN_USER_TRUE,
-    payload: responce
-  }
+	return{
+		type: LOGIN_USER_TRUE,
+		payload: responce
+	}
 }
 
 export function loadingUsers(responce){
-  return{
-    type: LOADING_USERS,
-    payload: responce
-  }
+	return{
+		type: LOADING_USERS,
+		payload: responce
+	}
 }
 
 export function loggoutUser(){
-  return{
-    type: LOGGOUT_USER,
-    payload: false
-  }
+	return{
+		type: LOGGOUT_USER,
+		payload: false
+	}
 }
 
 export function setCurrentUser(responce){
-  return{
-    type: SET_CURRENT_USER,
-    payload: responce
-  }
+	return{
+		type: SET_CURRENT_USER,
+		payload: responce
+	}
 }

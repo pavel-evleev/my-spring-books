@@ -49,8 +49,8 @@ class Login extends React.Component {
 				this.props.history.push('/books')
 				api.fetchEmail({ email: this.state.email })
 					.then((responce) => {
-            this.props.setCurrentUser(responce.data.id)
-            console.log(responce.data.id)
+						this.props.setCurrentUser(responce.data.id)
+						console.log(responce.data.id)
 						this.props.history.push('/users/my-page')
 					})
 			})
@@ -91,8 +91,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return{
-    loginTrue: bindActionCreators(ActionCreators.loginTrue, dispatch),
-    setCurrentUser: bindActionCreators(ActionCreators.setCurrentUser ,dispatch)
+		loginTrue: bindActionCreators(ActionCreators.loginTrue, dispatch),
+		setCurrentUser: bindActionCreators(ActionCreators.setCurrentUser ,dispatch)
 	}
 }
 

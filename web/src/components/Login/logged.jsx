@@ -10,31 +10,31 @@ import * as api from './../../services/API'
 
 
 class Logged extends Component{
-  constructor(props){
-    super(props)
-  }
-  
+	constructor(props){
+		super(props)
+	}
+	
 
-  loggoutHandle = ()=>{
-    api.logout()
-    this.props.loggoutUser()
-  }
+	loggoutHandle = ()=>{
+		api.logout()
+		this.props.loggoutUser()
+	}
 
-  render(){
-    console.log(this.props)
-    return(
-      <IconMenu
-        iconButtonElement={
-          <IconButton><MoreVertIcon /></IconButton>
-        }
-        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      >
-        <MenuItem primaryText="Help" />
-        <MenuItem primaryText="Sign out" onClick = {this.loggoutHandle} />
-      </IconMenu>
-    )
-  }
+	render(){
+		console.log(this.props)
+		return(
+			<IconMenu
+				iconButtonElement={
+					<IconButton><MoreVertIcon /></IconButton>
+				}
+				targetOrigin={{horizontal: 'right', vertical: 'top'}}
+				anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+			>
+				<MenuItem primaryText="Help" />
+				<MenuItem primaryText="Sign out" onClick = {this.loggoutHandle} />
+			</IconMenu>
+		)
+	}
 
 }
 

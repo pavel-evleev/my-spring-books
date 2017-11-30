@@ -37,7 +37,7 @@ export default class Routes extends React.Component {
 	render() {
 		return (
 			<div>
-        <MyAppBar onLeftIconButtonTouchTap={this.handleTouchTap}/>
+				<MyAppBar onLeftIconButtonTouchTap={this.handleTouchTap}/>
 				<LeftBar
 					onClose={this.handleTouchTap}
 					open={this.state.open}
@@ -48,12 +48,12 @@ export default class Routes extends React.Component {
 						<Route path="/login" component={Login} />
 						<Route path="/about" component={About} />
 						<Route path="/registration" component={AddUser} />
-            <PrivateRoute exact path="/users" component={Users} />
-				  	<PrivateRoute path='/users/add-book' component={AddBook} />
-					  <PrivateRoute path='/users/add-author' component={AddAuthor} />
-            <PrivateRoute path='/users/:id' component={User} />
-            <PrivateRoute path='/authors' component={Authors} />
-					  <PrivateRoute path='/books' component={Books} />
+						<PrivateRoute exact path="/users" component={Users} />
+						<PrivateRoute path='/users/add-book' component={AddBook} />
+						<PrivateRoute path='/users/add-author' component={AddAuthor} />
+						<PrivateRoute path='/users/:id' component={User} />
+						<PrivateRoute path='/authors' component={Authors} />
+						<PrivateRoute path='/books' component={Books} />
 						<Route component={NoMatch} />
 					</Switch>
 				</div>

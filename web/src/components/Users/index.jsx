@@ -27,7 +27,7 @@ class Users extends React.Component {
 		this.setState({usersLoading: true, error: null })
 		api.fetchUsers()
 			.then((response) => {
-        this.props.loadingUsers(response.data)
+				this.props.loadingUsers(response.data)
 				this.setState({usersLoading: false })
 			})
 			.catch((error) => {
