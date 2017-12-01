@@ -53,7 +53,7 @@ class CurrentUser extends React.Component {
           notify.show('Book add', 'success', 2000)
         }
       }).catch((error)=>{
-        notify.show(error, 'error', 2000)
+        notify.show('error', 'error', 2000)
       })
 
     this.setState({ selectedBooks: [] })
@@ -78,7 +78,7 @@ class CurrentUser extends React.Component {
       setTimeout(()=>{this.props.history.push(`/users`)}, 1000)
     })
     .catch((error)=>{
-      notify.show(error, 'error', 2000)
+      notify.show('error', 'error', 2000)
     })
   }
 
