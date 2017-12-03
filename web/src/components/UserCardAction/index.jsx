@@ -19,10 +19,6 @@ export default class UserCardAction extends React.Component {
     }
   }
 
-  // componentDidMount() {
-  //   this.setState({ allBooks: this.props.allBooks })
-  // }
-
   handleSelectBook = (event, index, value) => {
     this.setState({ selectedBooks: value });
   }
@@ -34,8 +30,6 @@ export default class UserCardAction extends React.Component {
 
   render() {
     const { allBooks, user } = this.props;
-
-    console.log(this.state.selectedBooks)
 
     return (
       <CardActions>

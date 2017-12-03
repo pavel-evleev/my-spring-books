@@ -13,7 +13,6 @@ class MyAppbar extends React.Component {
   }
 
   render() {
-    // console.log(this.props)
     return (
       <AppBar
         title="MySpringBooks"

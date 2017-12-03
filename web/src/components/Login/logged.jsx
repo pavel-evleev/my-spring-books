@@ -21,7 +21,6 @@ class Logged extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <IconMenu
         iconButtonElement={

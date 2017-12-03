@@ -27,7 +27,6 @@ export default class UserCard extends React.Component {
   }
 
   userCardAction = () => {
-    console.log(this.props)
     if (this.props.enable) {
       return (
         <UserCardAction
