@@ -4,13 +4,19 @@ import * as UserAction from './action'
 
 
 const loginState = Immutable({
-  login: false
+  login: true
 })
 
 const userState = Immutable({
   users: ['Alex', 'Pasha'],
 
 })
+
+const booksState = Immutable({
+  allBooks: ['lorem', 'Pasha', 'lorem', 'lorem', 'lorem', 'lorem', 'lorem', 'lorem', 'lorem', 'lorem', 'lorem'],
+
+})
+
 
 
 const loginReducer = (state = loginState, action) => {
@@ -38,10 +44,24 @@ const userReducer = (state = userState, action) => {
 
 }
 
+const booksReducer = (state = booksState, action) => {
+
+  switch (action.type) {
+    // case UserAction.SET_CURRENT_USER:
+    //   return state.merge({ currentUser: action.payload })
+    // case UserAction.LOADING_USERS:
+    //   return state.merge({ users: action.payload })
+    default:
+      return state
+  }
+
+}
+
 
 export default combineReducers(
   {
     loginReducer,
+    booksReducer,
     userReducer
   }
 )

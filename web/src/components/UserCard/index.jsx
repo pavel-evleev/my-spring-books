@@ -46,9 +46,7 @@ export default class UserCard extends React.Component {
         <CardHeader
           title={`User name ${user.name}`}
         >
-          {
-            this.buttonDeleteUser()
-          }
+          {this.buttonDeleteUser()}
         </CardHeader>
         <CardTitle title="Readed Books" />
         <CardText>
@@ -64,9 +62,7 @@ export default class UserCard extends React.Component {
             )
           }
         </CardText>
-        {
-          this.userCardAction()
-        }
+        {this.userCardAction()}
       </Card>
     )
   }

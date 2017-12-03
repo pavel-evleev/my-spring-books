@@ -56,8 +56,6 @@ class User extends React.Component {
       }).catch((error) => {
         notify.show('error', 'error', 2000)
       })
-
-    
   }
 
   handleDeleteBook = (userId, bookId) => {
@@ -84,7 +82,7 @@ class User extends React.Component {
   }
 
   render() {
-    const { allBooks, user, selectedBooks } = this.state;
+    const { allBooks, user, enable } = this.state;
 
     if (!user) {
       return (<div>User not found</div>)
@@ -92,9 +90,9 @@ class User extends React.Component {
 
     return (
       <UserCard
-        allBooks={this.state.allBooks}
-        user={this.state.user}
-        enable={this.state.enable}
+        allBooks={allBooks}
+        user={user}
+        enable={enable}
         deleteBook={this.handleDeleteBook}
         deleteUser={this.deleteUser}
         handleAddClick={this.handleAddClick}
@@ -108,6 +106,5 @@ const mapStateToProps = (state) => {
     currentUserId: state.userReducer.currentUser
   }
 }
-
 
 export default connect(mapStateToProps)(User)
