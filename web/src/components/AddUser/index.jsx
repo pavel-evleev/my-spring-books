@@ -78,19 +78,15 @@ export default class AddUser extends React.Component {
     this.setState({ userEmail: email });
   }
 
-  onBlurEmail = () => {
-    const email = this.state.userEmail;
-    if (!this.ValidateEmail(email)) {
 
+  validateEmail = () => {
+    const email = this.state.userEmail
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+    if (email.match(mailformat) != null) {
+      this.setState({ validEmail: '' });
+    } else {
+      this.setState({ validEmail: 'Invalid' })
     }
-  }
-
-  ValidateEmail = (mail) => {
-    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (email.value.match(mailformat)) {
-      return (true);
-    }
-    return (false);
   }
 
   handlePhoneChange = (event) => {
@@ -147,7 +143,7 @@ export default class AddUser extends React.Component {
           onChange={this.handleEmailChange}
           value={this.state.userEmail}
           errorText={this.state.validEmail}
-          onBlur={this.onBlurEmail} />
+          onBlur={this.validateEmail} />
         <br />
         <TextField
           floatingLabelText="Phone"

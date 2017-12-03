@@ -31,26 +31,26 @@ export default class Books extends React.Component {
         this.setState({ books: response.data, booksLoading: false })
       })
       .catch((error) => {
-        this.setState({ books: [], booksLoading: false, error: error.toString() })            
+        this.setState({ books: [], booksLoading: false, error: error.toString() })
       })
   }
 
 
-  deleteBook = (id) =>{
+  deleteBook = (id) => {
     api.DeleteBook(id)
-    .then((response)=>{
-        if(response.status<299){
-        let tmp = this.state.books;
-        let v=0;
-        tmp.forEach((books,index)=>{
-                if(books.id == id)
-                v = index;
-            });
-            tmp.splice(v,1);
-            this.setState({books: tmp});
+      .then((response) => {
+        if (response.status < 299) {
+          let tmp = this.state.books;
+          let v = 0;
+          tmp.forEach((books, index) => {
+            if (books.id == id)
+              v = index;
+          });
+          tmp.splice(v, 1);
+          this.setState({ books: tmp });
         }
-    });
-}
+      });
+  }
 
   render() {
     // Show loading bar if HTTP request is not completed
@@ -67,8 +67,8 @@ export default class Books extends React.Component {
       <div style={{ margin: "0 25%" }}>
         <h2>Books</h2>
         {
-          this.state.books.map((book, index)=>{
-            return (<BookItem key={index} book={book} deleteBook={()=>this.deleteBook(book.id)}/>)
+          this.state.books.map((book, index) => {
+            return (<BookItem key={index} book={book} deleteBook={() => this.deleteBook(book.id)} />)
           })
         }
       </div>

@@ -23,42 +23,42 @@ import PrivateRoute from './routes/PrivateRoute'
 	*/
 export default class Routes extends React.Component {
 
-	constructor(props) {
-		super(props)
-		this.state = {
-			open: false
-		}
-	}
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: false
+    }
+  }
 
-	handleTouchTap = () => {
-		this.setState({ open: !this.state.open })
-	}
+  handleTouchTap = () => {
+    this.setState({ open: !this.state.open })
+  }
 
-	render() {
-		return (
-			<div>
-				<MyAppBar onLeftIconButtonTouchTap={this.handleTouchTap}/>
-				<LeftBar
-					onClose={this.handleTouchTap}
-					open={this.state.open}
-				/>
-				<div>
-					<Switch>
-						<Route path="/" exact component={Home} />
-						<Route path="/login" component={Login} />
-						<Route path="/about" component={About} />
-						<Route path="/registration" component={AddUser} />
-						<PrivateRoute exact path="/users" component={Users} />
-						<PrivateRoute path='/users/add-book' component={AddBook} />
-						<PrivateRoute path='/users/add-author' component={AddAuthor} />
-						<PrivateRoute path='/users/:id' component={User} />
-						<PrivateRoute path='/authors' component={Authors} />
-						<PrivateRoute path='/books' component={Books} />
-						<Route component={NoMatch} />
-					</Switch>
-				</div>
-				<Notifications options={{ zIndex: 5000 }} />
-			</div>
-		)
-	}
+  render() {
+    return (
+      <div>
+        <MyAppBar onLeftIconButtonTouchTap={this.handleTouchTap} />
+        <LeftBar
+          onClose={this.handleTouchTap}
+          open={this.state.open}
+        />
+        <div>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/about" component={About} />
+            <Route path="/registration" component={AddUser} />
+            <PrivateRoute exact path="/users" component={Users} />
+            <PrivateRoute path='/users/add-book' component={AddBook} />
+            <PrivateRoute path='/users/add-author' component={AddAuthor} />
+            <PrivateRoute path='/users/:id' component={User} />
+            <PrivateRoute path='/authors' component={Authors} />
+            <PrivateRoute path='/books' component={Books} />
+            <Route component={NoMatch} />
+          </Switch>
+        </div>
+        <Notifications options={{ zIndex: 5000 }} />
+      </div>
+    )
+  }
 }

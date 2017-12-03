@@ -1,9 +1,9 @@
 import React from 'react'
-import {Card, CardTitle, CardActions, CardHeader, CardText} from 'material-ui/Card'
+import { Card, CardTitle, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import MenuItem from 'material-ui/MenuItem'
 import RaisedButton from 'material-ui/RaisedButton'
 import SelectField from 'material-ui/SelectField'
-import {notify} from 'react-notify-toast'
+import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
 
 import BookItem from '../BookItem'
@@ -25,17 +25,17 @@ class CurrentUser extends React.Component {
 
     // Load user info
     api.fetchUser(id).then((response) => {
-      this.setState({user: response.data});
+      this.setState({ user: response.data });
     });
 
     // Load all book for combo box
     api.fetchBooks().then((response) => {
-      this.setState({allBooks: response.data});
+      this.setState({ allBooks: response.data });
     });
   }
 
   handleSelectBook = (event, index, value) => {
-    this.setState({selectedBooks: value});
+    this.setState({ selectedBooks: value });
   }
 
   handleAddClick = () => {
@@ -46,13 +46,13 @@ class CurrentUser extends React.Component {
 
     api.addBooksToUser({ userId: user.id, ids: selectedBooks })
       .then((response) => {
-        this.setState({user: response.data})
-        if(selectedBooks.length > 1){
+        this.setState({ user: response.data })
+        if (selectedBooks.length > 1) {
           notify.show('Books add', 'success', 2000)
-        }else{
+        } else {
           notify.show('Book add', 'success', 2000)
         }
-      }).catch((error)=>{
+      }).catch((error) => {
         notify.show('error', 'error', 2000)
       })
 
@@ -64,22 +64,22 @@ class CurrentUser extends React.Component {
     api.removeBookFromUser(userId, bookId)
       .then((response) => {
         user.books = user.books.filter(book => book.id != bookId);
-        this.setState({user})
+        this.setState({ user })
         notify.show('Book removed', 'success', 2000)
-      }).catch((error)=>{
+      }).catch((error) => {
         notify.show("error", 'error', 2000)
       })
   }
 
-  deleteUser = (id) =>{
+  deleteUser = (id) => {
     api.DeleteUser(id)
-    .then((response)=>{
-      notify.show('User delete', 'success', 2000)
-      setTimeout(()=>{this.props.history.push(`/users`)}, 1000)
-    })
-    .catch((error)=>{
-      notify.show('error', 'error', 2000)
-    })
+      .then((response) => {
+        notify.show('User delete', 'success', 2000)
+        setTimeout(() => { this.props.history.push(`/users`) }, 1000)
+      })
+      .catch((error) => {
+        notify.show('error', 'error', 2000)
+      })
   }
 
   render() {
@@ -92,45 +92,45 @@ class CurrentUser extends React.Component {
     return (
       <Card>
         <CardHeader
-        title={`User name ${this.state.user.name}`}
+          title={`User name ${this.state.user.name}`}
         >
-        <RaisedButton label="Delete user" onClick = {()=>{this.deleteUser(user.id)}}/>
+          <RaisedButton label="Delete user" onClick={() => { this.deleteUser(user.id) }} />
         </CardHeader>
-        <CardTitle title="Readed Books"/>
+        <CardTitle title="Readed Books" />
         <CardText>
-        {
+          {
             Array.isArray(user.books) &&
-            user.books.map((book, index) => 
-              <BookItem 
-                  key={index}
-                  book={book}
-                  edit={true}
-                  deleteBook={() => {this.handleDeleteBook(user.id, book.id)}}
+            user.books.map((book, index) =>
+              <BookItem
+                key={index}
+                book={book}
+                edit={true}
+                deleteBook={() => { this.handleDeleteBook(user.id, book.id) }}
               />
             )
-        }
+          }
         </CardText>
         <CardActions>
-        <SelectField
+          <SelectField
             floatingLabelText="Books to add"
             value={this.state.selectedBooks}
             onChange={this.handleSelectBook}
             multiple={true}
-        >
-          {
-            Array.isArray(allBooks) &&
-            allBooks
+          >
+            {
+              Array.isArray(allBooks) &&
+              allBooks
                 .filter(book => !user.books.map(userBook => userBook.id).includes(book.id))
                 .map((book, index) =>
-                  <MenuItem 
-                      key={index} 
-                      value={book.id} 
-                      primaryText={book.name}
+                  <MenuItem
+                    key={index}
+                    value={book.id}
+                    primaryText={book.name}
                   />
                 )
-          }
-        </SelectField>
-        <RaisedButton label="Add books" onClick={this.handleAddClick}/>
+            }
+          </SelectField>
+          <RaisedButton label="Add books" onClick={this.handleAddClick} />
 
         </CardActions>
       </Card>
@@ -139,9 +139,9 @@ class CurrentUser extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return{
-		currentUserId: state.userReducer.currentUser
-	}
+  return {
+    currentUserId: state.userReducer.currentUser
+  }
 }
 
 
