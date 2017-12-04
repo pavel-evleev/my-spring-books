@@ -15,8 +15,6 @@ class Books extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      // books: [],
-      // booksLoading: false,
       error: null
     }
   }
@@ -52,32 +50,11 @@ class Books extends React.Component {
       });
   }
 
-  calculateColumn = () => {
-    const column = 250
-    let result = Math.ceil((document.documentElement.clientWidth - 300) / column)
-    console.log(result)
-    return `repeat(${result},1fr)`
-  }
-
-  calculateRow = () => {
-    const allBooks = this.props.books
-    const booksInRow = 3
-    const sizeRow = " 250px"
-    let resultString = "50px"
-    const result = Math.ceil(allBooks.length / booksInRow)
-    for (let index = 0; index < result; index++) {
-      resultString += sizeRow
-    }
-
-    return resultString
-  }
-
   render() {
     // Show loading bar if HTTP request is not completed
     if (this.state.booksLoading) {
       return (<div>Loading...</div>)
     }
-    console.log(this.calculateColumn())
     // Show error if HTTP request failed
     if (this.state.error) {
       return (<div>{this.state.error}</div>)
@@ -86,17 +63,10 @@ class Books extends React.Component {
     return (
       <div>
         <h2 style={{}}>Books</h2>
-        <div style={
-          {
-            margin: "20px 150px",
-            display: "grid",
-            gridTemplateColumns: this.calculateColumn(),
-            gridTemplateRows: this.calculateRow(),
-            gridGap: "5px"
-          }}>
+        <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
           {
             this.props.books.map((book, index) => {
-              return (<div key={index} style={{ backgroundColor: "blue" }}>{book}</div>)
+              return (<div key={index} style={{ backgroundColor: "blue", flexBasis: "250px", margin: "10px" }}>{book}</div>)
             })
           }
         </div>
