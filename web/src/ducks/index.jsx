@@ -13,7 +13,12 @@ const userState = Immutable({
 })
 
 const booksState = Immutable({
-  allBooks: ['lorem', 'Pasha /n asdasdasdasdasdasd /nassadasdasd', 'lorem', 'lorem', 'lorem', 'lorem', 'lorem', 'lorem', 'lorem', 'lorem', 'lorem'],
+  allBooks: [{ name: "BookName", authors: "asdasdasd", description: "adsadsadsd" },
+  { name: "BookName", authors: "asdasdasasdasdas asd  das dsad d", description: "adsadsadsd" },
+  { name: "BookName", authors: "asdasdasd", description: "adsadsadsd" },
+  { name: "BookName", authors: "asdasdasasdasdas asd  das dsad d", description: "adsadsadsd" },
+  { name: "BookName", authors: "asdasdasd", description: "adsadsadsdasdasdas asasdasd asd as a sdas d asd asd as d" },
+  { name: "BookName", authors: "asdasdasasdasdas asd  das dsad d", description: "adsadsadsd" }],
 
 })
 

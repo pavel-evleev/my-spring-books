@@ -63,10 +63,21 @@ class Books extends React.Component {
     return (
       <div>
         <h2 style={{}}>Books</h2>
-        <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
           {
             this.props.books.map((book, index) => {
-              return (<div key={index} style={{ backgroundColor: "blue", flexBasis: "250px", margin: "10px" }}>{book}</div>)
+              return (<div key={index} style={
+                {
+                  backgroundColor: "#68bbff",
+                  display: "grid",
+                  gridTemplateRows: "minmax(150px, 1fr)",
+                  flexBasis: "250px",
+                  margin: "5px"
+                }}>
+                <div>{book.name}</div>
+                <div>{book.authors}</div>
+                <div>{book.description}</div>
+              </div>)
             })
           }
         </div>
