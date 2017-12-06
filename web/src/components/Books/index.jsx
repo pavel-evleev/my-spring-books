@@ -5,6 +5,7 @@ import * as api from '../../services/API'
 
 import BookItem from '../BookItem'
 import IconButton from 'material-ui/IconButton'
+import Paper from 'material-ui/Paper'
 import ActionDelete from 'material-ui/svg-icons/action/delete'
 import { connect } from 'react-redux'
 
@@ -63,21 +64,42 @@ class Books extends React.Component {
     return (
       <div>
         <h2 style={{}}>Books</h2>
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+        <div style={
+          {
+            display: "flex",
+            flexWrap: "wrap",
+            maxWidth: "988px",
+            margin: "auto"
+          }
+        }>
           {
             this.props.books.map((book, index) => {
-              return (<div key={index} style={
-                {
-                  backgroundColor: "#68bbff",
-                  display: "grid",
-                  gridTemplateRows: "minmax(150px, 1fr)",
-                  flexBasis: "250px",
-                  margin: "5px"
-                }}>
-                <div>{book.name}</div>
-                <div>{book.authors}</div>
-                <div>{book.description}</div>
-              </div>)
+              return (
+                // <BookItem book={book}/>
+                <Paper key={index} zDepth={2} style={
+                  {
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "237px",
+                    margin: "5px",
+                    padding: "10px",
+                    fontFamily: "Roboto, Arial"
+                  }}>
+                  
+                  <div style={
+                    {
+                      margin: "10px auto 0px",
+                      fontWeight: "400",
+                      fontSize: "16px",
+                      color: "black",
+                      height: "34px"
+                    }
+                  }>{book.name} not longer then 48 symbol </div>
+                  <div style={{width: "150px", height: "185px", backgroundColor: "blue", margin: "15px auto"}} ></div>
+                  {/* <div style={{ padding: "0px 10px 5px", alignSelf: "center"}}>{book.authors}</div> */}
+                  <div style={{margin: "0px auto" }} >{book.description}</div>
+                </Paper>
+              )
             })
           }
         </div>

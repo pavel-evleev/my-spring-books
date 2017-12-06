@@ -13,6 +13,13 @@ export default class BookItem extends React.Component {
     this.props.deleteBook();
   }
 
+  groupAuthors = (authors) => {
+    if (Array.isArray(authors)) {
+      return authors.join(', ')
+    }
+    return authors
+  }
+
   handleEdit = (edit) => {
     if (edit) {
       return (
@@ -28,11 +35,11 @@ export default class BookItem extends React.Component {
   render() {
     const book = this.props.book;
     return (
-      <div style={{ marginBottom: "10px" }}>
+      <div>
         <Card>
           <CardHeader
             title={book.name}
-            subtitle={book.authors.join(', ')}
+            subtitle={this.groupAuthors(book.authors)}
             actAsExpander={true}
             showExpandableButton={true}
           />

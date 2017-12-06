@@ -13,12 +13,14 @@ const userState = Immutable({
 })
 
 const booksState = Immutable({
-  allBooks: [{ name: "BookName", authors: "asdasdasd", description: "adsadsadsd" },
-  { name: "BookName", authors: "asdasdasasdasdas asd  das dsad d", description: "adsadsadsd" },
-  { name: "BookName", authors: "asdasdasd", description: "adsadsadsd" },
-  { name: "BookName", authors: "asdasdasasdasdas asd  das dsad d", description: "adsadsadsd" },
-  { name: "BookName", authors: "asdasdasd", description: "adsadsadsdasdasdas asasdasd asd as a sdas d asd asd as d" },
-  { name: "BookName", authors: "asdasdasasdasdas asd  das dsad d", description: "adsadsadsd" }],
+  allBooks: [{ name: "BookName", authors: "author1 author2", description: "Краткое описание книги" },
+  { name: "BookName Long name book", authors: "author1 author2 author3", description: "Краткое описание книги" },
+  { name: "BookName", authors: "author1", description: "Краткое описание книги" },
+  { name: "BookName", authors: "author1 author2 author3", description: "Краткое описание книги" },
+  { name: "BookName", authors: "author1 author2", description: "Краткое описание книги или не очень короткое описание" },
+  { name: "BookName", authors: "author1 author2 author3", description: "Краткое описание книги" },
+  { name: "BookName", authors: "author1 author2", description: "Краткое описание книги или не очень короткое описание" }
+],
 
 })
 
