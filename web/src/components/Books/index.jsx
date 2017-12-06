@@ -2,6 +2,7 @@ import React from 'react'
 
 // import BookItem from '../BookItem'
 import * as api from '../../services/API'
+import BookCard from './BookMiniCard'
 
 import BookItem from '../BookItem'
 import IconButton from 'material-ui/IconButton'
@@ -74,32 +75,7 @@ class Books extends React.Component {
         }>
           {
             this.props.books.map((book, index) => {
-              return (
-                // <BookItem book={book}/>
-                <Paper key={index} zDepth={2} style={
-                  {
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "237px",
-                    margin: "5px",
-                    padding: "10px",
-                    fontFamily: "Roboto, Arial"
-                  }}>
-                  
-                  <div style={
-                    {
-                      margin: "10px auto 0px",
-                      fontWeight: "400",
-                      fontSize: "16px",
-                      color: "black",
-                      height: "34px"
-                    }
-                  }>{book.name} not longer then 48 symbol </div>
-                  <div style={{width: "150px", height: "185px", backgroundColor: "blue", margin: "15px auto"}} ></div>
-                  {/* <div style={{ padding: "0px 10px 5px", alignSelf: "center"}}>{book.authors}</div> */}
-                  <div style={{margin: "0px auto" }} >{book.description}</div>
-                </Paper>
-              )
+              return (<BookCard key={index} book={book}/>)
             })
           }
         </div>

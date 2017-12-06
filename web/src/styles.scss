@@ -1,12 +1,7 @@
-.menu>li {
-    display: inline-block;
-    padding: 0 5px;
-}
-
-.left {
-    float: left
-}
-
+// .menu>li {
+//     display: inline-block;
+//     padding: 0 5px;
+// }
 h1 {
     font-family: 'Lato', sans-serif;
     font-weight: 900;
@@ -15,11 +10,39 @@ h1 {
     text-shadow: 0 1px 3px #555;
 }
 
-div.header-card :first-child{
-    padding-right: 0px !important;
-}
-
-
 body {
     margin: 0px;
+}
+
+.bookMiniCard {
+    display: flex;
+    flex-direction: column;
+    width: 237px;
+    margin: 5px;
+    padding: 10px;
+    font-family: "Roboto, Arial";
+}
+
+.bookMiniCard-title {
+    margin: 10px auto 0px;
+    font-weight: 400;
+    font-size: 16px;
+    color: black;
+    height: 34px;
+}
+
+.bookMiniCard-title:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.bookMiniCard-img {
+    width: 150px;
+    height: 185px;
+    background-color: blue;
+    margin: 15px auto;
+}
+
+.bookMiniCard-desc {
+    margin: 0px auto;
 }
