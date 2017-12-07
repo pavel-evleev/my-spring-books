@@ -18,7 +18,7 @@ class User extends React.Component {
 
   componentDidMount() {
     const idCurrent = this.props.currentUserId;
-    const id = parseInt(this.props.match.params.id);
+    const id = parseInt(this.props.match.params.userId);
 
     // Load user info
     api.fetchUser(id).then((response) => {

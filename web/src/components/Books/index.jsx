@@ -52,6 +52,10 @@ class Books extends React.Component {
       });
   }
 
+  handleOnClickBook = (id) => {
+    this.props.history.push(`/books/${id}`);
+  }
+
   render() {
     // Show loading bar if HTTP request is not completed
     if (this.state.booksLoading) {
@@ -74,8 +78,8 @@ class Books extends React.Component {
           }
         }>
           {
-            this.props.books.map((book, index) => {
-              return (<BookCard key={index} book={book}/>)
+            this.props.books.map((book) => {
+              return (<BookCard key={book.id} book={book} OnClick={this.handleOnClickBook} />)
             })
           }
         </div>

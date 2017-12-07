@@ -23,17 +23,20 @@ body {
     font-family: "Roboto, Arial";
 }
 
+.bookMiniCard:hover {
+    cursor: pointer;
+}
+
+.bookMiniCard:hover>.bookMiniCard-title {
+    text-decoration: underline;
+}
+
 .bookMiniCard-title {
     margin: 10px auto 0px;
     font-weight: 400;
     font-size: 16px;
     color: black;
     height: 34px;
-}
-
-.bookMiniCard-title:hover {
-    cursor: pointer;
-    text-decoration: underline;
 }
 
 .bookMiniCard-img {

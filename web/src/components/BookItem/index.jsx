@@ -2,12 +2,24 @@ import React from 'react'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import IconButton from 'material-ui/IconButton'
 import ActionDelete from 'material-ui/svg-icons/action/delete'
+import { connect } from 'react-redux'
+
 
 
 /**
  * Simple book list item.
  */
-export default class BookItem extends React.Component {
+class BookItem extends React.Component {
+  constructor(props){
+    super(props)
+  }
+
+  componentDidMount(){
+    const id = parseInt(this.props.match.params.bookId);
+
+    console.log(this.props.match)
+  }
+
 
   handleDeleteBook = () => {
     this.props.deleteBook();
@@ -33,7 +45,7 @@ export default class BookItem extends React.Component {
   }
 
   render() {
-    const book = this.props.book;
+    const { book, edit } = this.props;
     return (
       <div>
         <Card>
@@ -43,12 +55,22 @@ export default class BookItem extends React.Component {
             actAsExpander={true}
             showExpandableButton={true}
           />
-          {this.handleEdit(this.props.edit)}
+          {this.handleEdit(edit)}
           <CardText expandable={true}>
             Description
-            </CardText>
+          </CardText>
         </Card>
       </div>
     )
   }
 }
+
+BookItem.defaultProps = { edit: false }
+
+const mapStateToProps = (state) =>{
+  return{
+    books: state.booksReducer.books
+  }
+}
+
+export default connect(mapStateToProps)(BookItem)
