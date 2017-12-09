@@ -1,13 +1,12 @@
 import React from 'react'
 
-// import BookItem from '../BookItem'
 import * as api from '../../services/API'
 import BookCard from './BookMiniCard'
 
-import BookItem from '../BookItem'
 import IconButton from 'material-ui/IconButton'
 import Paper from 'material-ui/Paper'
 import ActionDelete from 'material-ui/svg-icons/action/delete'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 /*
@@ -68,15 +67,7 @@ class Books extends React.Component {
 
     return (
       <div>
-        <h2 style={{}}>Books</h2>
-        <div style={
-          {
-            display: "flex",
-            flexWrap: "wrap",
-            maxWidth: "988px",
-            margin: "auto"
-          }
-        }>
+        <div className="book-wrapper">
           {
             this.props.books.map((book) => {
               return (<BookCard key={book.id} book={book} OnClick={this.handleOnClickBook} />)
@@ -94,4 +85,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Books)
+export default withRouter(connect(mapStateToProps)(Books))

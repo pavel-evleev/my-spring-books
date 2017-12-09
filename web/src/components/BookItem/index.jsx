@@ -9,17 +9,8 @@ import { connect } from 'react-redux'
 /**
  * Simple book list item.
  */
-class BookItem extends React.Component {
-  constructor(props){
-    super(props)
-  }
-
-  componentDidMount(){
-    const id = parseInt(this.props.match.params.bookId);
-
-    console.log(this.props.match)
-  }
-
+class BookCard extends React.Component {
+ 
 
   handleDeleteBook = () => {
     this.props.deleteBook();
@@ -45,7 +36,7 @@ class BookItem extends React.Component {
   }
 
   render() {
-    const { book, edit } = this.props;
+    const { book, edit, expandable, expButton } = this.props;
     return (
       <div>
         <Card>
@@ -53,11 +44,11 @@ class BookItem extends React.Component {
             title={book.name}
             subtitle={this.groupAuthors(book.authors)}
             actAsExpander={true}
-            showExpandableButton={true}
+            showExpandableButton={expButton}
           />
           {this.handleEdit(edit)}
-          <CardText expandable={true}>
-            Description
+          <CardText expandable={expandable}>
+            {book.description}
           </CardText>
         </Card>
       </div>
@@ -65,12 +56,6 @@ class BookItem extends React.Component {
   }
 }
 
-BookItem.defaultProps = { edit: false }
+BookCard.defaultProps = { edit: false, expandable: false, expButton: false }
 
-const mapStateToProps = (state) =>{
-  return{
-    books: state.booksReducer.books
-  }
-}
-
-export default connect(mapStateToProps)(BookItem)
+export default BookCard

@@ -57,6 +57,8 @@ export default class UserCard extends React.Component {
                 key={index}
                 book={book}
                 edit={enable}
+                expandable={enable}
+                expButton={enable}
                 deleteBook={() => { deleteBook(user.id, book.id) }}
               />
             )

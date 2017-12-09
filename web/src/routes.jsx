@@ -6,7 +6,7 @@ import Notifications from 'react-notify-toast'
 import About from './components/About'
 import Authors from './components/Authors'
 import Books from './components/Books'
-import Book from './components/BookItem'
+import Book from './components/Books/BookCardContainer'
 import Home from './components/Home'
 import AddUser from './components/AddUser'
 import AddBook from './components/AddBook'
@@ -17,6 +17,10 @@ import Login from './components/Login'
 import NoMatch from './routes/NoMatch'
 import MyAppBar from './components/MyAppBar'
 import PrivateRoute from './routes/PrivateRoute'
+
+
+
+import Page from './components/OurPage'
 
 /**
 	* Hash url router.
@@ -47,7 +51,7 @@ export default class Routes extends React.Component {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/login" component={Login} />
-            <Route path="/about" component={About} />
+            <Route path="/about" component={Page} />
             <Route path="/registration" component={AddUser} />
             <PrivateRoute exact path="/users" component={Users} />
             <PrivateRoute path='/users/add-book' component={AddBook} />

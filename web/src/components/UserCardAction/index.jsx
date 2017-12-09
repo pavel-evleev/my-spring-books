@@ -6,7 +6,6 @@ import SelectField from 'material-ui/SelectField'
 import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
 
-import BookItem from '../BookItem'
 import * as api from '../../services/API'
 
 export default class UserCardAction extends React.Component {

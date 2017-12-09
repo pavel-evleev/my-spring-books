@@ -20,7 +20,7 @@ class BookMiniCard extends React.Component {
     const { book, OnClick } = this.props
 
     return (
-      <Paper zDepth={2} onClick={() => OnClick(book.id)} className="bookMiniCard">
+      <Paper zDepth={1} onClick={() => OnClick(book.id)} className="bookMiniCard">
         <div className="bookMiniCard-title" >{this.truncateTitle(book.name)}</div>
         <div className="bookMiniCard-img"></div>
         {/* <div style={{ padding: "0px 10px 5px", alignSelf: "center"}}>{book.authors}</div> */}
