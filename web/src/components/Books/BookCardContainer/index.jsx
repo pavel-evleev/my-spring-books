@@ -10,8 +10,6 @@ class BookCardContainer extends React.Component {
   }
 
   componentDidMount() {
-    
-
     console.log(this.props.match)
   }
 
@@ -29,8 +27,6 @@ class BookCardContainer extends React.Component {
 
   render() {
     const { books, edit } = this.props;
-    // console.log(this.findBookById(2))
-    // return null
     return (<BookCard book={this.findBookById()} />)
   }
 }

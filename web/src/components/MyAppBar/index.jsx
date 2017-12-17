@@ -1,7 +1,7 @@
 import React from 'react'
 import AppBar from 'material-ui/AppBar'
 
-import LoginButton from './../Login/login'
+import RightButtons from './RightButtons'
 import LoggedButton from './../Login/logged'
 import { connect } from 'react-redux'
 
@@ -17,7 +17,7 @@ class MyAppbar extends React.Component {
       <AppBar
         title="MySpringBooks"
         onLeftIconButtonTouchTap={this.props.onLeftIconButtonTouchTap}
-        iconElementRight={this.props.logged ? <LoggedButton /> : <LoginButton />}
+        iconElementRight={this.props.logged ? <LoggedButton /> : <RightButtons />}
       />
     )
   }

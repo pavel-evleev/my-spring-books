@@ -3,7 +3,7 @@ import CircularProgress from 'material-ui/CircularProgress'
 import { List, ListItem } from 'material-ui/List'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as UsersAction from './../../ducks/action'
+import * as UsersAction from './../../services/ducks/action'
 
 import * as api from '../../services/API'
 

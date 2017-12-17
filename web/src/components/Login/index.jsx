@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as api from '../../services/API'
-import * as ActionCreators from '../../ducks/action'
+import * as ActionCreators from '../../services/ducks/action'
 
 class Login extends React.Component {
   constructor(props) {

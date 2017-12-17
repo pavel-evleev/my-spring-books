@@ -5,7 +5,7 @@ import MenuItem from 'material-ui/MenuItem'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as LoggedAction from '../../ducks/action'
+import * as LoggedAction from '../../services/ducks/action'
 import * as api from './../../services/API'
 
 

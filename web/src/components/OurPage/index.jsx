@@ -18,7 +18,7 @@ export default class Page extends React.Component {
         <Paper className="user">
           <div className="user-ava">
             <div>
-              <img src="https://pp.userapi.com/c636616/v636616709/14484/Lashw8t1hys.jpg" alt="user" />
+              <img src={require("./../../img/photo40427709_329412123.jpg")} alt="user" />
             </div>
           </div>
           <div className="user-info">info</div>
