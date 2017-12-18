@@ -15,7 +15,6 @@ class Users extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      usersLoading: false,
       error: null
     }
   }
@@ -24,20 +23,12 @@ class Users extends React.Component {
 	 * Load all books when component is created.
 	 */
   componentDidMount() {
-    this.setState({ usersLoading: true, error: null })
-    api.fetchUsers()
-      .then((response) => {
-        this.props.loadingUsers(response.data)
-        this.setState({ usersLoading: false })
-      })
-      .catch((error) => {
-        this.setState({ usersLoading: false, error: error.toString() })
-      })
+    this.props.loadingUsers()
   }
 
   render() {
     // Show loading bar if HTTP request is not completed
-    if (this.state.usersLoading) {
+    if (this.props.fetching) {
       return (<CircularProgress />)
     }
 
@@ -65,6 +56,7 @@ class Users extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    fetching: state.loginReducer.fetching,
     users: state.userReducer.users
   }
 }

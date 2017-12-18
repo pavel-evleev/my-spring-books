@@ -47,7 +47,7 @@ export default class Routes extends React.Component {
           onClose={this.handleTouchTap}
           open={this.state.open}
         />
-        <div>
+        <div style={{width: "1160px", margin: "auto"}}>
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/login" component={Login} />

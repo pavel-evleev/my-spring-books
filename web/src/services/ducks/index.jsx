@@ -4,7 +4,8 @@ import * as UserAction from './action'
 
 
 const loginState = Immutable({
-  login: true
+  login: true,
+  fetching: false
 })
 
 const userState = Immutable({
@@ -29,7 +30,9 @@ const booksState = Immutable({
 const loginReducer = (state = loginState, action) => {
 
   switch (action.type) {
-    case UserAction.LOGIN_USER_TRUE:
+    case UserAction.START_WAITING:
+      return state.merge({ fetching: action.payload })
+    case UserAction.SUCCESS_LOGIN:
       return state.merge({ login: action.payload })
     case UserAction.LOGGOUT_USER:
       return state.merge({ login: action.payload })

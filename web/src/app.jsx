@@ -6,10 +6,11 @@ import rootReducer from './services/ducks'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { BrowserRouter } from 'react-router-dom'
 import { ping } from './services/ducks/middleware'
+import thunk from 'redux-thunk'
 
 
 // ------------------------------------
-const store = createStore(rootReducer, applyMiddleware(ping))
+const store = createStore(rootReducer, applyMiddleware(ping, thunk))
 window.store = store
 // ------------------------------------
 

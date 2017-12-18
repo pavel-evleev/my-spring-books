@@ -5,8 +5,8 @@ import InputMask from 'react-input-mask'
 import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import CircularProgress from 'material-ui/CircularProgress'
 
-import * as api from '../../services/API'
 import * as ActionCreators from '../../services/ducks/action'
 
 class Login extends React.Component {
@@ -43,20 +43,17 @@ class Login extends React.Component {
   }
 
   handleLogin = () => {
-    api.Login(this.state.email, this.state.password)
-      .then((responce) => {
-        this.props.loginTrue(true)
-        api.fetchEmail({ email: this.state.email })
-          .then((responce) => {
-            this.props.setCurrentUser(responce.data.id)
-            this.props.history.push(`/users/${responce.data.id}`)
-          })
-      })
+    this.props.request(this.state.email, this.state.password)
+    setTimeout(() => this.props.history.push(`/users/${this.props.loginedUser}`), 1200)
   }
 
   render() {
+    if (this.props.fetching) {
+      return (<CircularProgress />)
+    }
+
     return (
-      <div>
+      <div style={{ margin: "auto", width: "300px" }}>
         <TextField id="name"
           hintText="Login"
           floatingLabelText="Login"
@@ -83,14 +80,14 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    login: state.loginReducer.login
+    fetching: state.loginReducer.fetching,
+    loginedUser: state.userReducer.currentUser,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginTrue: bindActionCreators(ActionCreators.loginTrue, dispatch),
-    setCurrentUser: bindActionCreators(ActionCreators.setCurrentUser, dispatch)
+    request: bindActionCreators(ActionCreators.requestLogin, dispatch),
   }
 }
 
