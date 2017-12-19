@@ -10,7 +10,7 @@ export default class Page extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      grid: true
+      view: "grid"
     }
   }
 
@@ -20,7 +20,7 @@ export default class Page extends React.Component {
 
   render() {
     let button = null
-    if (this.state.grid) {
+    if (this.state.view === "grid") {
       button = <Grid />
     } else {
       button = <List />
@@ -30,7 +30,7 @@ export default class Page extends React.Component {
       <div className="page">
         <Paper className="view-books">
           <IconButton touch={true}
-           onClick={() => { this.setState({ grid: !this.state.grid }) }}>
+            onClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }}>
             {button}
           </IconButton>
         </Paper>
@@ -43,7 +43,7 @@ export default class Page extends React.Component {
           <div className="user-info">info</div>
         </Paper>
         <div className="user-books">
-          <Books grid={this.state.grid}/>
+          <Books view={this.state.view} />
         </div>
       </div>
     )

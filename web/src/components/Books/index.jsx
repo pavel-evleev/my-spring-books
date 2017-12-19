@@ -56,7 +56,7 @@ class Books extends React.Component {
   }
 
   render() {
-    const grid = this.props.grid
+    const grid = this.props.view
     // Show loading bar if HTTP request is not completed
     if (this.state.booksLoading) {
       return (<div>Loading...</div>)
@@ -69,7 +69,7 @@ class Books extends React.Component {
     return (
       <div>
         <div className="book-wrapper">
-          {grid ? (
+          {(grid === "grid") ? (
             this.props.books.map((book) => {
               return (<BookCard key={book.id} book={book} OnClick={this.handleOnClickBook} />)
             })) : (this.props.books.map((book) => {
@@ -91,5 +91,5 @@ const mapStateToProps = (state) => {
   }
 }
 
-Books.defaultProps = { grid: true }
+Books.defaultProps = { view: "grid" }
 export default withRouter(connect(mapStateToProps)(Books))
