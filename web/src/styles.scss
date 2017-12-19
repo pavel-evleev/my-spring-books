@@ -57,8 +57,10 @@ body {
     display: grid;
     width: 1150px;
     margin: 30px auto;
+    grid-row-gap: 15px;
     grid-template-columns: 3fr 250px;
-    grid-template-areas: "b u "
+    grid-template-rows: 50px 886px;
+    grid-template-areas: "n u" "b u";
 }
 
 .page .book-wrapper {
@@ -73,11 +75,16 @@ body {
     width: 125px;
     height: 160px;
 }
-
+.view-books{
+    grid-area: n;
+    width: 818px;
+    margin: 0px auto;
+    // box-shadow: 0px 0px 5px 1px rgba(128, 128, 128, 0.4);
+}
 .user {
     grid-area: u;
     height: 320px;
-    margin: 5px 0 0;
+    // margin: 5px 0 0;
 }
 
 .user-ava {
@@ -86,10 +93,8 @@ body {
 }
 
 .user-ava img {
-    width: 200px;
-    // height: 200px;
-    object-fit: cover;
-    // border-radius: 120px;
+    width: 200px; // height: 200px;
+    object-fit: cover; // border-radius: 120px;
 }
 
 .user-ava div {
