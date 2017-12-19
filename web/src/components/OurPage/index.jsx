@@ -1,7 +1,7 @@
 import React from 'react'
 import IconButton from 'material-ui/IconButton';
-import List from 'material-ui/svg-icons/action/list'
-import Grid from 'material-ui/svg-icons/action/view-module'
+import List from 'material-ui/svg-icons/action/view-list'
+import Grid from 'material-ui/svg-icons/navigation/apps'
 import Paper from 'material-ui/Paper'
 import Books from './../Books'
 
@@ -21,9 +21,9 @@ export default class Page extends React.Component {
   render() {
     let button = null
     if (this.state.view === "grid") {
-      button = <Grid />
-    } else {
       button = <List />
+    } else {
+      button = <Grid />
     }
 
     return (
