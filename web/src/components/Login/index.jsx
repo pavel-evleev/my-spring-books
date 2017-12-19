@@ -2,6 +2,7 @@ import React from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import InputMask from 'react-input-mask'
+import { Redirect } from 'react-router-dom'
 import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -20,6 +21,7 @@ class Login extends React.Component {
     }
 
   }
+
   handleRegistration = () => {
     this.props.history.push(`/registration`)
   }
@@ -44,12 +46,15 @@ class Login extends React.Component {
 
   handleLogin = () => {
     this.props.request(this.state.email, this.state.password)
-    setTimeout(() => this.props.history.push(`/users/${this.props.loginedUser}`), 1200)
   }
 
   render() {
     if (this.props.fetching) {
       return (<CircularProgress />)
+    }
+
+    if (this.props.loginedUser) {
+      return <Redirect to={`/users/${this.props.loginedUser}`} />
     }
 
     return (
@@ -80,15 +85,12 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    fetching: state.loginReducer.fetching,
-    loginedUser: state.userReducer.currentUser,
+    fetching: state.fetching,
+    loginedUser: state.currentUser,
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    request: bindActionCreators(ActionCreators.requestLogin, dispatch),
-  }
-}
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ request: ActionCreators.requestLogin }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

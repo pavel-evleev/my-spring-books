@@ -17,6 +17,6 @@ class PrivateRoute extends Component {
 
 export default connect(state => {
   return {
-    login: state.loginReducer.login
+    login: state.login
   }
 })(PrivateRoute)

@@ -42,10 +42,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loggoutUser: bindActionCreators(LoggedAction.loggoutUser, dispatch)
-  }
-}
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ loggoutUser: LoggedAction.loggoutUser }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Logged)

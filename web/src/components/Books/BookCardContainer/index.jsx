@@ -32,9 +32,8 @@ class BookCardContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.booksReducer)
   return {
-    books: state.booksReducer.allBooks
+    books: state.allBooks
   }
 }
 

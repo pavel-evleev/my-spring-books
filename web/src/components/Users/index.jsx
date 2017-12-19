@@ -5,12 +5,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as UsersAction from './../../services/ducks/action'
 
-import * as api from '../../services/API'
-
-
-/*
- * View for listing books.
- */
 class Users extends React.Component {
   constructor(props) {
     super(props)
@@ -56,15 +50,11 @@ class Users extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    fetching: state.loginReducer.fetching,
-    users: state.userReducer.users
+    fetching: state.fetching,
+    users: state.users
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadingUsers: bindActionCreators(UsersAction.loadingUsers, dispatch)
-  }
-}
-
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ loadingUsers: UsersAction.loadingUsers }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(Users)

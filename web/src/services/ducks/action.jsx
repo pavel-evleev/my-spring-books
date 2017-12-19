@@ -1,40 +1,30 @@
 import * as api from './../API'
 
-export const START_WAITING = "START_WAITING"
+export const FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST"
 export const SUCCESS_LOGIN = 'SUCCESS_LOGIN'
-export const LOADING_USERS = 'LOADING_USERS'
+export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'
 export const LOGGOUT_USER = 'LOGGOUT_USER'
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
-export const CATCH_ERROR = "CATCH_ERROR"
+export const FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE"
 
 
 export function loadingUsers() {
   return function (dispatch) {
-    dispatch({
-      type: START_WAITING,
-      payload: true
-    })
+    dispatch({ type: FETCH_USERS_REQUEST })
 
     api.fetchUsers()
-      .then((response) => {
+      .then(response =>
         dispatch({
-          type: LOADING_USERS,
+          type: FETCH_USER_SUCCESS,
           payload: response.data
         })
-      })
-      .catch((error) => {
+      )
+      .catch(error =>
         dispatch({
-          type: CATCH_ERROR,
+          type: FETCH_USERS_FAILURE,
           payload: error.toString()
         })
-      })
-
-    setTimeout(() => {
-      dispatch({
-        type: START_WAITING,
-        payload: false
-      })
-    }, 1000)
+      )
   }
 }
 
@@ -48,33 +38,22 @@ export function loggoutUser() {
 
 export function requestLogin(email, password) {
   return function (dispatch) {
-    dispatch({
-      type: START_WAITING,
-      payload: true
-    })
+    dispatch({ type: FETCH_USERS_REQUEST })
 
     api.Login(email, password)
       .then(() => {
         api.fetchEmail({ email: email })
-          .then((responce) => {
+          .then(responce => {
             dispatch({
               type: SET_CURRENT_USER,
               payload: responce.data.id
             })
-
+          }).catch(error =>
             dispatch({
-              type: SUCCESS_LOGIN,
-              payload: true
+              type: FETCH_USERS_FAILURE,
+              payload: error.toString()
             })
-
-            setTimeout(() => {
-              dispatch({
-                type: START_WAITING,
-                payload: false
-              })
-            }, 1500)
-
-          })
+          )
       })
   }
 }

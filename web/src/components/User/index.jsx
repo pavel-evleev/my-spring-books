@@ -103,7 +103,7 @@ class User extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentUserId: state.userReducer.currentUser
+    currentUserId: state.currentUser
   }
 }
 

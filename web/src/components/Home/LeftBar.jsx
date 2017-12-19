@@ -96,7 +96,7 @@ class LeftBar extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    login: state.loginReducer.login
+    login: state.login
   }
 }
 

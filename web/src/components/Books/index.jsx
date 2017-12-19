@@ -2,6 +2,7 @@ import React from 'react'
 
 import * as api from '../../services/API'
 import BookCard from './BookMiniCard'
+import BookListItem from './BookListView'
 
 import IconButton from 'material-ui/IconButton'
 import Paper from 'material-ui/Paper'
@@ -20,18 +21,8 @@ class Books extends React.Component {
     }
   }
 
-  /*
-   * Load all books when component is created.
-   */
   componentDidMount() {
-    // this.setState({ books: [], booksLoading: false, error: null })
-    // api.fetchBooks()
-    //   .then((response) => {
-    //     this.setState({ books: response.data, booksLoading: false })
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ books: [], booksLoading: false, error: error.toString() })
-    //   })
+
   }
 
 
@@ -73,10 +64,7 @@ class Books extends React.Component {
             this.props.books.map((book) => {
               return (<BookCard key={book.id} book={book} OnClick={this.handleOnClickBook} />)
             })) : (this.props.books.map((book) => {
-              return (<div style={{ width: "100%", display: "flex", margin: "5px 0" }} key={book.id}>
-                <div style={{backgroundColor: "blue", width: "40px", height: "40px", margin: "0px 10px"}}>img</div>
-                {book.name}
-              </div>)
+              return (<BookListItem key={book.id} book={book} />)
             }))
           }
         </div>
@@ -87,7 +75,7 @@ class Books extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    books: state.booksReducer.allBooks
+    books: state.allBooks
   }
 }
 
