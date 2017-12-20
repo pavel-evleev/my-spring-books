@@ -17,6 +17,7 @@ import Login from './components/Login'
 import NoMatch from './routes/NoMatch'
 import MyAppBar from './components/MyAppBar'
 import PrivateRoute from './routes/PrivateRoute'
+import SearchedBooks from './components/SearchedBooks'
 
 
 
@@ -61,6 +62,7 @@ export default class Routes extends React.Component {
             <PrivateRoute path='/authors' component={Authors} />
             <PrivateRoute exact path='/books' component={BooksPage} />
             <PrivateRoute path='/books/:bookId' component={Book} />
+            <PrivateRoute path='/search-books/:searchBooks' component={SearchedBooks} />
             <Route component={NoMatch} />
           </Switch>
         </div>

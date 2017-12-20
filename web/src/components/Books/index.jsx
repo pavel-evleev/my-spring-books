@@ -56,6 +56,9 @@ class Books extends React.Component {
     if (this.state.error) {
       return (<div>{this.state.error}</div>)
     }
+    if(!Array.isArray(this.props.books)){
+      return(<div>Dont have books...</div>)
+    }
 
     return (
       <div>

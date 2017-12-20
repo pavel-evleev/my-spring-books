@@ -86,3 +86,7 @@ export const Login = (username, password) => {
 export const logout = () => {
   client.defaults.auth = null
 }
+
+export const searchBooks = (searchQuery) => {
+  return client.get('/v1/books/search/' + searchBooks)
+}

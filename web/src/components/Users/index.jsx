@@ -1,5 +1,5 @@
 import React from 'react'
-import CircularProgress from 'material-ui/CircularProgress'
+import CircularProgress from './../MagicProgress'
 import { List, ListItem } from 'material-ui/List'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -27,8 +27,8 @@ class Users extends React.Component {
     }
 
     // Show error if HTTP request failed
-    if (this.state.error) {
-      return (<div>{this.state.error}</div>)
+    if (this.props.error) {
+      return (<div>{this.props.error}</div>)
     }
 
     return (
@@ -51,7 +51,8 @@ class Users extends React.Component {
 const mapStateToProps = (state) => {
   return {
     fetching: state.fetching,
-    users: state.users
+    users: state.users,
+    error: state.error
   }
 }
 

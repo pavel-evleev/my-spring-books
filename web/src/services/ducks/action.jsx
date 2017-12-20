@@ -1,12 +1,33 @@
 import * as api from './../API'
 
 export const FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST"
+export const FETCH_SEARCH_REQUEST = "FETCH_SEARCH_REQUEST"
+export const SUCCESS_SEARCH_BOOKS = "SUCCESS_SEARCH_BOOKS"
+export const ERROR_SEARCH_BOOKS = "ERROR_SEARCH_BOOKS"
 export const SUCCESS_LOGIN = 'SUCCESS_LOGIN'
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'
 export const LOGGOUT_USER = 'LOGGOUT_USER'
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 export const FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE"
 
+
+export function searchBooksRequest(searchQuery) {
+  return function (dispatch) {
+    dispatch({ type: FETCH_SEARCH_REQUEST })
+
+    api.searchBooks(searchQuery)
+      .then(responce => {
+        dispatch({
+          type: SUCCESS_SEARCH_BOOKS,
+          payload: responce.data
+        })
+      }).catch(error =>
+        dispatch({
+          type: ERROR_SEARCH_BOOKS,
+          payload: error.toString()
+        }))
+  }
+}
 
 export function loadingUsers() {
   return function (dispatch) {
@@ -18,13 +39,11 @@ export function loadingUsers() {
           type: FETCH_USER_SUCCESS,
           payload: response.data
         })
-      )
-      .catch(error =>
+      ).catch(error =>
         dispatch({
           type: FETCH_USERS_FAILURE,
           payload: error.toString()
-        })
-      )
+        }))
   }
 }
 
@@ -57,3 +76,5 @@ export function requestLogin(email, password) {
       })
   }
 }
+
+
