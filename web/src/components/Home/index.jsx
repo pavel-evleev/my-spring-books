@@ -9,7 +9,12 @@ export default class Home extends React.Component {
     return (
       <div style={{ margin: "0 25%" }}>
         <h1>Welcome to my app </h1>
+        <div className="orbit-spinner">
+        <div className="orbit"></div>
+        <div className="orbit"></div>
+        <div className="orbit"></div>
       </div>
+      </div >
     )
   }
 }

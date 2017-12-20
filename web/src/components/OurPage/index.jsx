@@ -28,7 +28,7 @@ export default class Page extends React.Component {
     const { name, books } = user
     return (
       <div className="page">
-        <ToolBar changeViewOnClick={()=>{(this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" }))}} className="view-books" />
+        <ToolBar changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }} className="view-books" />
         <Paper className="user">
           <div className="user-ava">
             <div>
@@ -47,6 +47,7 @@ export default class Page extends React.Component {
         <div className="user-books">
           <Books view={this.state.view} />
         </div>
+        
       </div>
     )
   }
