@@ -73,11 +73,7 @@ class Books extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    books: state.allBooks
-  }
-}
+
 
 Books.defaultProps = { view: "grid" }
-export default withRouter(connect(mapStateToProps)(Books))
+export default withRouter(Books)

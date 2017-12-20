@@ -5,7 +5,7 @@ import Notifications from 'react-notify-toast'
 
 import About from './components/About'
 import Authors from './components/Authors'
-import Books from './components/Books'
+import BooksPage from './components/Books/BooksWrapper'
 import Book from './components/Books/BookCardContainer'
 import Home from './components/Home'
 import AddUser from './components/AddUser'
@@ -59,7 +59,7 @@ export default class Routes extends React.Component {
             <PrivateRoute path='/users/:userId/books/:bookId' component={Book} />
             <PrivateRoute path='/users/:userId' component={User} />
             <PrivateRoute path='/authors' component={Authors} />
-            <PrivateRoute exact path='/books' component={Books} />
+            <PrivateRoute exact path='/books' component={BooksPage} />
             <PrivateRoute path='/books/:bookId' component={Book} />
             <Route component={NoMatch} />
           </Switch>

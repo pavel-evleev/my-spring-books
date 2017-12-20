@@ -2,7 +2,11 @@ import React from 'react'
 import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
 
-import UserCard from '../UserCard'
+import IconButton from 'material-ui/IconButton'
+import Mail from 'material-ui/svg-icons/communication/email'
+import Paper from 'material-ui/Paper'
+import Books from './../Books'
+import ToolBar from './../ToolBar'
 import * as api from '../../services/API'
 
 class User extends React.Component {
@@ -10,6 +14,7 @@ class User extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      view: "grid",
       enable: false,
       user: null,
       allBooks: []
@@ -89,14 +94,27 @@ class User extends React.Component {
     }
 
     return (
-      <UserCard
-        allBooks={allBooks}
-        user={user}
-        enable={enable}
-        deleteBook={this.handleDeleteBook}
-        deleteUser={this.deleteUser}
-        handleAddClick={this.handleAddClick}
-      />
+      <div className="page">
+        <ToolBar changeViewOnClick={()=>{(this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" }))}} className="view-books" />
+        <Paper className="user">
+          <div className="user-ava">
+            <div>
+              <img src={require("./../../img/photo40427709_329412123.jpg")} alt="user" />
+            </div>
+          </div>
+          <div>
+            <div className="user-info">{user.name}</div>
+            <IconButton touch={true}
+              onClick={() => { alert("click") }}>
+              <Mail />
+            </IconButton>
+          </div>
+          <div>counting books:{user.books.length}</div>
+        </Paper>
+        <div className="user-books">
+          <Books books={user.books}view={this.state.view} />
+        </div>
+      </div>
     )
   }
 }
