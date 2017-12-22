@@ -6,6 +6,8 @@ import SelectField from 'material-ui/SelectField'
 import Snackbar from 'material-ui/Snackbar'
 import MenuItem from 'material-ui/MenuItem'
 
+import ImageUpload from './../ImageUpload'
+
 import * as api from '../../services/API'
 
 export default class AddBook extends React.Component {
@@ -103,6 +105,7 @@ export default class AddBook extends React.Component {
     return (
       <div>
         <div style={{ margin: "0 25%", display: this.state.hidden }}>
+          <ImageUpload/>
           <TextField
             hintText="Book Name"
             floatingLabelText="Book Name"

@@ -6,6 +6,58 @@ h1 {
     text-shadow: 0 1px 3px #555;
 }
 
+// imageUpload
+.fileInput {
+    border-bottom: 4px solid lightgray;
+    border-right: 4px solid lightgray;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    padding: 10px;
+    margin: 15px;
+    cursor: pointer;
+}
+
+.imgPreview {
+    text-align: center;
+    margin: 5px 15px;
+    height: 200px;
+    width: 500px;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    border-top: 5px solid gray;
+    border-bottom: 5px solid gray;
+}
+
+.imgPreview>img {
+    width: 100%;
+    height: 100%;
+}
+
+.previewText {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.submitButton {
+    padding: 12px;
+    margin-left: 10px;
+    background: white;
+    border: 4px solid lightgray;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 10pt;
+    cursor: pointer
+}
+
+.submitButton:hover {
+    background: #efefef;
+}
+
+.centerText {
+    text-align: center;
+    width: 500px;
+}
+
 body {
     margin: 0px;
 }
@@ -75,16 +127,16 @@ body {
     width: 125px;
     height: 160px;
 }
-.view-books{
+
+.view-books {
     grid-area: n;
     width: 818px;
-    margin: 0px auto;
-    // box-shadow: 0px 0px 5px 1px rgba(128, 128, 128, 0.4);
+    margin: 0px auto; // box-shadow: 0px 0px 5px 1px rgba(128, 128, 128, 0.4);
 }
+
 .user {
     grid-area: u;
-    max-height: 40  0px;
-    // margin: 5px 0 0;
+    max-height: 40 0px; // margin: 5px 0 0;
 }
 
 .user-ava {
@@ -144,74 +196,75 @@ body {
     width: 4px;
 }
 
-
-
-.orbit-spinner, .orbit-spinner * {
+.orbit-spinner,
+.orbit-spinner * {
     box-sizing: border-box;
-  }
+}
 
-  .orbit-spinner {
+.orbit-spinner {
     height: 55px;
     width: 55px;
     border-radius: 50%;
     perspective: 800px;
-  }
+}
 
-  .orbit-spinner .orbit {
+.orbit-spinner .orbit {
     position: absolute;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
     border-radius: 50%;
-  }
+}
 
-  .orbit-spinner .orbit:nth-child(1) {
+.orbit-spinner .orbit:nth-child(1) {
     left: 0%;
     top: 0%;
     animation: orbit-spinner-orbit-one-animation 1200ms linear infinite;
     border-bottom: 3px solid #33b5e9;
-  }
+}
 
-  .orbit-spinner .orbit:nth-child(2) {
+.orbit-spinner .orbit:nth-child(2) {
     right: 0%;
     top: 0%;
     animation: orbit-spinner-orbit-two-animation 1200ms linear infinite;
     border-right: 3px solid #33b5e9;
-  }
+}
 
-  .orbit-spinner .orbit:nth-child(3) {
+.orbit-spinner .orbit:nth-child(3) {
     right: 0%;
     bottom: 0%;
     animation: orbit-spinner-orbit-three-animation 1200ms linear infinite;
     border-top: 3px solid #33b5e9;
-  }
+}
 
-  @keyframes orbit-spinner-orbit-one-animation {
+@keyframes orbit-spinner-orbit-one-animation {
     0% {
-      transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+        transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
     }
     100% {
-      transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+        transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
     }
-  }
+}
 
-  @keyframes orbit-spinner-orbit-two-animation {
+@keyframes orbit-spinner-orbit-two-animation {
     0% {
-      transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+        transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
     }
     100% {
-      transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+        transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
     }
-  }
+}
 
-  @keyframes orbit-spinner-orbit-three-animation {
+@keyframes orbit-spinner-orbit-three-animation {
     0% {
-      transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+        transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
     }
     100% {
-      transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+        transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
     }
-  }
+}
+
+
 /* Portrait and Landscape */
 
 @media only screen and (min-width: 320px) and (max-width: 480px) {

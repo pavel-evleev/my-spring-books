@@ -1,4 +1,7 @@
 import React from 'react'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
+
 import Books from './../Books'
 import ToolBar from './../ToolBar'
 import Search from './../Search'
@@ -17,7 +20,7 @@ class SearchedBooks extends React.Component {
   }
   componentDidMount() {
     const searchQuery = this.props.match.params.searchBooks
-    this.props.searchBooksRequest(searchQuery)
+    // this.props.searchBooksRequest(searchQuery)
   }
 
   render() {
@@ -35,7 +38,17 @@ class SearchedBooks extends React.Component {
           changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }}
           searchComponent={<Search />} />
         <div className="user-books">
-          <Books books={searchedBooks} view={this.state.view} />
+          {
+            (searchedBooks)
+              ? (<Books books={searchedBooks} view={this.state.view} />)
+              : (<div>
+                <div>Sorry, we have not this book. Would you want add this book?</div>
+                <FloatingActionButton mini={true} onClick={()=>this.props.history.push("/users/add-book")}>
+                  <ContentAdd />
+                </FloatingActionButton>
+              </div>)
+          }
+
         </div>
       </div>
     )
