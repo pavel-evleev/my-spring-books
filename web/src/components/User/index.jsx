@@ -95,7 +95,7 @@ class User extends React.Component {
 
     return (
       <div className="page">
-        <ToolBar changeViewOnClick={()=>{(this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" }))}} className="view-books" />
+        <ToolBar changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }} className="view-books" />
         <Paper className="user">
           <div className="user-ava">
             <div>
@@ -112,7 +112,7 @@ class User extends React.Component {
           <div>counting books:{user.books.length}</div>
         </Paper>
         <div className="user-books">
-          <Books books={user.books}view={this.state.view} />
+          <Books books={user.books} view={this.state.view} />
         </div>
       </div>
     )

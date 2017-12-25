@@ -6,6 +6,28 @@ h1 {
     text-shadow: 0 1px 3px #555;
 }
 
+// chat
+.chat {
+    border: 1px solid black;
+    display: grid;
+    width: 1150px;
+    height: 100%;
+    margin: 30px auto;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 50px 300px 150px;
+    grid-template-areas: "l l c c c c c c c c c c" "l l c c c c c c c c c c" "l l m m m m m m m m m m";
+    .chat-list {
+        grid-area: l;
+    }
+    .conversation {
+        grid-area: c;
+    }
+    .box-message {
+        grid-area: m;
+    }
+}
+
+// end chat
 // imageUpload
 .fileInput {
     border-bottom: 4px solid lightgray;
@@ -113,19 +135,16 @@ body {
     grid-template-columns: 3fr 250px;
     grid-template-rows: 50px 886px;
     grid-template-areas: "n u" "b u";
-}
-
-.page .book-wrapper {
-    max-width: 830px;
-}
-
-.page .bookMiniCard {
-    width: 265px
-}
-
-.page .bookMiniCard-img {
-    width: 125px;
-    height: 160px;
+    .book-wrapper {
+        max-width: 830px;
+    }
+    .bookMiniCard {
+        width: 265px
+    }
+    .bookMiniCard-img {
+        width: 125px;
+        height: 160px;
+    }
 }
 
 .view-books {
@@ -142,28 +161,25 @@ body {
 .user-ava {
     overflow: hidden;
     margin: 30px auto;
+    img {
+        width: 200px; // height: 200px;
+        object-fit: cover; // border-radius: 120px;
+    }
+    div {
+        width: 200px;
+        height: 200px;
+        border-radius: 100px;
+        overflow: hidden;
+        margin: auto;
+    }
 }
-
-.user-ava img {
-    width: 200px; // height: 200px;
-    object-fit: cover; // border-radius: 120px;
-}
-
-.user-ava div {
-    width: 200px;
-    height: 200px;
-    border-radius: 100px;
-    overflow: hidden;
-    margin: auto;
-}
-
-.user-info {}
 
 .user-books {
     grid-area: b;
     overflow: auto;
 }
 
+// scrolls
  ::-webkit-scrollbar-button {
     background-image: url('');
     background-repeat: no-repeat;
@@ -196,6 +212,8 @@ body {
     width: 4px;
 }
 
+// end scrolls
+// spinner
 .orbit-spinner,
 .orbit-spinner * {
     box-sizing: border-box;
@@ -264,6 +282,7 @@ body {
     }
 }
 
+// end spinner
 
 /* Portrait and Landscape */
 

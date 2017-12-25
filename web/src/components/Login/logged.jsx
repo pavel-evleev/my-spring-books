@@ -4,6 +4,7 @@ import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import * as LoggedAction from '../../services/ducks/action'
 import * as api from './../../services/API'
@@ -18,6 +19,7 @@ class Logged extends Component {
   loggoutHandle = () => {
     api.logout()
     this.props.loggoutUser()
+    this.props.history.push('/')
   }
 
   render() {
@@ -45,4 +47,4 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ loggoutUser: LoggedAction.loggoutUser }, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(Logged)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Logged))
