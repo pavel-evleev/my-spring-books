@@ -2,10 +2,6 @@ import React from 'react'
 import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
 
-import IconButton from 'material-ui/IconButton'
-import Mail from 'material-ui/svg-icons/communication/email'
-
-
 class Chat extends React.Component {
 
   constructor(props) {
@@ -18,21 +14,19 @@ class Chat extends React.Component {
     }
   }
 
-
-
   render() {
     return (
-     <div className="chat">
-      <div className= "chat-list">
+      <div className="chat">
+        <div className="chat-list">
 
-      </div>
-      <div className="conversation">
+        </div>
+        <div className="conversation">
 
-      </div>
-      <div className="box-message">
+        </div>
+        <div className="box-message">
 
+        </div>
       </div>
-     </div>
     )
   }
 }
@@ -40,7 +34,7 @@ class Chat extends React.Component {
 const mapStateToProps = (state) => {
   return {
     currentUserId: state.currentUser,
-    // converations: state.converations
+    converations: state.converations
   }
 }
 
