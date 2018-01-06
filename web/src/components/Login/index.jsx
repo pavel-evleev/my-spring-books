@@ -7,6 +7,7 @@ import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import CircularProgress from 'material-ui/CircularProgress'
+import * as axios from './../../services/API'
 
 import * as ActionCreators from '../../services/ducks/action'
 

@@ -16,10 +16,10 @@ export function searchBooksRequest(searchQuery) {
     dispatch({ type: FETCH_SEARCH_REQUEST })
 
     api.searchBooks(searchQuery)
-      .then(responce => {
+      .then(response => {
         dispatch({
           type: SUCCESS_SEARCH_BOOKS,
-          payload: responce.data
+          payload: response.data
         })
       }).catch(error =>
         dispatch({
@@ -59,13 +59,14 @@ export function requestLogin(email, password) {
   return function (dispatch) {
     dispatch({ type: FETCH_USERS_REQUEST })
 
-    api.Login(email, password)
-      .then(() => {
+    api.LoginOuath(email, password)
+      .then((response) => {
+        api.set_cookie("key", response.data.access_token, response.data.expires_in)
         api.fetchEmail({ email: email })
-          .then(responce => {
+          .then((response) => {
             dispatch({
               type: SET_CURRENT_USER,
-              payload: responce.data.id
+              payload: response.data.id
             })
           }).catch(error =>
             dispatch({
