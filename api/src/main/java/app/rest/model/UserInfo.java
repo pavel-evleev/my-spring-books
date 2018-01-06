@@ -1,16 +1,17 @@
 package app.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class UserInfo {
 
-    public UserInfo(Long id, String name, String phone, String password, String email) {
+    public UserInfo(Long id, String name, String phone, String email) {
         this.id = id;
         this.name = name;
         this.phone = phone;
-        this.password = password;
         this.email = email;
     }
 
@@ -19,8 +20,6 @@ public class UserInfo {
     private String name;
 
     private String phone;
-
-    private String password;
 
     private String email;
 
@@ -49,14 +48,6 @@ public class UserInfo {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public List<BookInfo> getBooks() {
