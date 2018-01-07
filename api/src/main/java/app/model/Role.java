@@ -16,13 +16,11 @@ public class Role {
     @Column(name = "role")
     private String role;
 
-
-    public Long getId() {
-        return id;
+    public Role() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Role(String role) {
+        this.role = role;
     }
 
     public String getRole() {

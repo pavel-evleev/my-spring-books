@@ -48,7 +48,7 @@ public class UserService {
     }
 
     public static UserInfo toUserInfo(User user) {
-        UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getPhone(), user.getPassword(), user.getEmail());
+        UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getPhone(), user.getEmail());
         userInfo.setBooks(
                 user.getBooks().stream()
                         .map(BookService::toBookInfo)

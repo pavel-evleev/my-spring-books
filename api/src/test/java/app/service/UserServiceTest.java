@@ -48,7 +48,6 @@ public class UserServiceTest {
 
         assertThat(returnedUser.getId()).isEqualTo(1);
         assertThat(returnedUser.getName()).isEqualTo(name);
-        assertThat(returnedUser.getPassword()).isEqualTo(password);
         assertThat(returnedUser.getPhone()).isEqualTo(phone);
         assertThat(returnedUser.getEmail()).isEqualTo(email);
     }
@@ -88,7 +87,6 @@ public class UserServiceTest {
         UserInfo returnedUser = userService.save(creCMD);
 
         assertThat(returnedUser.getName()).isEqualTo(creCMD.getName());
-        assertThat(returnedUser.getPassword()).isEqualTo(creCMD.getPassword());
         assertThat(returnedUser.getPhone()).isEqualTo(creCMD.getPhone());
     }
 
