@@ -17,7 +17,7 @@ The application is in progress.
 ## DB
 
 * MySQL
-![alt text](https://github.com/PavelEvleev/MyReadedBooks/blob/dev/Screenshot_5.jpg)
+![alt text](https://github.com/PavelEvleev/my-spring-books/blob/master/Screenshot_5.jpg)
 
 ## Frontend
 

@@ -5,7 +5,7 @@ import App from './app'
 
 ReactDOM.render(
   <AppContainer>
-    <App/>
+    <App />
   </AppContainer>,
   document.getElementById('app')
 )
@@ -16,7 +16,7 @@ if (module.hot) {
     const NextApp = require('./app').default
     ReactDOM.render(
       <AppContainer>
-        <NextApp/>
+        <NextApp />
       </AppContainer>,
       document.getElementById('app')
     )

@@ -1,32 +1,324 @@
-.menu>li {
-    display: inline-block;
-    padding: 0 5px;
-}
-
-.succes {
-    font-size: xx-large;
-    color: rgba(44, 194, 19, 0.84);
-    text-shadow: 0px 0px 1px lawngreen;
-    display: block;
-    margin: 20px 35%;
+h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    font-size: 54px;
     text-align: center;
-    box-shadow: 0px 2px 13px;
-    border-radius: 20px;
-    padding: 5px;
+    text-shadow: 0 1px 3px #555;
 }
 
-.bad {
-    font-size: xx-large;
-    color: rgba(194, 19, 28, 0.84);
-    text-shadow: 0px 0px 1px #555E5C;
-    display: block;
-    margin: 20px 35%;
+// chat
+.chat {
+    border: 1px solid black;
+    display: grid;
+    width: 1150px;
+    height: 100%;
+    margin: 30px auto;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 50px 300px 150px;
+    grid-template-areas: "l l c c c c c c c c c c" "l l c c c c c c c c c c" "l l m m m m m m m m m m";
+    .chat-list {
+        grid-area: l;
+    }
+    .conversation {
+        grid-area: c;
+    }
+    .box-message {
+        grid-area: m;
+    }
+}
+
+// end chat
+// imageUpload
+.fileInput {
+    border-bottom: 4px solid lightgray;
+    border-right: 4px solid lightgray;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    padding: 10px;
+    margin: 15px;
+    cursor: pointer;
+}
+
+.imgPreview {
     text-align: center;
-    box-shadow: 0px 2px 13px;
-    border-radius: 20px;
-    padding: 5px;
+    margin: 5px 15px;
+    height: 200px;
+    width: 500px;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    border-top: 5px solid gray;
+    border-bottom: 5px solid gray;
 }
 
-.left {
-    float: left
+.imgPreview>img {
+    width: 100%;
+    height: 100%;
 }
+
+.previewText {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.submitButton {
+    padding: 12px;
+    margin-left: 10px;
+    background: white;
+    border: 4px solid lightgray;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 10pt;
+    cursor: pointer
+}
+
+.submitButton:hover {
+    background: #efefef;
+}
+
+.centerText {
+    text-align: center;
+    width: 500px;
+}
+
+body {
+    margin: 0px;
+}
+
+.book-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 988px;
+    margin: auto;
+}
+
+.bookMiniCard {
+    display: flex;
+    flex-direction: column;
+    width: 237px;
+    margin: 5px;
+    padding: 10px;
+    font-family: "Roboto, Arial";
+}
+
+.bookMiniCard:hover {
+    cursor: pointer;
+}
+
+.bookMiniCard:hover>.bookMiniCard-title {
+    text-decoration: underline;
+}
+
+.bookMiniCard-title {
+    margin: 10px auto 0px;
+    font-weight: 400;
+    font-size: 16px;
+    color: black;
+    height: 34px;
+}
+
+.bookMiniCard-img {
+    width: 150px;
+    height: 185px;
+    background-color: blue;
+    margin: 15px auto;
+}
+
+.bookMiniCard-desc {
+    margin: 0px auto;
+}
+
+.page {
+    display: grid;
+    width: 1150px;
+    margin: 30px auto;
+    grid-row-gap: 15px;
+    grid-template-columns: 3fr 250px;
+    grid-template-rows: 50px 886px;
+    grid-template-areas: "n u" "b u";
+    .book-wrapper {
+        max-width: 830px;
+    }
+    .bookMiniCard {
+        width: 265px
+    }
+    .bookMiniCard-img {
+        width: 125px;
+        height: 160px;
+    }
+}
+
+.view-books {
+    grid-area: n;
+    width: 818px;
+    margin: 0px auto; // box-shadow: 0px 0px 5px 1px rgba(128, 128, 128, 0.4);
+}
+
+.user {
+    grid-area: u;
+    max-height: 40 0px; // margin: 5px 0 0;
+}
+
+.user-ava {
+    overflow: hidden;
+    margin: 30px auto;
+    img {
+        width: 200px; // height: 200px;
+        object-fit: cover; // border-radius: 120px;
+    }
+    div {
+        width: 200px;
+        height: 200px;
+        border-radius: 100px;
+        overflow: hidden;
+        margin: auto;
+    }
+}
+
+.user-books {
+    grid-area: b;
+    overflow: auto;
+}
+
+// scrolls
+ ::-webkit-scrollbar-button {
+    background-image: url('');
+    background-repeat: no-repeat;
+    width: 5px;
+    height: 0px
+}
+
+ ::-webkit-scrollbar-track {
+    background-color: #ecedee
+}
+
+ ::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color: #6dc0c8;
+}
+
+ ::-webkit-scrollbar-thumb:hover {
+    background-color: #56999f;
+}
+
+ ::-webkit-resizer {
+    background-image: url('');
+    background-repeat: no-repeat;
+    width: 4px;
+    height: 0px
+}
+
+ ::-webkit-scrollbar {
+    width: 4px;
+}
+
+// end scrolls
+// spinner
+.orbit-spinner,
+.orbit-spinner * {
+    box-sizing: border-box;
+}
+
+.orbit-spinner {
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+    perspective: 800px;
+}
+
+.orbit-spinner .orbit {
+    position: absolute;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.orbit-spinner .orbit:nth-child(1) {
+    left: 0%;
+    top: 0%;
+    animation: orbit-spinner-orbit-one-animation 1200ms linear infinite;
+    border-bottom: 3px solid #33b5e9;
+}
+
+.orbit-spinner .orbit:nth-child(2) {
+    right: 0%;
+    top: 0%;
+    animation: orbit-spinner-orbit-two-animation 1200ms linear infinite;
+    border-right: 3px solid #33b5e9;
+}
+
+.orbit-spinner .orbit:nth-child(3) {
+    right: 0%;
+    bottom: 0%;
+    animation: orbit-spinner-orbit-three-animation 1200ms linear infinite;
+    border-top: 3px solid #33b5e9;
+}
+
+@keyframes orbit-spinner-orbit-one-animation {
+    0% {
+        transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+    }
+    100% {
+        transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+    }
+}
+
+@keyframes orbit-spinner-orbit-two-animation {
+    0% {
+        transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+    }
+    100% {
+        transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+    }
+}
+
+@keyframes orbit-spinner-orbit-three-animation {
+    0% {
+        transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+    }
+    100% {
+        transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+    }
+}
+
+// end spinner
+
+/* Portrait and Landscape */
+
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+    .page {
+        width: 300px;
+    }
+}
+
+
+/* Portrait */
+
+@media only screen and (min-width: 320px) and (max-width: 480px) and (orientation: portrait) {}
+
+
+/* Landscape */
+
+@media only screen and (min-width: 320px) and (max-width: 480px) and (orientation: landscape) {}
+
+
+/* ----------- iPhone 5, 5S, 5C and 5SE ----------- */
+
+
+/* Portrait and Landscape */
+
+@media only screen and (min-width: 320px) and (max-width: 568px) {}
+
+
+/* Portrait */
+
+@media only screen and (min-width: 320px) and (max-width: 568px) and (orientation: portrait) {}
+
+
+/* Landscape */
+
+@media only screen and (min-width: 320px) and (max-width: 568px) and (orientation: landscape) {}
+
+
+/* ----------- iPhone 6, 6S, 7 and 8 ----------- */

@@ -1,18 +1,18 @@
 package app.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Pavel on 08.09.2017.
- */
+
 public class UserInfo {
 
-    public UserInfo(Long id, String name, String phone, String password) {
+    public UserInfo(Long id, String name, String phone, String email) {
         this.id = id;
         this.name = name;
         this.phone = phone;
-        this.password = password;
+        this.email = email;
     }
 
     private Long id;
@@ -21,7 +21,7 @@ public class UserInfo {
 
     private String phone;
 
-    private String password;
+    private String email;
 
     private List<BookInfo> books = new ArrayList<>();
 
@@ -50,19 +50,19 @@ public class UserInfo {
         this.phone = phone;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public List<BookInfo> getBooks() {
         return books;
     }
 
     public void setBooks(List<BookInfo> books) {
         this.books = books;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

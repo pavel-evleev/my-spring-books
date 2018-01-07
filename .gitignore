@@ -56,3 +56,4 @@ yarn.lock
 
 # Ignore permission file
 *.pem
+api/src/main/resources/application-email.yml

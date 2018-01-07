@@ -1,11 +1,18 @@
 package app.rest.controller;
 
 import app.rest.model.*;
+import app.services.EmailVerifyService;
 import app.services.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,7 +33,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{userId}")
-    public UserInfo addBooks(@RequestBody AddingBooks books){
+    public UserInfo addBooks(@RequestBody AddingBooks books) {
         return userService.addBooks(books);
     }
 
@@ -35,9 +42,19 @@ public class UserController {
         return userService.findAll();
     }
 
+    @GetMapping("/findNames/{name}")
+    public List<String> findNameLike(@PathVariable String name) {
+        return userService.findNameLike(name);
+    }
+
     @GetMapping("/{userId}")
     public UserInfo findById(@PathVariable Long userId) {
         return userService.findOne(userId);
+    }
+
+    @PostMapping("findEmail")
+    public UserInfo findEmail(@RequestBody CreateUserCommand userCommand) {
+        return userService.findEmail(userCommand.getEmail());
     }
 
     @GetMapping("/{userId}/books")
@@ -47,7 +64,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{userId}/books/{bookId}")
-    public void deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId){
+    public void deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId) {
         userService.patch(userId, bookId);
     }
 
@@ -67,5 +84,30 @@ public class UserController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleConstraintViolationException(ConstraintViolationException exception) {
         return new ApiError(exception.getMessage());
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public void loginPage() {
+    }
+
+    @RequestMapping("/verify/{uuid}")
+    public void confirmEmail(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            if (userService.confirmEmail(uuid))
+                response.sendRedirect("//localhost:8888");
+            else
+                response.sendRedirect("//localhost:8888/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
     }
 }
