@@ -109,7 +109,7 @@ class User extends React.Component {
               <Mail />
             </IconButton>
           </div>
-          <div>counting books:{user.books.length}</div>
+          <div>Collection books:{user.books.length}</div>
         </Paper>
         <div className="user-books">
           <Books books={user.books} view={this.state.view} />

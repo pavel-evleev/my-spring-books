@@ -28,6 +28,38 @@ h1 {
 }
 
 // end chat
+// book-card
+.book-card-container {
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: ". . p p p . i i i i . ." ". . p p p . i i i i . ." ". . d d d d d d d d . .";
+    .book-card-img {
+        grid-area: p;
+        display: flex;
+        justify-content: center;
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+    .book-card-info {
+        grid-area: i;
+        background-color: aqua;
+        span {
+            display: block;
+        }
+    }
+    .book-card-description {
+        margin: 20px 0 0;
+        min-height: 50px;
+        background-color: #33b5e9;
+        grid-area: d;
+    }
+}
+
+// end book-card
 // imageUpload
 .fileInput {
     border-bottom: 4px solid lightgray;
