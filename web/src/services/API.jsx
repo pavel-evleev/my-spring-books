@@ -8,7 +8,7 @@ export const getCookie = (name) => {
 
 export const set_cookie = (name, value, date) => {
   let d = new Date()
-  d.setTime(d.getTime() + date*60)
+  d.setTime(d.getTime() + date * 60)
   let expires = "expires=" + d.toGMTString();
   document.cookie = name + '=' + value + ';' + expires + ';Path=/;';
 }
@@ -16,8 +16,8 @@ export const delete_cookie = (name) => {
   document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
-const AuthStr = 'Bearer '.concat(getCookie("key"));
-export const DEFAULT_HTTP_HEADERS = {
+let AuthStr = 'Bearer '.concat(getCookie("key"));
+export let DEFAULT_HTTP_HEADERS = {
   'Content-Type': 'application/json',
   "Authorization": AuthStr
 }
