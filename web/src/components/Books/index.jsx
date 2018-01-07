@@ -67,7 +67,7 @@ class Books extends React.Component {
             this.props.books.map((book) => {
               return (<BookCard key={book.id} book={book} OnClick={this.handleOnClickBook} />)
             })) : (this.props.books.map((book) => {
-              return (<BookListItem key={book.id} book={book} />)
+              return (<BookListItem key={book.id} book={book} OnClick={this.handleOnClickBook} />)
             }))
           }
         </div>

@@ -16,7 +16,7 @@ webapp/
 #
 # Front-end
 #
-
+*/src/img/*
 # Logs
 logs
 *.log

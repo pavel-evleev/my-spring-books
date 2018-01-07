@@ -38,6 +38,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
         http.rememberMe().
                 tokenRepository(persistentTokenRepository()).
+                rememberMeParameter("remember-me").
                 rememberMeCookieName("my-remember-me").
                 tokenValiditySeconds(86400);
     }
