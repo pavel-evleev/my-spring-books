@@ -1,7 +1,34 @@
 import React from 'react'
 import ActionButton from './../GroupIconButton/FavorDeleteButton'
-import { connect } from 'react-redux'
+import Comments from './../Comments'
 
+import { connect } from 'react-redux'
+const com = [
+  {
+    id: 1,
+    authorComment: "Pavel",
+    text: "text comment",
+    time: "12/12/2007"
+  },
+  {
+    id: 2,
+    authorComment: "Pavel",
+    text: "text comment",
+    time: "12/12/2007"
+  },
+  {
+    id: 3,
+    authorComment: "Pavel",
+    text: "text comment",
+    time: "12/12/2007"
+  },
+  {
+    id: 4,
+    authorComment: "Pavel",
+    text: "text comment",
+    time: "12/12/2007"
+  }
+]
 
 
 /**
@@ -28,7 +55,7 @@ class BookCard extends React.Component {
   }
 
   render() {
-    const { book, edit, expandable, expButton } = this.props;
+    const { book, edit } = this.props;
     return (
       <div>
         <div className="book-card-container">
@@ -47,12 +74,13 @@ class BookCard extends React.Component {
           <div className="book-card-description">
             {book.description}
           </div>
+          <Comments className="book-comments" comments={com}/>
         </div>
       </div>
     )
   }
 }
 
-BookCard.defaultProps = { edit: false, expandable: false, expButton: false }
+BookCard.defaultProps = { edit: false }
 
 export default BookCard

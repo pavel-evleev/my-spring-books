@@ -34,7 +34,7 @@ h1 {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: auto;
-    grid-template-areas: ". . p p p . i i i i . ." ". . p p p . i i i i . ." ". . d d d d d d d d . .";
+    grid-template-areas: ". . p p p . i i i i . ." ". . p p p . i i i i . ." ". . d d d d d d d d . ." ". . c c c c c c c c . .";
     .book-card-img {
         grid-area: p;
         display: flex;
@@ -56,6 +56,31 @@ h1 {
         min-height: 50px;
         background-color: #33b5e9;
         grid-area: d;
+    }
+    .book-comments {
+        grid-area: c;
+        border: #555 1px solid;
+        margin: 10px 0 0 0;
+        .b-comment {
+            background-color: blanchedalmond;
+            margin-bottom: 5px;
+            .a-cont {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                padding: 10px 0 0 10px;
+                color: cornflowerblue;
+                 :last-child {
+                    color: #555;
+                    font-size: 13px;
+                    padding-right: 10px;
+                }
+            }
+            p {
+                margin-bottom: 0px;
+                padding: 0 0 10px 25px;
+            }
+        }
     }
 }
 
