@@ -5,13 +5,13 @@ export const getCookie = (name) => {
   var parts = value.split("; " + name + "=");
   if (parts.length === 2) return parts.pop().split(";").shift();
 }
-export let AuthStr = 'Bearer '.concat(getCookie("key"));
 export const set_cookie = (name, value, date) => {
   let d = new Date()
   d.setTime(d.getTime() + date * 60)
   let expires = "expires=" + d.toGMTString();
   console.log("token " + value)
-  AuthStr = 'Bearer ' + value;
+  let AuthStr = 'Bearer ' + value;
+  axios.defaults.headers.common['Authorization'] = AuthStr;
   document.cookie = name + '=' + value + ';' + expires + ';Path=/;';
 }
 export const delete_cookie = (name) => {
@@ -21,7 +21,6 @@ export const delete_cookie = (name) => {
 
 export let DEFAULT_HTTP_HEADERS = {
   'Content-Type': 'application/json',
-  "Authorization": AuthStr
 }
 
 export const validateStatus = (status) => {

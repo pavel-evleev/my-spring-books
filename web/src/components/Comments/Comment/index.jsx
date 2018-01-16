@@ -8,12 +8,12 @@ class Comment extends React.Component {
   }
 
   render() {
-    const { authorComment, text, time } = this.props.comment
+    const { authorComment, text, datePublished } = this.props.comment
     return (
       <div className="b-comment">
         <div className="a-cont">
-          <div>{authorComment ? authorComment : "Author comment is here"}</div>
-          <div>{time}</div>
+          <div>{authorComment.name ? authorComment.name : "Author comment is here"}</div>
+          <div>{datePublished}</div>
         </div>
         <p>{text ? text : "Your comment is here......"}</p>
       </div>

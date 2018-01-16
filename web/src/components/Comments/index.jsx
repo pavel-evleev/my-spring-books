@@ -12,12 +12,10 @@ export default class Comments extends React.Component {
   render() {
     const { comments, className } = this.props
     console.log(this.props)
-    let i = 0;
     return (
       <div className={className}>
         {
-
-          comments.map((comment) => <Comment key={++i} comment={comment} />)
+          comments.map((c, index) => <Comment key={index} comment={c} />)
         }
         <AddComment handleSendComment={this.props.handleSendComment} />
       </div>
