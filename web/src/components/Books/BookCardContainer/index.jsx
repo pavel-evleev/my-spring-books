@@ -1,4 +1,6 @@
 import React from 'react'
+import * as ActionCreators from './../../../services/ducks/action'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import BookCard from './../../BookItem'
@@ -25,18 +27,31 @@ class BookCardContainer extends React.Component {
     }
   }
 
+  handleSendComment = (text) => {
+    const comment = {
+      bookId: parseInt(this.props.match.params.bookId),
+      authorCommentId: this.props.currentUserId,
+      text: text
+    }
+    this.props.sendComment(comment)
+  }
+
+
   render() {
-    const { books, edit } = this.props;
-    return (<BookCard book={this.findBookById()} />)
+    const { books } = this.props;
+    return (<BookCard book={this.findBookById()} handleSendComment={this.handleSendComment}/>)
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    books: state.allBooks
+    books: state.allBooks,
+    currentUserId: state.currentUser
   }
 }
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ sendComment: ActionCreators.addComment }, dispatch)
 
 
-export default connect(mapStateToProps)(BookCardContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(BookCardContainer)

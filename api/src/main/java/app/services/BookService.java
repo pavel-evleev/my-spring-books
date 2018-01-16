@@ -1,16 +1,22 @@
 package app.services;
 
+import app.model.Comment;
+import app.model.User;
 import app.repository.AuthorRepository;
+import app.repository.UserRepository;
 import app.rest.model.BookInfo;
+import app.rest.model.CommentInfo;
 import app.rest.model.CreateBookCommand;
 import app.model.Author;
 import app.model.Book;
 import app.repository.BookRepository;
+import app.rest.model.CreateCommentCommand;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,10 +26,12 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
+    private final UserRepository userRepository;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
+        this.userRepository = userRepository;
     }
 
     public List<BookInfo> findAll() {
@@ -77,6 +85,26 @@ public class BookService {
                 .map(Author::getName)
                 .collect(Collectors.toList())
         );
+        if(book.getComments()!=null){
+            bookInfo.setComments(
+                    book.getComments().stream().map(comment ->
+                            new CommentInfo(comment.getText(),comment.getAuthorComment(),comment.getDatePublished()))
+                            .collect(Collectors.toList())
+            );
+        }
         return bookInfo;
+    }
+
+    public BookInfo saveComment(CreateCommentCommand createCommentCommand) {
+        User authorComment = userRepository.findOne(createCommentCommand.getAuthorCommentId());
+        Book book = bookRepository.findOne(createCommentCommand.getBookId());
+
+        Comment newComment = new Comment();
+        newComment.setAuthorComment(authorComment);
+        newComment.setDatePublished(Date.valueOf(LocalDate.now()));
+        newComment.setText(createCommentCommand.getText());
+
+        book.addComment(newComment);
+        return toBookInfo(bookRepository.saveAndFlush(book));
     }
 }

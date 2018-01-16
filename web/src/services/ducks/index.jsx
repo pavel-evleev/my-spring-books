@@ -30,11 +30,22 @@ const rootReducer = (state = store, action) => {
     case UserAction.FETCH_USERS_FAILURE:
       return state.merge({ error: action.payload, fetching: false })
     case UserAction.FETCH_SEARCH_REQUEST:
-      return state.merge({ fetching: true, searchedBooks: [],  error: null })
+      return state.merge({ fetching: true, searchedBooks: [], error: null })
     case UserAction.SUCCESS_SEARCH_BOOKS:
       return state.merge({ searchedBooks: action.payload, fetching: false })
     case UserAction.ERROR_SEARCH_BOOKS:
       return state.merge({ fetching: false, error: action.payload })
+    case UserAction.SEND_COMMENT_SUCCESS:
+      return state.merge({ allBooks: action.payload })
+    case UserAction.ERROR_SEND_COMMENT:
+      return state.merge({ error: action.payload })
+    case UserAction.USER_OPEN_REQUEST:
+      return state.merge({ fetching: true, openedUser: null, allBooks: null })
+    case UserAction.USER_OPEN_SECCESS:
+      return state.merge({ fetching: false, openedUser: action.payload, allBooks: action.payload.books })
+    case UserAction.USER_OPEN_ERROR:
+      return state.merge({ fetching: false, error: action.payload })
+
     default:
       return state
   }

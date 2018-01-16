@@ -19,6 +19,7 @@ export default class AddComment extends React.Component {
 
   render() {
     const sendComment = this.props.handleSendComment
+    // console.log(this.props.handleSendComment)
     return (
       <div>
         <TextField

@@ -8,6 +8,11 @@ import java.util.List;
 
 public class UserInfo {
 
+    public UserInfo(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public UserInfo(Long id, String name, String phone, String email) {
         this.id = id;
         this.name = name;

@@ -2,7 +2,6 @@ import React from 'react'
 import ActionButton from './../GroupIconButton/FavorDeleteButton'
 import Comments from './../Comments'
 
-import { connect } from 'react-redux'
 const com = [
   {
     id: 1,
@@ -54,8 +53,11 @@ class BookCard extends React.Component {
     return authors
   }
 
+  
+
   render() {
     const { book, edit } = this.props;
+    console.log(this.props)
     return (
       <div>
         <div className="book-card-container">
@@ -69,12 +71,12 @@ class BookCard extends React.Component {
             <span>Book name: {book.name}</span>
             <span>Authors: {this.groupAuthors(book.authors)}</span>
             <span>Readed: {book.readed ? book.readed : "5"}</span>
-            <ActionButton/>
+            <ActionButton />
           </div>
           <div className="book-card-description">
             {book.description}
           </div>
-          <Comments className="book-comments" comments={com}/>
+          <Comments className="book-comments" comments={book.comments} handleSendComment={this.props.handleSendComment} />
         </div>
       </div>
     )

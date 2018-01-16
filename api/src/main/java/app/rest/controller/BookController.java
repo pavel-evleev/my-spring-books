@@ -4,6 +4,7 @@ package app.rest.controller;
 import app.rest.model.ApiError;
 import app.rest.model.BookInfo;
 import app.rest.model.CreateBookCommand;
+import app.rest.model.CreateCommentCommand;
 import app.services.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +29,12 @@ public class BookController {
     @PostMapping
     public BookInfo create(@RequestBody CreateBookCommand createBookCommand) {
         return bookService.save(createBookCommand);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/comment")
+    public BookInfo addComment(@RequestBody CreateCommentCommand createCommentCommand){
+        return bookService.saveComment(createCommentCommand);
     }
 
     @GetMapping("/{bookId}")

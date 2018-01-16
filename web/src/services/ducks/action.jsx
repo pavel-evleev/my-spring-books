@@ -10,6 +10,12 @@ export const LOGGOUT_USER = 'LOGGOUT_USER'
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 export const FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE"
 
+export const SEND_COMMENT_SUCCESS = 'SEND_COMMENT_SUCCESS'
+export const ERROR_SEND_COMMENT = 'ERROR_SEND_COMMENT'
+
+export const USER_OPEN_REQUEST = 'USER_OPEN_REQUEST'
+export const USER_OPEN_SECCESS = 'USER_OPEN_SECCESS'
+export const USER_OPEN_ERROR = 'USER_OPEN_ERROR'
 
 export function searchBooksRequest(searchQuery) {
   return function (dispatch) {
@@ -75,6 +81,41 @@ export function requestLogin(email, password) {
             })
           )
       })
+  }
+}
+
+export function fetchUser(id) {
+  return function (dispatch) {
+    dispatch({ type: USER_OPEN_REQUEST })
+
+    api.fetchUser(id).then((response)=>{
+        dispatch({
+          type: USER_OPEN_SECCESS,
+          payload: response.data
+        })
+    }).catch(error=>{
+      dispatch({
+        type: USER_OPEN_ERROR,
+        payload: error.toString()
+      })
+    })
+  }
+}
+
+export function addComment(comment) {
+  return function (dispatch) {
+    api.addComment(comment).then((response) => {
+      console.clear()
+      console.log(response.data)
+        dispatch({
+          type: SEND_COMMENT_SUCCESS,
+          payload: response.data
+        })
+      }).catch(error =>
+        dispatch({
+          type: ERROR_SEND_COMMENT,
+          payload: error.toString()
+        }))
   }
 }
 

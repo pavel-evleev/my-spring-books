@@ -5,18 +5,20 @@ export const getCookie = (name) => {
   var parts = value.split("; " + name + "=");
   if (parts.length === 2) return parts.pop().split(";").shift();
 }
-
+export let AuthStr = 'Bearer '.concat(getCookie("key"));
 export const set_cookie = (name, value, date) => {
   let d = new Date()
   d.setTime(d.getTime() + date * 60)
   let expires = "expires=" + d.toGMTString();
+  console.log("token " + value)
+  AuthStr = 'Bearer ' + value;
   document.cookie = name + '=' + value + ';' + expires + ';Path=/;';
 }
 export const delete_cookie = (name) => {
   document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
-let AuthStr = 'Bearer '.concat(getCookie("key"));
+
 export let DEFAULT_HTTP_HEADERS = {
   'Content-Type': 'application/json',
   "Authorization": AuthStr
@@ -43,6 +45,10 @@ export const clientForLogin = axios.create({
  */
 export const fetchBooks = () => {
   return client.get(`/v1/books`)
+}
+
+export const addComment = (c) => {
+  return client.post('/v1/books/comment', c)
 }
 
 export const fetchAuthors = () => {

@@ -40,6 +40,12 @@ public class Book implements Serializable {
     @ManyToMany(mappedBy = "books")
     private List<User> users = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "books_comments",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "comment_id"))
+    private List<Comment> comments = new ArrayList<>();
+
 
     public Book() {
     }
@@ -98,6 +104,16 @@ public class Book implements Serializable {
         this.users = users;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void addComment(Comment comment){ this.comments.add(comment);}
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,7 +127,8 @@ public class Book implements Serializable {
         if (datePublished != null ? !datePublished.equals(book.datePublished) : book.datePublished != null)
             return false;
         if (authors != null ? !authors.equals(book.authors) : book.authors != null) return false;
-        return users != null ? users.equals(book.users) : book.users == null;
+        if (users != null ? !users.equals(book.users) : book.users != null) return false;
+        return comments != null ? comments.equals(book.comments) : book.comments == null;
     }
 
     @Override
@@ -122,6 +139,7 @@ public class Book implements Serializable {
         result = 31 * result + (datePublished != null ? datePublished.hashCode() : 0);
         result = 31 * result + (authors != null ? authors.hashCode() : 0);
         result = 31 * result + (users != null ? users.hashCode() : 0);
+        result = 31 * result + (comments != null ? comments.hashCode() : 0);
         return result;
     }
 

@@ -75,7 +75,6 @@ public class UserService {
             System.err.println(ex.getMessage());
         }
         newUser = userRepository.save(newUser);
-        System.out.println(newUser.getId());
         return toUserInfo(newUser);
     }
 

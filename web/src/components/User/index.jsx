@@ -1,6 +1,8 @@
 import React from 'react'
 import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as ActionCreators from './../../services/ducks/action'
 
 import IconButton from 'material-ui/IconButton'
 import Mail from 'material-ui/svg-icons/communication/email'
@@ -16,7 +18,6 @@ class User extends React.Component {
     this.state = {
       view: "grid",
       enable: false,
-      user: null,
       allBooks: []
     }
   }
@@ -26,14 +27,8 @@ class User extends React.Component {
     const id = parseInt(this.props.match.params.userId);
 
     // Load user info
-    api.fetchUser(id).then((response) => {
-      this.setState({ user: response.data });
-    });
-
-    // Load all book for combo box
-    api.fetchBooks().then((response) => {
-      this.setState({ allBooks: response.data });
-    });
+    this.props.fetchUser(id);
+  
 
     if (idCurrent === id) {
       this.setState({ enable: true })
@@ -87,9 +82,10 @@ class User extends React.Component {
   }
 
   render() {
-    const { allBooks, user, enable } = this.state;
+    const { user, enable } = this.state;
+    
 
-    if (!user) {
+    if (!this.props.openedUser) {
       return (<div>User not found</div>)
     }
 
@@ -103,16 +99,16 @@ class User extends React.Component {
             </div>
           </div>
           <div>
-            <div className="user-info">{user.name}</div>
+            <div className="user-info">{this.props.openedUser.name}</div>
             <IconButton touch={true}
               onClick={() => { alert("click") }}>
               <Mail />
             </IconButton>
           </div>
-          <div>Collection books:{user.books.length}</div>
+          <div>Collection books:{this.props.openedUser.books.length}</div>
         </Paper>
         <div className="user-books">
-          <Books books={user.books} view={this.state.view} />
+          <Books books={this.props.openedUser.books} view={this.state.view} />
         </div>
       </div>
     )
@@ -121,8 +117,12 @@ class User extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentUserId: state.currentUser
+    currentUserId: state.currentUser,
+    openedUser: state.openedUser
   }
 }
 
-export default connect(mapStateToProps)(User)
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ fetchUser: ActionCreators.fetchUser }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(User)

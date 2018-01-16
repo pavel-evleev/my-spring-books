@@ -1,5 +1,7 @@
 package app.rest.model;
 
+import app.model.Comment;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ public class BookInfo {
     private Date datePublished;
 
     private List<String> authors = new ArrayList<>();
+
+    private List<CommentInfo> comments = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -64,5 +68,13 @@ public class BookInfo {
 
     public void setAuthors(List<String> authors) {
         this.authors = authors;
+    }
+
+    public List<CommentInfo> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentInfo> comments) {
+        this.comments = comments;
     }
 }
