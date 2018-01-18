@@ -25,6 +25,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    private static final int THIRTY_DAYS = 60 * 60 * 24 * 30;
 
     /**
      * Setting up the endpointsconfigurer authentication manager.
@@ -53,9 +54,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().
                 withClient("my-trusted-client")
-                .authorizedGrantTypes("client_credentials", "password")
-                .authorities("ROLE_CLIENT","ROLE_TRUSTED_CLIENT").scopes("read","write","trust")
-                .resourceIds("oauth2-resource").accessTokenValiditySeconds(3600).secret("secret");
+                .secret("secret")
+                .authorizedGrantTypes("client_credentials", "password", "refresh_token")
+                .authorities("ROLE_CLIENT","ROLE_TRUSTED_CLIENT")
+                .scopes("read","write","trust")
+                .resourceIds("oauth2-resource")
+                .accessTokenValiditySeconds(30)
+                .refreshTokenValiditySeconds(THIRTY_DAYS);
     }
 
     /**

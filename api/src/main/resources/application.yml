@@ -11,3 +11,5 @@ spring:
   profiles:
     include: 'email'
 logging.level.org.hibernate.SQL: debug
+logging.level.org.springframework.web: DEBUG
+logging.level.org.hibernate: ERROR
