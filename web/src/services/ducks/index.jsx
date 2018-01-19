@@ -36,7 +36,7 @@ const rootReducer = (state = store, action) => {
     case UserAction.ERROR_SEARCH_BOOKS:
       return state.merge({ fetching: false, error: action.payload })
     case UserAction.SEND_COMMENT_SUCCESS:
-      return state.merge({ allBooks: action.payload })
+      return state.merge({ allBooks: state.allBooks.map(book => book.id === action.payload.id ? action.payload : book ) })
     case UserAction.ERROR_SEND_COMMENT:
       return state.merge({ error: action.payload })
     case UserAction.USER_OPEN_REQUEST:
