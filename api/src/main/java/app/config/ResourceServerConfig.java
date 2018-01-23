@@ -1,6 +1,7 @@
 package app.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -10,6 +11,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+
+import javax.servlet.MultipartConfigElement;
 
 /**
  * The @EnableResourceServer annotation adds a filter of type OAuth2AuthenticationProcessingFilter automatically
@@ -42,6 +47,21 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return new InMemoryTokenStore();
     }
 
+    @Bean(name = "commonsMultipartResolver")
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
+    }
+
+
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+
+        factory.setMaxFileSize("5MB");
+        factory.setMaxRequestSize("5MB");
+
+        return factory.createMultipartConfig();
+    }
 //
 //    @Bean
 //    public DataSource getDataSource() {

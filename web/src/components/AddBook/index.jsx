@@ -5,12 +5,15 @@ import DatePicker from 'material-ui/DatePicker'
 import SelectField from 'material-ui/SelectField'
 import Snackbar from 'material-ui/Snackbar'
 import MenuItem from 'material-ui/MenuItem'
+import * as ActionCreators from './../../services/ducks/action'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 import ImageUpload from './../ImageUpload'
 
 import * as api from '../../services/API'
 
-export default class AddBook extends React.Component {
+class AddBook extends React.Component {
 
   constructor(props) {
     super(props);
@@ -30,7 +33,8 @@ export default class AddBook extends React.Component {
       open: false,
       message: '',
       error: null,
-      newAuthors: ''
+      newAuthors: '',
+      file: ''
     };
   }
 
@@ -70,14 +74,22 @@ export default class AddBook extends React.Component {
   }
 
   handleAddClick = () => {
-    api.CreateBook(
-      {
-        name: this.state.name,
-        publisher: this.state.publisher,
-        datePublished: this.state.publishedDate,
-        authorsIds: this.state.arraySelectedAuthors,
-        newAuthors: this.state.newAuthors ? this.state.newAuthors.split('\n') : []
-      }).then((response) => {
+    const formData = new FormData()
+    formData.append('file',this.state.file,this.state.file.name)
+    formData.append('name',this.state.name)
+    formData.append('publisher',this.state.publisher)
+    formData.append('datePublished',this.state.publishedDate)
+    formData.append('authorsIds',this.state.arraySelectedAuthors)
+    // {
+    //   name: this.state.name,
+    //   publisher: this.state.publisher,
+    //   datePublished: this.state.publishedDate,
+    //   file: this.state.file,
+    //   authorsIds: this.state.arraySelectedAuthors,
+    //   newAuthors: this.state.newAuthors ? this.state.newAuthors.split('\n') : []
+    // }
+    api.CreateBook(formData
+      ).then((response) => {
         if (response.status == 201) {
           this.setState(
             {
@@ -95,6 +107,11 @@ export default class AddBook extends React.Component {
       });
   }
 
+  handleFile = (file) => {
+    console.log(file)
+    this.setState({ file: file })
+  }
+
   handleRequestClose = () => {
     this.setState({
       open: false,
@@ -105,7 +122,7 @@ export default class AddBook extends React.Component {
     return (
       <div>
         <div style={{ margin: "0 25%", display: this.state.hidden }}>
-          <ImageUpload/>
+          <ImageUpload handleFile={this.handleFile} />
           <TextField
             hintText="Book Name"
             floatingLabelText="Book Name"
@@ -163,3 +180,14 @@ export default class AddBook extends React.Component {
     )
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    books: state.allBooks,
+    currentUserId: state.currentUser
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ sendComment: ActionCreators.addComment }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddBook)

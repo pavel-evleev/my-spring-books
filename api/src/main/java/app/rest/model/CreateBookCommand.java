@@ -1,5 +1,7 @@
 package app.rest.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,21 @@ public class CreateBookCommand {
     private List<Long> authorsIds = new ArrayList<>();
 
     private List<String> newAuthors = new ArrayList<>();
+
+    public CreateBookCommand(String name, String publisher, Date datePublished, List<Long> authorsIds) {
+        this.name = name;
+        this.publisher = publisher;
+        this.datePublished = datePublished;
+        this.authorsIds = authorsIds;
+    }
+
+    public CreateBookCommand(String name, String publisher, Date datePublished, List<Long> authorsIds, List<String> newAuthors) {
+        this.name = name;
+        this.publisher = publisher;
+        this.datePublished = datePublished;
+        this.authorsIds = authorsIds;
+        this.newAuthors = newAuthors;
+    }
 
     public String getName() {
         return name;
