@@ -53,7 +53,7 @@ class BookCard extends React.Component {
     return authors
   }
 
-  
+
 
   render() {
     const { book, edit } = this.props;
@@ -63,7 +63,7 @@ class BookCard extends React.Component {
         <div className="book-card-container">
           <div className="book-card-img">
             <div>
-              {/* <img src={require("./../../img/123123.jpg")} alt="book" width="226" height="300" /> */}
+              <img src={book.cover ? book.cover : ''} alt="book" width="226" height="300" />
             </div>
 
           </div>

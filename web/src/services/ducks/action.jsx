@@ -21,6 +21,9 @@ export const USER_OPEN_ERROR = 'USER_OPEN_ERROR'
 export const BOOK_CREATED_SUCCESS = 'BOOK_CREATED_SUCCESS'
 export const BOOK_CREATED_ERROR = 'BOOK_CREATED_ERROR'
 
+export const BOOKS_FETCH_SUCCESS = 'BOOKS_FETCH_SUCCESS'
+export const BOOKS_FETCH_ERROR = 'BOOKS_FETCH_ERROR'
+
 export function searchBooksRequest(searchQuery) {
   return function (dispatch) {
     dispatch({ type: FETCH_SEARCH_REQUEST })
@@ -144,4 +147,19 @@ export function creatBook(book) {
   }
 }
 
+export function getBooks() {
+  return function (dispatch) {
+    api.fetchBooks().then(response=>{
+      dispatch({
+        type: BOOKS_FETCH_SUCCESS,
+        payload: response.data
+      })
+    }).catch(error=>{
+      dispatch({
+        type: BOOKS_FETCH_ERROR,
+        payload: error.toString()
+      })
+    })
+  }
+}
 

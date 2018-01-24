@@ -54,8 +54,15 @@ const rootReducer = (state = store, action) => {
       notify.show(action.payload, 'error', 1000)
       return state.merge({ fetching: false, error: action.payload })
     case UserAction.BOOK_CREATED_SUCCESS:
-      return state.merge({ allBooks: state.allBooks.push(action.payload) })
+      notify.show('Book created', 'success', 1500)
+      return state.merge({ allBooks: state.allBooks.concat(action.payload) })
     case UserAction.BOOK_CREATED_ERROR:
+      notify.show(action.payload, 'error', 1000)
+      return state.merge({ error: action.payload })
+    case UserAction.BOOKS_FETCH_SUCCESS:
+      notify.show('Books get', 'success', 1000)
+      return state.merge({ allBooks: action.payload })
+    case UserAction.BOOKS_FETCH_ERROR:
       notify.show(action.payload, 'error', 1000)
       return state.merge({ error: action.payload })
 

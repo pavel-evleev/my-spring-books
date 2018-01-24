@@ -16,9 +16,29 @@ public class BookInfo {
         this.datePublished = datePublished;
     }
 
+    public BookInfo(Long id, String name, String publisher, LocalDate datePublished, String cover) {
+        this.id = id;
+        this.name = name;
+        this.cover = cover;
+        this.publisher = publisher;
+        this.datePublished = datePublished;
+    }
+
     private Long id;
 
     private String name;
+
+    private String cover;
+
+
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
 
     private String publisher;
 

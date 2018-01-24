@@ -45,7 +45,9 @@ public class BookService {
     }
 
     @Transactional
-    public BookInfo save(CreateBookCommand book) {
+    public BookInfo save(CreateBookCommand book, String compressImage) {
+
+        String cover = compressImage + ".jpg";
         // Get existing authors
         List<Author> authors = book.getAuthorsIds().stream()
                 .map(authorRepository::findOne)
@@ -58,7 +60,7 @@ public class BookService {
                     .collect(Collectors.toList())));
         }
 
-        Book newBook = new Book(book.getName(), book.getPublisher(), Date.valueOf(book.getDatePublished()));
+        Book newBook = new Book(book.getName(), book.getPublisher(), Date.valueOf(book.getDatePublished()), cover);
         newBook.setAuthors(authors);
         return toBookInfo(bookRepository.save(newBook));
     }
@@ -91,6 +93,10 @@ public class BookService {
                             new CommentInfo(comment.getText(), comment.getAuthorComment(), comment.getDatePublished()))
                             .collect(Collectors.toList())
             );
+        }
+
+        if (book.getCover().length() > 0) {
+            bookInfo.setCover("http://127.0.0.1:8080/v1/books/image/" + book.getCover());
         }
         return bookInfo;
     }

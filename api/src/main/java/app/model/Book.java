@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +30,10 @@ public class Book implements Serializable {
     @Column(name = "date_publisher", nullable = false)
     private Date datePublished;
 
+    @NotEmpty
+    @Column(name = "cover", nullable = false)
+    private String cover;
+
     @NotNull
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "authors_books",
@@ -51,10 +54,11 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(String name, String publisher, Date datePublished) {
+    public Book(String name, String publisher, Date datePublished, String cover) {
         this.name = name;
         this.publisher = publisher;
         this.datePublished = datePublished;
+        this.cover = cover;
     }
 
     public Long getId() {
@@ -71,6 +75,14 @@ public class Book implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     public String getPublisher() {
@@ -109,7 +121,9 @@ public class Book implements Serializable {
         return comments;
     }
 
-    public void addComment(Comment comment){ this.comments.add(comment);}
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
@@ -155,4 +169,6 @@ public class Book implements Serializable {
 //                ", users=" + users +
                 '}';
     }
+
+
 }

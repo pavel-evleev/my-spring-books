@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -61,6 +62,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         factory.setMaxRequestSize("5MB");
 
         return factory.createMultipartConfig();
+    }
+
+    @Bean
+    public ThreadPoolTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
+        pool.setCorePoolSize(5);
+        pool.setMaxPoolSize(10);
+        pool.setWaitForTasksToCompleteOnShutdown(true);
+        return pool;
     }
 //
 //    @Bean

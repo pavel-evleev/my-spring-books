@@ -6,21 +6,20 @@ import app.rest.model.BookInfo;
 import app.rest.model.CreateBookCommand;
 import app.rest.model.CreateCommentCommand;
 import app.services.BookService;
+import app.services.ImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
 import javax.validation.ConstraintViolationException;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -29,8 +28,11 @@ public class BookController {
 
     private final BookService bookService;
 
-    public BookController(BookService bookService) {
+    private final ImageService imageService;
+
+    public BookController(BookService bookService, ImageService imageService) {
         this.bookService = bookService;
+        this.imageService = imageService;
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -41,26 +43,28 @@ public class BookController {
                            @RequestParam("publisher") String publisher,
                            @RequestParam("datePublished") String datePublished,
                            @RequestParam("authorsIds") List<Long> authorsIds,
-                           @RequestParam("newAuthors") List<String> newAuthors) throws IOException {
-        try (InputStream stream = image.getInputStream()) {
-            String imgName = image.getOriginalFilename();
-            BufferedImage im = null;
-            im = ImageIO.read(stream);
-            ImageIO.write(im, "jpg", new File("D:\\testImage\\" + imgName));
-        }
+                           @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) throws IOException {
+        String compressImage = UUID.randomUUID().toString();
+
+        imageService.compressAndSaveImage(image, compressImage);
         CreateBookCommand createBookCommand = null;
-        if (newAuthors.size() > 0) {
+        if (newAuthors != null && newAuthors.size() > 0) {
             createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, newAuthors);
         } else {
             createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds);
         }
-        return bookService.save(createBookCommand);
+        return bookService.save(createBookCommand, compressImage);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/comment")
     public BookInfo addComment(@RequestBody CreateCommentCommand createCommentCommand) {
         return bookService.saveComment(createCommentCommand);
+    }
+
+    @GetMapping(value = "/image/{image:.+}")
+    public ResponseEntity<byte[]> getCover(@PathVariable String image) {
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageService.getImage(image));
     }
 
     @GetMapping("/{bookId}")
