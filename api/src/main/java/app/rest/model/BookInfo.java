@@ -3,6 +3,7 @@ package app.rest.model;
 import app.model.Comment;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public class BookInfo {
 
-    public BookInfo(Long id, String name, String publisher, Date datePublished) {
+    public BookInfo(Long id, String name, String publisher, LocalDate datePublished) {
         this.id = id;
         this.name = name;
         this.publisher = publisher;
@@ -24,7 +25,7 @@ public class BookInfo {
 
     private String publisher;
 
-    private Date datePublished;
+    private LocalDate datePublished;
 
     private List<String> authors = new ArrayList<>();
 
@@ -54,11 +55,11 @@ public class BookInfo {
         this.publisher = publisher;
     }
 
-    public Date getDatePublished() {
+    public LocalDate getDatePublished() {
         return datePublished;
     }
 
-    public void setDatePublished(Date datePublished) {
+    public void setDatePublished(LocalDate datePublished) {
         this.datePublished = datePublished;
     }
 

@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -47,7 +49,7 @@ public class BookController {
             ImageIO.write(im, "jpg", new File("D:\\testImage\\" + imgName));
         }
 
-        CreateBookCommand createBookCommand = new CreateBookCommand(name, publisher, Date.valueOf(datePublished), authorsIds);
+        CreateBookCommand createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds);
         return bookService.save(createBookCommand);
     }
 

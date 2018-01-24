@@ -8,6 +8,7 @@ import MenuItem from 'material-ui/MenuItem'
 import * as ActionCreators from './../../services/ducks/action'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 import ImageUpload from './../ImageUpload'
 
@@ -75,11 +76,11 @@ class AddBook extends React.Component {
 
   handleAddClick = () => {
     const formData = new FormData()
-    formData.append('file',this.state.file,this.state.file.name)
-    formData.append('name',this.state.name)
-    formData.append('publisher',this.state.publisher)
-    formData.append('datePublished',this.state.publishedDate)
-    formData.append('authorsIds',this.state.arraySelectedAuthors)
+    formData.append('file', this.state.file, this.state.file.name)
+    formData.append('name', this.state.name)
+    formData.append('publisher', this.state.publisher)
+    formData.append('datePublished', moment(this.state.publishedDate).format("YYYY-MM-DD"))
+    formData.append('authorsIds', this.state.arraySelectedAuthors)
     // {
     //   name: this.state.name,
     //   publisher: this.state.publisher,
@@ -89,22 +90,22 @@ class AddBook extends React.Component {
     //   newAuthors: this.state.newAuthors ? this.state.newAuthors.split('\n') : []
     // }
     api.CreateBook(formData
-      ).then((response) => {
-        if (response.status == 201) {
-          this.setState(
-            {
-              hidden: "none",
-              open: true,
-              message: "succes!"
-            }
-          );
-          setTimeout(() => {
-            this.props.history.push("/books")
-          }, 1001);
-        }
-      }).catch((error) => {
-        this.setState({ message: "not add because: " + error, open: true });
-      });
+    ).then((response) => {
+      if (response.status == 201) {
+        this.setState(
+          {
+            hidden: "none",
+            open: true,
+            message: "succes!"
+          }
+        );
+        setTimeout(() => {
+          this.props.history.push("/books")
+        }, 1001);
+      }
+    }).catch((error) => {
+      this.setState({ message: "not add because: " + error, open: true });
+    });
   }
 
   handleFile = (file) => {
@@ -119,6 +120,7 @@ class AddBook extends React.Component {
   };
 
   render() {
+    let dataFormat = { year: 'numeric', month: 'long', day: 'numeric' }
     return (
       <div>
         <div style={{ margin: "0 25%", display: this.state.hidden }}>
@@ -166,7 +168,8 @@ class AddBook extends React.Component {
             autoOk={true}
             maxDate={this.state.maxDate}
             value={this.state.publishedDate}
-            onChange={this.handleDateChange} />
+            onChange={this.handleDateChange}
+          />
           <RaisedButton label="Add" onClick={this.handleAddClick} />
 
         </div>

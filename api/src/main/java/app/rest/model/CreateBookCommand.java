@@ -3,6 +3,7 @@ package app.rest.model;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,20 +16,20 @@ public class CreateBookCommand {
 
     private String publisher;
 
-    private Date datePublished;
+    private LocalDate datePublished;
 
     private List<Long> authorsIds = new ArrayList<>();
 
     private List<String> newAuthors = new ArrayList<>();
 
-    public CreateBookCommand(String name, String publisher, Date datePublished, List<Long> authorsIds) {
+    public CreateBookCommand(String name, String publisher, LocalDate datePublished, List<Long> authorsIds) {
         this.name = name;
         this.publisher = publisher;
         this.datePublished = datePublished;
         this.authorsIds = authorsIds;
     }
 
-    public CreateBookCommand(String name, String publisher, Date datePublished, List<Long> authorsIds, List<String> newAuthors) {
+    public CreateBookCommand(String name, String publisher, LocalDate datePublished, List<Long> authorsIds, List<String> newAuthors) {
         this.name = name;
         this.publisher = publisher;
         this.datePublished = datePublished;
@@ -52,11 +53,11 @@ public class CreateBookCommand {
         this.publisher = publisher;
     }
 
-    public Date getDatePublished() {
+    public LocalDate getDatePublished() {
         return datePublished;
     }
 
-    public void setDatePublished(Date datePublished) {
+    public void setDatePublished(LocalDate datePublished) {
         this.datePublished = datePublished;
     }
 

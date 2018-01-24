@@ -80,7 +80,12 @@ export function requestLogin(email, password) {
               payload: error.toString()
             })
           )
-      })
+      }).catch(error =>
+        dispatch({
+          type: FETCH_USERS_FAILURE,
+          payload: error.toString()
+        })
+      )
   }
 }
 

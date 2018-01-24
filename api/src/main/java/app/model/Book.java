@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class Book implements Serializable {
 
     @NotNull
     @Column(name = "date_publisher", nullable = false)
-    private Date datePublished;
+    private LocalDate datePublished;
 
     @NotNull
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
@@ -50,7 +51,7 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(String name, String publisher, Date datePublished) {
+    public Book(String name, String publisher, LocalDate datePublished) {
         this.name = name;
         this.publisher = publisher;
         this.datePublished = datePublished;
@@ -80,11 +81,11 @@ public class Book implements Serializable {
         this.publisher = publisher;
     }
 
-    public Date getDatePublished() {
+    public LocalDate getDatePublished() {
         return datePublished;
     }
 
-    public void setDatePublished(Date datePublished) {
+    public void setDatePublished(LocalDate datePublished) {
         this.datePublished = datePublished;
     }
 

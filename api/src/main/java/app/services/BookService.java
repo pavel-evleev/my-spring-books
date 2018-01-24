@@ -58,7 +58,7 @@ public class BookService {
                 .collect(Collectors.toList())));
         }
 
-        Book newBook = new Book(book.getName(), book.getPublisher(), Date.valueOf("2017-03-01"));
+        Book newBook = new Book(book.getName(), book.getPublisher(), book.getDatePublished());
         newBook.setAuthors(authors);
         return toBookInfo(bookRepository.save(newBook));
     }
