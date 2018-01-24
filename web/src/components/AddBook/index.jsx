@@ -3,15 +3,14 @@ import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import DatePicker from 'material-ui/DatePicker'
 import SelectField from 'material-ui/SelectField'
-import Snackbar from 'material-ui/Snackbar'
 import MenuItem from 'material-ui/MenuItem'
-import * as ActionCreators from './../../services/ducks/action'
+import moment from 'moment'
+import ImageUpload from './../ImageUpload'
+import { notify } from 'react-notify-toast'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import moment from 'moment'
 
-import ImageUpload from './../ImageUpload'
-
+import * as ActionCreators from './../../services/ducks/action'
 import * as api from '../../services/API'
 
 class AddBook extends React.Component {
@@ -31,9 +30,6 @@ class AddBook extends React.Component {
       publisher: '',
       publishedDate: null,
       value: '',
-      open: false,
-      message: '',
-      error: null,
       newAuthors: '',
       file: ''
     };
@@ -81,46 +77,20 @@ class AddBook extends React.Component {
     formData.append('publisher', this.state.publisher)
     formData.append('datePublished', moment(this.state.publishedDate).format("YYYY-MM-DD"))
     formData.append('authorsIds', this.state.arraySelectedAuthors)
-    // {
-    //   name: this.state.name,
-    //   publisher: this.state.publisher,
-    //   datePublished: this.state.publishedDate,
-    //   file: this.state.file,
-    //   authorsIds: this.state.arraySelectedAuthors,
-    //   newAuthors: this.state.newAuthors ? this.state.newAuthors.split('\n') : []
-    // }
-    api.CreateBook(formData
-    ).then((response) => {
-      if (response.status == 201) {
-        this.setState(
-          {
-            hidden: "none",
-            open: true,
-            message: "succes!"
-          }
-        );
-        setTimeout(() => {
-          this.props.history.push("/books")
-        }, 1001);
-      }
-    }).catch((error) => {
-      this.setState({ message: "not add because: " + error, open: true });
-    });
+    if (this.state.newAuthors.length > 0) {
+      formData.append('newAuthors', this.state.newAuthors.split('\n'))
+    }
+    this.props.creatBook(formData)
+    setTimeout(() => {
+      this.props.history.push("/books")
+    }, 1001);
   }
 
   handleFile = (file) => {
-    console.log(file)
     this.setState({ file: file })
   }
 
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
-    });
-  };
-
   render() {
-    let dataFormat = { year: 'numeric', month: 'long', day: 'numeric' }
     return (
       <div>
         <div style={{ margin: "0 25%", display: this.state.hidden }}>
@@ -171,14 +141,7 @@ class AddBook extends React.Component {
             onChange={this.handleDateChange}
           />
           <RaisedButton label="Add" onClick={this.handleAddClick} />
-
         </div>
-        <Snackbar
-          open={this.state.open}
-          message={this.state.message}
-          autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
-        />
       </div>
     )
   }
@@ -191,6 +154,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ sendComment: ActionCreators.addComment }, dispatch)
+  bindActionCreators({ creatBook: ActionCreators.creatBook }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddBook)

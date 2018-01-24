@@ -1,15 +1,15 @@
 package app.services;
 
+import app.model.Author;
+import app.model.Book;
 import app.model.Comment;
 import app.model.User;
 import app.repository.AuthorRepository;
+import app.repository.BookRepository;
 import app.repository.UserRepository;
 import app.rest.model.BookInfo;
 import app.rest.model.CommentInfo;
 import app.rest.model.CreateBookCommand;
-import app.model.Author;
-import app.model.Book;
-import app.repository.BookRepository;
 import app.rest.model.CreateCommentCommand;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -36,8 +36,8 @@ public class BookService {
 
     public List<BookInfo> findAll() {
         return bookRepository.findAll().stream()
-            .map(BookService::toBookInfo)
-            .collect(Collectors.toList());
+                .map(BookService::toBookInfo)
+                .collect(Collectors.toList());
     }
 
     public BookInfo findOne(Long id) {
@@ -48,17 +48,17 @@ public class BookService {
     public BookInfo save(CreateBookCommand book) {
         // Get existing authors
         List<Author> authors = book.getAuthorsIds().stream()
-            .map(authorRepository::findOne)
-            .collect(Collectors.toList());
+                .map(authorRepository::findOne)
+                .collect(Collectors.toList());
 
         // Create new authors
         if (!CollectionUtils.isEmpty(book.getNewAuthors())) {
             authors.addAll(authorRepository.save(book.getNewAuthors().stream()
-                .map(Author::new)
-                .collect(Collectors.toList())));
+                    .map(Author::new)
+                    .collect(Collectors.toList())));
         }
 
-        Book newBook = new Book(book.getName(), book.getPublisher(), book.getDatePublished());
+        Book newBook = new Book(book.getName(), book.getPublisher(), Date.valueOf(book.getDatePublished()));
         newBook.setAuthors(authors);
         return toBookInfo(bookRepository.save(newBook));
     }
@@ -79,16 +79,16 @@ public class BookService {
     }
 
     public static BookInfo toBookInfo(Book book) {
-        BookInfo bookInfo = new BookInfo(book.getId(), book.getName(), book.getPublisher(), book.getDatePublished());
+        BookInfo bookInfo = new BookInfo(book.getId(), book.getName(), book.getPublisher(), book.getDatePublished().toLocalDate());
         bookInfo.setAuthors(
-            book.getAuthors().stream()
-                .map(Author::getName)
-                .collect(Collectors.toList())
+                book.getAuthors().stream()
+                        .map(Author::getName)
+                        .collect(Collectors.toList())
         );
-        if(book.getComments()!=null){
+        if (book.getComments() != null) {
             bookInfo.setComments(
                     book.getComments().stream().map(comment ->
-                            new CommentInfo(comment.getText(),comment.getAuthorComment(),comment.getDatePublished()))
+                            new CommentInfo(comment.getText(), comment.getAuthorComment(), comment.getDatePublished()))
                             .collect(Collectors.toList())
             );
         }

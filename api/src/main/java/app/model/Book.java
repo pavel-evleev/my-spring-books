@@ -29,7 +29,7 @@ public class Book implements Serializable {
 
     @NotNull
     @Column(name = "date_publisher", nullable = false)
-    private LocalDate datePublished;
+    private Date datePublished;
 
     @NotNull
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
@@ -51,7 +51,7 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(String name, String publisher, LocalDate datePublished) {
+    public Book(String name, String publisher, Date datePublished) {
         this.name = name;
         this.publisher = publisher;
         this.datePublished = datePublished;
@@ -81,11 +81,11 @@ public class Book implements Serializable {
         this.publisher = publisher;
     }
 
-    public LocalDate getDatePublished() {
+    public Date getDatePublished() {
         return datePublished;
     }
 
-    public void setDatePublished(LocalDate datePublished) {
+    public void setDatePublished(Date datePublished) {
         this.datePublished = datePublished;
     }
 

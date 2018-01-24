@@ -1,8 +1,5 @@
 package app.rest.model;
 
-import app.model.Comment;
-
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

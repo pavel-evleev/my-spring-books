@@ -18,7 +18,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -41,15 +40,20 @@ public class BookController {
                            @RequestParam("name") String name,
                            @RequestParam("publisher") String publisher,
                            @RequestParam("datePublished") String datePublished,
-                           @RequestParam("authorsIds") List<Long> authorsIds) throws IOException {
+                           @RequestParam("authorsIds") List<Long> authorsIds,
+                           @RequestParam("newAuthors") List<String> newAuthors) throws IOException {
         try (InputStream stream = image.getInputStream()) {
             String imgName = image.getOriginalFilename();
             BufferedImage im = null;
             im = ImageIO.read(stream);
             ImageIO.write(im, "jpg", new File("D:\\testImage\\" + imgName));
         }
-
-        CreateBookCommand createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds);
+        CreateBookCommand createBookCommand = null;
+        if (newAuthors.size() > 0) {
+            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, newAuthors);
+        } else {
+            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds);
+        }
         return bookService.save(createBookCommand);
     }
 

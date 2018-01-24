@@ -1,5 +1,6 @@
 import * as api from './../API'
 
+
 export const FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST"
 export const FETCH_SEARCH_REQUEST = "FETCH_SEARCH_REQUEST"
 export const SUCCESS_SEARCH_BOOKS = "SUCCESS_SEARCH_BOOKS"
@@ -16,6 +17,9 @@ export const ERROR_SEND_COMMENT = 'ERROR_SEND_COMMENT'
 export const USER_OPEN_REQUEST = 'USER_OPEN_REQUEST'
 export const USER_OPEN_SECCESS = 'USER_OPEN_SECCESS'
 export const USER_OPEN_ERROR = 'USER_OPEN_ERROR'
+
+export const BOOK_CREATED_SUCCESS = 'BOOK_CREATED_SUCCESS'
+export const BOOK_CREATED_ERROR = 'BOOK_CREATED_ERROR'
 
 export function searchBooksRequest(searchQuery) {
   return function (dispatch) {
@@ -93,12 +97,12 @@ export function fetchUser(id) {
   return function (dispatch) {
     dispatch({ type: USER_OPEN_REQUEST })
 
-    api.fetchUser(id).then((response)=>{
-        dispatch({
-          type: USER_OPEN_SECCESS,
-          payload: response.data
-        })
-    }).catch(error=>{
+    api.fetchUser(id).then((response) => {
+      dispatch({
+        type: USER_OPEN_SECCESS,
+        payload: response.data
+      })
+    }).catch(error => {
       dispatch({
         type: USER_OPEN_ERROR,
         payload: error.toString()
@@ -110,17 +114,33 @@ export function fetchUser(id) {
 export function addComment(comment) {
   return function (dispatch) {
     api.addComment(comment).then((response) => {
-      console.clear()
-      console.log(response.data)
+      dispatch({
+        type: SEND_COMMENT_SUCCESS,
+        payload: response.data
+      })
+    }).catch(error => {
+      dispatch({
+        type: ERROR_SEND_COMMENT,
+        payload: error.toString()
+      })
+    })
+  }
+}
+
+export function creatBook(book) {
+  return function (dispatch) {
+    api.CreateBook(book)
+      .then(response => {
         dispatch({
-          type: SEND_COMMENT_SUCCESS,
+          type: BOOK_CREATED_SUCCESS,
           payload: response.data
         })
-      }).catch(error =>
+      }).catch(error => {
         dispatch({
-          type: ERROR_SEND_COMMENT,
+          type: BOOK_CREATED_ERROR,
           payload: error.toString()
-        }))
+        })
+      })
   }
 }
 
