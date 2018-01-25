@@ -7,19 +7,19 @@ import app.rest.model.CreateBookCommand;
 import app.rest.model.CreateCommentCommand;
 import app.services.BookService;
 import app.services.ImageService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 @RestController
@@ -63,8 +63,12 @@ public class BookController {
     }
 
     @GetMapping(value = "/image/{image:.+}")
-    public ResponseEntity<byte[]> getCover(@PathVariable String image) {
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageService.getImage(image));
+    public ResponseEntity<byte[]> getCover(@PathVariable String image, HttpServletResponse response) {
+        response.setHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=" + TimeUnit.DAYS.toSeconds(365));
+        response.setHeader(HttpHeaders.PRAGMA, null);
+
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG)
+                .body(imageService.getImage(image));
     }
 
     @GetMapping("/{bookId}")

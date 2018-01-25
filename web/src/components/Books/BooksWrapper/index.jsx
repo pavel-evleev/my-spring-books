@@ -2,7 +2,9 @@ import React from 'react'
 import Books from './../index'
 import ToolBar from './../../ToolBar'
 import Search from './../../Search'
+import * as ActionCreators from './../../../services/ducks/action'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 class Page extends React.Component {
 
@@ -12,6 +14,11 @@ class Page extends React.Component {
       view: "grid"
     }
   }
+
+  componentDidMount() {
+    this.props.getBooks()
+  }
+
 
   render() {
     return (
@@ -30,7 +37,13 @@ class Page extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    books: state.allBooks
+    books: state.allBooks,
+    currentUserId: state.currentUser
   }
 }
-export default connect(mapStateToProps)(Page)
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ getBooks: ActionCreators.getBooks }, dispatch)
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page)

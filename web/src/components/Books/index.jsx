@@ -8,9 +8,6 @@ import IconButton from 'material-ui/IconButton'
 import Paper from 'material-ui/Paper'
 import ActionDelete from 'material-ui/svg-icons/action/delete'
 import { withRouter } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
-import * as ActionCreators from './../../services/ducks/action'
-import { connect } from 'react-redux'
 
 /*
  * View for listing books.
@@ -23,9 +20,6 @@ class Books extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.props.getBooks()
-  }
 
 
   deleteBook = (id) => {
@@ -78,15 +72,6 @@ class Books extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    books: state.allBooks,
-    currentUserId: state.currentUser
-  }
-}
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ getBooks: ActionCreators.getBooks }, dispatch)
 
 Books.defaultProps = { view: "grid" }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Books))
+export default withRouter(Books)

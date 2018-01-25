@@ -15,6 +15,8 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
@@ -35,10 +37,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(
-                        "/v1/books",
                         "/v1/users/verify/*").permitAll()
                 .antMatchers("/v1/users/**", "/v1/users").authenticated()
-                .antMatchers("/v1/books/comment").authenticated()
+                .antMatchers("/v1/books/**").authenticated()
                 .antMatchers(HttpMethod.POST, "/v1/users").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/post/**").hasAuthority("ROLE_ADMIN");
 
@@ -83,5 +84,17 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         dataSource.setPassword(env.getProperty("spring.datasource.password"));
         return dataSource;
     }
+
+//    @Bean
+//    public WebMvcConfigurerAdapter webConfigurer () {
+//        return new WebMvcConfigurerAdapter() {
+//            @Override
+//            public void addResourceHandlers (ResourceHandlerRegistry registry) {
+//                registry.addResourceHandler("D:/testImage/**")
+//                        .addResourceLocations("/testImage/")
+//                        .setCachePeriod(60*60*60*24*90);
+//            }
+//        };
+//    }
 
 }
