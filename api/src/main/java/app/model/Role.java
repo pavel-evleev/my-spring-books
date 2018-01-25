@@ -1,13 +1,14 @@
 package app.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Pavel on 20.10.2017.
  */
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

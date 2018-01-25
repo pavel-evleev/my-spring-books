@@ -2,6 +2,7 @@ package app.config;
 
 import app.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
+import javax.sql.DataSource;
+
 /**
  * Configures the authorization server.
  * The @EnableAuthorizationServer annotation is used to configure the OAuth 2.0 Authorization Server mechanism,
@@ -21,16 +24,19 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
     private TokenStore tokenStore;
-
-    @Autowired
+    private DataSource dataSource;
     private CustomUserDetailsService clientDetailsService;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
 
-    private static final int THIRTY_DAYS = 60 * 60 * 24 * 30;
+    @Autowired
+    public AuthorizationServerConfig(TokenStore tokenStore, @Qualifier("getDataSource") DataSource dataSource,
+                                     CustomUserDetailsService clientDetailsService, AuthenticationManager authenticationManager) {
+        this.tokenStore = tokenStore;
+        this.dataSource = dataSource;
+        this.clientDetailsService = clientDetailsService;
+        this.authenticationManager = authenticationManager;
+    }
 
     /**
      * Setting up the endpointsconfigurer authentication manager.
@@ -56,15 +62,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory().
-                withClient("my-trusted-client")
-                .secret("secret")
-                .authorizedGrantTypes("client_credentials", "password", "refresh_token")
-                .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
-                .scopes("read", "write", "trust")
-                .resourceIds("oauth2-resource")
-                .accessTokenValiditySeconds(3600)
-                .refreshTokenValiditySeconds(THIRTY_DAYS);
+        clients.jdbc(dataSource);
+//                withClient("my-trusted-client")
+//                .secret("secret")
+//                .authorizedGrantTypes("client_credentials", "password", "refresh_token")
+//                .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
+//                .scopes("read", "write", "trust")
+//                .resourceIds("oauth2-resource")
+//                .accessTokenValiditySeconds(3600)
+//                .refreshTokenValiditySeconds(THIRTY_DAYS);
     }
 
     /**

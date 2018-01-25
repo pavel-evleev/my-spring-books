@@ -1,5 +1,6 @@
 package app.config;
 
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
@@ -11,11 +12,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 import javax.servlet.MultipartConfigElement;
+import javax.sql.DataSource;
 
 /**
  * The @EnableResourceServer annotation adds a filter of type OAuth2AuthenticationProcessingFilter automatically
@@ -45,7 +47,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Bean
     public TokenStore tokenStore() {
-        return new InMemoryTokenStore();
+        return new JdbcTokenStore(getDataSource());
     }
 
     @Bean(name = "commonsMultipartResolver")
@@ -72,22 +74,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         pool.setWaitForTasksToCompleteOnShutdown(true);
         return pool;
     }
-//
-//    @Bean
-//    public DataSource getDataSource() {
-//        MysqlDataSource  dataSource = new MysqlDataSource();
-//        dataSource.setUrl(env.getProperty("spring.datasource.url"));
-//        dataSource.setUser(env.getProperty("spring.datasource.username"));
-//        dataSource.setPassword(env.getProperty("spring.datasource.password"));
-//        return dataSource;
-//    }
-//
-//
-//    @Bean
-//    public PersistentTokenRepository persistentTokenRepository() {
-//        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-//        tokenRepository.setDataSource(getDataSource());
-//        return tokenRepository;
-//    }
+
+    @Bean
+    public DataSource getDataSource() {
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setUrl(env.getProperty("spring.datasource.url"));
+        dataSource.setUser(env.getProperty("spring.datasource.username"));
+        dataSource.setPassword(env.getProperty("spring.datasource.password"));
+        return dataSource;
+    }
 
 }
