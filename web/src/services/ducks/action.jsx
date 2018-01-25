@@ -74,7 +74,7 @@ export function requestLogin(email, password) {
 
     api.LoginOuath(email, password)
       .then((response) => {
-        api.set_cookie("key", response.data.access_token, response.data.expires_in)
+        api.set_cookie("key", response.data.access_token, response.data.expires_in, response.data.refresh_token)
         api.fetchEmail({ email: email })
           .then((response) => {
             dispatch({
