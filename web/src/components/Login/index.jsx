@@ -55,7 +55,7 @@ class Login extends React.Component {
     }
 
     if (this.props.loginedUser) {
-      return <Redirect to={`/users/${this.props.loginedUser}`} />
+      return <Redirect to={`/users/${this.props.loginedUser.id}`} />
     }
 
     return (

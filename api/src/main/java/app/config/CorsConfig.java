@@ -35,6 +35,7 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
         configAutenticacao.addAllowedMethod("DELETE");
         configAutenticacao.addAllowedMethod("PUT");
         configAutenticacao.addAllowedMethod("OPTIONS");
+        configAutenticacao.addAllowedMethod("PATCH");
         configAutenticacao.setMaxAge(3600L);
         // source.registerCorsConfiguration("/oauth/token", configAutenticacao);
         source.registerCorsConfiguration("/**", configAutenticacao); // Global para todas as URLs da aplicação

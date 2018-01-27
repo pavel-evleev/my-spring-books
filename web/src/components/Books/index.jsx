@@ -20,24 +20,6 @@ class Books extends React.Component {
     }
   }
 
-
-
-  deleteBook = (id) => {
-    api.DeleteBook(id)
-      .then((response) => {
-        if (response.status < 299) {
-          let tmp = this.state.books;
-          let v = 0;
-          tmp.forEach((books, index) => {
-            if (books.id == id)
-              v = index;
-          });
-          tmp.splice(v, 1);
-          this.setState({ books: tmp });
-        }
-      });
-  }
-
   handleOnClickBook = (id) => {
     this.props.history.push(`/books/${id}`);
   }
@@ -52,18 +34,22 @@ class Books extends React.Component {
     if (this.state.error) {
       return (<div>{this.state.error}</div>)
     }
-    if(!Array.isArray(this.props.books)){
-      return(<div>Dont have books...</div>)
+    if (!Array.isArray(this.props.books)) {
+      return (<div>Dont have books...</div>)
     }
-
+    console.log(this.props)
     return (
       <div>
         <div className="book-wrapper">
           {(grid === "grid") ? (
             this.props.books.map((book) => {
-              return (<BookCard key={book.id} book={book} OnClick={this.handleOnClickBook} />)
+              return (<BookCard key={book.id} book={book}
+                buttonAction={this.props.enableChange}
+                OnClick={this.handleOnClickBook}
+                addToCollection={this.props.addToCollection}
+                removeFromCollectiom={this.props.removeFromCollectiom} />)
             })) : (this.props.books.map((book) => {
-              return (<BookListItem key={book.id} book={book} OnClick={this.handleOnClickBook} />)
+              return (<BookListItem key={book.id} book={book} OnClick={this.handleOnClickBook} addToCollection={this.props.addToCollection} removeFromCollectiomn={this.props.removeFromCollectiomn} />)
             }))
           }
         </div>
@@ -73,5 +59,8 @@ class Books extends React.Component {
 }
 
 
-Books.defaultProps = { view: "grid" }
+Books.defaultProps = {
+  view: "grid",
+  buttonAction: false
+}
 export default withRouter(Books)

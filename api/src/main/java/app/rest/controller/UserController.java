@@ -64,8 +64,8 @@ public class UserController extends ApiErrorController {
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{userId}/books/{bookId}")
-    public void deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId) {
-        userService.patch(userId, bookId);
+    public UserInfo deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId) {
+        return userService.patch(userId, bookId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

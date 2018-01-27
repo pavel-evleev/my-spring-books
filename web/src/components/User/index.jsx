@@ -17,57 +17,48 @@ class User extends React.Component {
     super(props)
     this.state = {
       view: "grid",
-      enable: false,
+      enableChange: false,
       allBooks: []
     }
   }
 
   componentDidMount() {
-    const idCurrent = this.props.currentUserId;
+    const idCurrent = this.props.currentUser.id;
     const id = parseInt(this.props.match.params.userId);
-
     // Load user info
-    this.props.fetchUser(id);
-  
-
-    if (idCurrent === id) {
-      this.setState({ enable: true })
+    if (idCurrent !== id) {
+      this.props.fetchUser(id);
+    } else {
+      this.setState({ enableChange: true })
+      this.props.openedUserIsLoginedUser()
     }
   }
 
-  handleSelectBook = (event, index, value) => {
-    this.setState({ selectedBooks: value });
-  }
+  // handleSelectBook = (event, index, value) => {
+  //   this.setState({ selectedBooks: value });
+  // }
 
-  handleAddClick = (selectedBooks) => {
-    const { user } = this.state
-    if (!Array.isArray(selectedBooks) || selectedBooks.length < 1) {
-      return
-    }
+  // handleAddClick = (selectedBooks) => {
+  //   const { user } = this.state
+  //   if (!Array.isArray(selectedBooks) || selectedBooks.length < 1) {
+  //     return
+  //   }
 
-    api.addBooksToUser({ userId: user.id, ids: selectedBooks })
-      .then((response) => {
-        this.setState({ user: response.data })
-        if (selectedBooks.length > 1) {
-          notify.show('Books add', 'success', 2000)
-        } else {
-          notify.show('Book add', 'success', 2000)
-        }
-      }).catch((error) => {
-        notify.show('error', 'error', 2000)
-      })
-  }
+  //   api.addBooksToUser({ userId: user.id, ids: selectedBooks })
+  //     .then((response) => {
+  //       this.setState({ user: response.data })
+  //       if (selectedBooks.length > 1) {
+  //         notify.show('Books add', 'success', 2000)
+  //       } else {
+  //         notify.show('Book add', 'success', 2000)
+  //       }
+  //     }).catch((error) => {
+  //       notify.show('error', 'error', 2000)
+  //     })
+  // }
 
-  handleDeleteBook = (userId, bookId) => {
-    const { user } = this.state
-    api.removeBookFromUser(userId, bookId)
-      .then((response) => {
-        user.books = user.books.filter(book => book.id != bookId);
-        this.setState({ user })
-        notify.show('Book removed', 'success', 2000)
-      }).catch((error) => {
-        notify.show("error", 'error', 2000)
-      })
+  removeFromCollectiom = (bookId) => {
+    this.props.removeFromCollectiom(this.props.currentUser.id, bookId)
   }
 
   deleteUser = (id) => {
@@ -82,8 +73,8 @@ class User extends React.Component {
   }
 
   render() {
-    const { user, enable } = this.state;
-    
+    const { user, enableChange } = this.state;
+
 
     if (!this.props.openedUser) {
       return (<div>User not found</div>)
@@ -108,7 +99,7 @@ class User extends React.Component {
           <div>Collection books:{this.props.openedUser.books.length}</div>
         </Paper>
         <div className="user-books">
-          <Books books={this.props.openedUser.books} view={this.state.view} />
+          <Books books={this.props.openedUser.books} view={this.state.view} enableChange={this.state.enableChange} removeFromCollectiom={this.removeFromCollectiom}/>
         </div>
       </div>
     )
@@ -117,12 +108,16 @@ class User extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentUserId: state.currentUser,
+    currentUser: state.currentUser,
     openedUser: state.openedUser
   }
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchUser: ActionCreators.fetchUser }, dispatch)
+  bindActionCreators({
+    fetchUser: ActionCreators.fetchUser,
+    openedUserIsLoginedUser: ActionCreators.openedIsLogined,
+    removeFromCollectiom: ActionCreators.removeFromCollectiom
+  }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

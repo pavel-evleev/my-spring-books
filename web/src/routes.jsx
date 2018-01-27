@@ -20,8 +20,6 @@ import PrivateRoute from './routes/PrivateRoute'
 import SearchedBooks from './components/SearchedBooks'
 import Chat from './components/Chat'
 
-
-
 import Page from './components/OurPage'
 
 /**

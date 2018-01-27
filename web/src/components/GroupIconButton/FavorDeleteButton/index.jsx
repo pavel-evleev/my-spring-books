@@ -15,22 +15,24 @@ class FavorDeleteButton extends React.Component {
   }
 
   render() {
+    const { handleClickFavor, handleClickUnfavor, buttonAction } = this.props
     return (
-      <div >
-        <IconButton touch={true} onClick={(e) => {
+      <div>
+        {buttonAction ? <IconButton touch={true} onClick={(e) => {
           e.stopPropagation()
-          this.setState({ favorite: !this.state.favorite })
-        }}>
-          {
-            this.state.favorite ? (<Favorite />) : (<PossibleFavorite />)
-          }
-        </IconButton>
-        <IconButton touch={true} onClick={(e) => {
-          e.stopPropagation()
-          this.props.onDelete
+          handleClickUnfavor()
         }}>
           <Delete />
-        </IconButton>
+        </IconButton> : <IconButton touch={true} onClick={(e) => {
+          e.stopPropagation()
+          this.state.favorite ? handleClickUnfavor() : handleClickFavor()
+          this.setState({ favorite: !this.state.favorite })
+        }}>
+            {
+              this.state.favorite ? (<Favorite />) : (<PossibleFavorite />)
+            }
+          </IconButton>
+        }
       </div>
     )
   }

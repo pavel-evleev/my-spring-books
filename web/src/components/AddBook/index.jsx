@@ -149,7 +149,7 @@ class AddBook extends React.Component {
 const mapStateToProps = (state) => {
   return {
     books: state.allBooks,
-    currentUserId: state.currentUser
+    currentUserId: state.currentUser.id
   }
 }
 

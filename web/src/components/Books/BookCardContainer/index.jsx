@@ -12,7 +12,7 @@ class BookCardContainer extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.match)
+    // console.log(this.props.match)
   }
 
 
@@ -46,7 +46,7 @@ class BookCardContainer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     books: state.allBooks,
-    currentUserId: state.currentUser
+    currentUserId: state.currentUser.id
   }
 }
 

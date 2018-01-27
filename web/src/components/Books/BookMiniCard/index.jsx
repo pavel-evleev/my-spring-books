@@ -12,7 +12,12 @@ class BookMiniCard extends React.Component {
     }
   }
 
-  deleteBook = (id) => {
+  handleAddFavor = () => {
+    this.props.addToCollection(this.props.book.id)
+  }
+
+  handleRemoveFavor = () =>{
+    this.props.removeFromCollectiom(this.props.book.id)
   }
 
   truncateTitle = (title) => {
@@ -21,6 +26,7 @@ class BookMiniCard extends React.Component {
     }
     return title
   }
+
 
   render() {
     const { book, OnClick } = this.props
@@ -31,7 +37,7 @@ class BookMiniCard extends React.Component {
         <div className="bookMiniCard-img">
           {book.cover ? <img src={book.cover} alt="book" width="150" height="185" /> : <img src={require("../../../img/book.png")} alt="book" width="200" height="200" />}
         </div>
-        <ActionButton />
+        <ActionButton buttonAction={this.props.buttonAction} handleClickFavor={this.handleAddFavor} handleClickUnfavor={this.handleRemoveFavor} />
         {/* <div style={{ padding: "0px 10px 5px", alignSelf: "center"}}>{book.authors}</div> */}
         <div className="bookMiniCard-desc">{book.description}</div>
       </Paper>
@@ -39,6 +45,6 @@ class BookMiniCard extends React.Component {
   }
 }
 
-BookMiniCard.defaultProps = { deleteBool: false }
+BookMiniCard.defaultProps = { buttonAction: false }
 
 export default BookMiniCard

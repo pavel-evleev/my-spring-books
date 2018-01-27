@@ -7,7 +7,6 @@ import app.repository.UserRepository;
 import app.rest.model.AddingBooks;
 import app.rest.model.CreateUserCommand;
 import app.rest.model.UserInfo;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -85,16 +84,16 @@ public class UserService {
 
 
     @Transactional
-    public void patch(Long id, Long bookId) {
+    public UserInfo patch(Long id, Long bookId) {
         User user = userRepository.findOne(id);
         user.setBooks(user.getBooks().stream().filter(book -> !book.getId().equals(bookId)).collect(Collectors.toList()));
-        User u = userRepository.saveAndFlush(user);
+        return toUserInfo(userRepository.saveAndFlush(user));
     }
 
     public UserInfo addBooks(AddingBooks books) {
         User user = userRepository.findOne(books.getUserId());
-        List<Book> findBooks = bookRepository.findAll(books.getIds());
-        user.getBooks().addAll(findBooks);
+        Book findBook = bookRepository.findById(books.getIds());
+        user.getBooks().add(findBook);
         return toUserInfo(userRepository.saveAndFlush(user));
     }
 

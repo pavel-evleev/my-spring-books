@@ -11,7 +11,7 @@ export default class Comments extends React.Component {
 
   render() {
     const { comments, className } = this.props
-    console.log(this.props)
+    // console.log(this.props)
     return (
       <div className={className}>
         {

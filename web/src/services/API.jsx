@@ -52,25 +52,6 @@ export const refreshTokenRequest = (refresh_token) => {
   return clientForLogin.post('oauth/token', params)
 }
 
-// client.interceptors.response.use(function (response) {
-//   return response;
-// }, function (error) {
-//   debugger;
-//   if (error.response.status === 401) {
-//     let refresh_token = new Promise((resolve, reject) => {
-//       let token = getCookie("refresh_token");
-//       resolve(token);
-//     });
-//     refresh_token.then(result => {
-//       console.log(result)
-//       refreshTokenRequest(result)
-//     })
-//     if(error.config.method==='get')
-
-//   }
-// }
-// )
-
 /*
  * API endpoint to fetch all user books.
  */

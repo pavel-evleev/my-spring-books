@@ -57,7 +57,6 @@ class BookCard extends React.Component {
 
   render() {
     const { book, edit } = this.props;
-    console.log(this.props)
     return (
       <div>
         <div className="book-card-container">

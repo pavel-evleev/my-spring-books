@@ -1,7 +1,5 @@
 package app.rest.model;
 
-import java.util.List;
-
 /**
  * Created by Pavel on 06.10.2017.
  */
@@ -9,13 +7,13 @@ public class AddingBooks {
 
     private Long userId;
 
-    private List<Long> ids;
+    private Long ids;
 
-    public List<Long> getIds() {
+    public Long getIds() {
         return ids;
     }
 
-    public void setIds(List<Long> ids) {
+    public void setIds(Long ids) {
         this.ids = ids;
     }
 
