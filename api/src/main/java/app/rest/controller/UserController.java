@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/users")
-public class UserController {
+public class UserController extends ApiErrorController {
 
     private final UserService userService;
 
@@ -80,11 +80,7 @@ public class UserController {
         userService.deleteAll();
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleConstraintViolationException(ConstraintViolationException exception) {
-        return new ApiError(exception.getMessage());
-    }
+
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public void logoutPage(HttpServletRequest request, HttpServletResponse response) {

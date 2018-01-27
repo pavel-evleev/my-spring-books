@@ -2,6 +2,7 @@ import React from 'react'
 import Books from './../index'
 import ToolBar from './../../ToolBar'
 import Search from './../../Search'
+import Progress from './../../MagicProgress'
 import * as ActionCreators from './../../../services/ducks/action'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -27,7 +28,7 @@ class Page extends React.Component {
           changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }}
           searchComponent={<Search />} />
         <div className="user-books">
-          <Books books={this.props.books} view={this.state.view} />
+          {this.props.fetching ? <Progress /> : <Books books={this.props.books} view={this.state.view} />}
         </div>
       </div>
     )
@@ -38,7 +39,8 @@ class Page extends React.Component {
 const mapStateToProps = (state) => {
   return {
     books: state.allBooks,
-    currentUserId: state.currentUser
+    currentUserId: state.currentUser,
+    fetching: state.fetching
   }
 }
 

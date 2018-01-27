@@ -63,7 +63,7 @@ class BookCard extends React.Component {
         <div className="book-card-container">
           <div className="book-card-img">
             <div>
-              <img src={book.cover ? book.cover : ''} alt="book" width="226" height="300" />
+              <img src={book.cover ? book.cover : require("../../img/book.png")} alt="book" width="226" height="300" />
             </div>
 
           </div>

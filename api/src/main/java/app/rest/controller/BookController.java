@@ -1,19 +1,20 @@
 package app.rest.controller;
 
 
-import app.rest.model.ApiError;
 import app.rest.model.BookInfo;
 import app.rest.model.CreateBookCommand;
 import app.rest.model.CreateCommentCommand;
 import app.services.BookService;
 import app.services.ImageService;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/v1/books")
-public class BookController {
+public class BookController extends ApiErrorController {
 
     private final BookService bookService;
 
@@ -93,9 +94,5 @@ public class BookController {
         bookService.deleteAll();
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleConstraintViolationException(ConstraintViolationException exception) {
-        return new ApiError(exception.getMessage());
-    }
+
 }

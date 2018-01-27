@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/authors")
-public class AuthorController {
+public class AuthorController extends ApiErrorController{
 
     private final AuthorService authorService;
 
@@ -55,9 +55,5 @@ public class AuthorController {
         return authorService.findOne(authorId).getBooks();
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleConstraintViolationException(ConstraintViolationException exception) {
-        return new ApiError(exception.getMessage());
-    }
+
 }

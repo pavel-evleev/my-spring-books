@@ -21,8 +21,24 @@ export const USER_OPEN_ERROR = 'USER_OPEN_ERROR'
 export const BOOK_CREATED_SUCCESS = 'BOOK_CREATED_SUCCESS'
 export const BOOK_CREATED_ERROR = 'BOOK_CREATED_ERROR'
 
+export const BOOKS_FETCH_REQUEST = "BOOKS_FETCH_REQUEST"
 export const BOOKS_FETCH_SUCCESS = 'BOOKS_FETCH_SUCCESS'
 export const BOOKS_FETCH_ERROR = 'BOOKS_FETCH_ERROR'
+
+function reAuth(dispatch, params) {
+  let refresh_token = new Promise((resolve, reject) => {
+    let token = api.getCookie("refresh_token");
+    resolve(token);
+  });
+  refresh_token.then(result => {
+    api.refreshTokenRequest(result)
+      .then(response => {
+        api.set_cookie("key", response.data.access_token, response.data.expires_in, response.data.refresh_token)
+        dispatch(params())
+      }).catch(error => console.log(error));
+  })
+}
+
 
 export function searchBooksRequest(searchQuery) {
   return function (dispatch) {
@@ -34,11 +50,17 @@ export function searchBooksRequest(searchQuery) {
           type: SUCCESS_SEARCH_BOOKS,
           payload: response.data
         })
-      }).catch(error =>
-        dispatch({
-          type: ERROR_SEARCH_BOOKS,
-          payload: error.toString()
-        }))
+      }).catch(error => {
+        if (error.response.status === 401) {
+          reAuth(dispatch, searchBooksRequest(searchQuery))
+        } else {
+          dispatch({
+            type: ERROR_SEARCH_BOOKS,
+            payload: error.toString()
+          })
+        }
+      }
+      )
   }
 }
 
@@ -52,11 +74,17 @@ export function loadingUsers() {
           type: FETCH_USER_SUCCESS,
           payload: response.data
         })
-      ).catch(error =>
-        dispatch({
-          type: FETCH_USERS_FAILURE,
-          payload: error.toString()
-        }))
+      ).catch(error => {
+        if (error.response.status === 401) {
+          reAuth(dispatch, loadingUsers)
+        } else {
+          dispatch({
+            type: FETCH_USERS_FAILURE,
+            payload: error.toString()
+          })
+        }
+      }
+      )
   }
 }
 
@@ -106,10 +134,14 @@ export function fetchUser(id) {
         payload: response.data
       })
     }).catch(error => {
-      dispatch({
-        type: USER_OPEN_ERROR,
-        payload: error.toString()
-      })
+      if (error.response.status === 401) {
+        reAuth(dispatch, fetchUser(id))
+      } else {
+        dispatch({
+          type: USER_OPEN_ERROR,
+          payload: error.toString()
+        })
+      }
     })
   }
 }
@@ -122,10 +154,14 @@ export function addComment(comment) {
         payload: response.data
       })
     }).catch(error => {
-      dispatch({
-        type: ERROR_SEND_COMMENT,
-        payload: error.toString()
-      })
+      if (error.response.status === 401) {
+        reAuth(dispatch, addComment(comment))
+      } else {
+        dispatch({
+          type: ERROR_SEND_COMMENT,
+          payload: error.toString()
+        })
+      }
     })
   }
 }
@@ -139,26 +175,36 @@ export function creatBook(book) {
           payload: response.data
         })
       }).catch(error => {
-        dispatch({
-          type: BOOK_CREATED_ERROR,
-          payload: error.toString()
-        })
+        if (error.response.status === 401) {
+          reAuth(dispatch, creatBook(book))
+        } else {
+          dispatch({
+            type: BOOK_CREATED_ERROR,
+            payload: error.toString()
+          })
+        }
       })
   }
 }
 
+
 export function getBooks() {
   return function (dispatch) {
-    api.fetchBooks().then(response=>{
+    dispatch({ type: BOOKS_FETCH_REQUEST })
+    api.fetchBooks().then(response => {
       dispatch({
         type: BOOKS_FETCH_SUCCESS,
         payload: response.data
       })
-    }).catch(error=>{
-      dispatch({
-        type: BOOKS_FETCH_ERROR,
-        payload: error.toString()
-      })
+    }).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, getBooks)
+      } else {
+        dispatch({
+          type: BOOKS_FETCH_ERROR,
+          payload: error.toString()
+        })
+      }
     })
   }
 }

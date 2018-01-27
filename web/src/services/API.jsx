@@ -9,12 +9,12 @@ export const set_cookie = (name, value, date, refreshToken) => {
   let d = new Date()
   d.setTime(d.getTime() + date * 60)
   let expires = "expires=" + d.toGMTString();
-  console.log("token " + value)
   let AuthStr = 'Bearer ' + value;
   axios.defaults.headers.common['Authorization'] = AuthStr;
   document.cookie = name + '=' + value + ';' + expires + ';Path=/;';
   document.cookie = "refresh_token" + '=' + refreshToken + ';' + ';Path=/;';
 }
+
 export const delete_cookie = (name) => {
   document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
@@ -40,20 +40,36 @@ export const clientForLogin = axios.create({
   validateStatus: validateStatus
 })
 
-client.interceptors.response.use(function (response) {
-  return response;
-}, function (error) {
-  debugger;
-  if (error.response.status === 401) {
-    let refresh_token = new Promise((resolve, reject) => {
-      let token = getCookie("refresh_token");
-      resolve(token);
-    });
-    refresh_token.then(result => console.log(result))
-    refresh_token(refresh_token);
-  }
+export const updateAuth = () => {
+  clientForLogin.defaults.auth = { username: 'my-trusted-client', password: 'secret' }
 }
-)
+
+export const refreshTokenRequest = (refresh_token) => {
+  var params = new URLSearchParams();
+  params.append('grant_type', 'refresh_token');
+  params.append('refresh_token', refresh_token);
+  updateAuth();
+  return clientForLogin.post('oauth/token', params)
+}
+
+// client.interceptors.response.use(function (response) {
+//   return response;
+// }, function (error) {
+//   debugger;
+//   if (error.response.status === 401) {
+//     let refresh_token = new Promise((resolve, reject) => {
+//       let token = getCookie("refresh_token");
+//       resolve(token);
+//     });
+//     refresh_token.then(result => {
+//       console.log(result)
+//       refreshTokenRequest(result)
+//     })
+//     if(error.config.method==='get')
+
+//   }
+// }
+// )
 
 /*
  * API endpoint to fetch all user books.
@@ -117,9 +133,7 @@ export const DeleteUser = (id) => {
   return client.delete('/v1/users/' + id);
 }
 
-export const updateAuth = () => {
-  clientForLogin.defaults.auth = { username: 'my-trusted-client', password: 'secret' }
-}
+
 
 export const LoginOuath = (email, password) => {
   var params = new URLSearchParams();
@@ -130,15 +144,7 @@ export const LoginOuath = (email, password) => {
   return clientForLogin.post('oauth/token', params)
 }
 
-const refreshTokenRequest = (refresh_token) => {
-  var params = new URLSearchParams();
-  params.append('grant_type', 'refresh_token');
-  params.append('refresh_token', refresh_token);
-  updateAuth();
-  return clientForLogin.post('oauth/token', params).then(response => {
-    set_cookie("key", response.data.access_token, response.data.expires_in, response.data.refresh_token)
-  }).catch(error => console.log(error));
-}
+
 
 export const Login = (username, password) => {
   updateAuth(username, password)
