@@ -18,7 +18,7 @@ class User extends React.Component {
     this.state = {
       view: "grid",
       enableChange: false,
-      allBooks: []
+      allBooks: [],
     }
   }
 
@@ -34,31 +34,12 @@ class User extends React.Component {
     }
   }
 
-  // handleSelectBook = (event, index, value) => {
-  //   this.setState({ selectedBooks: value });
-  // }
-
-  // handleAddClick = (selectedBooks) => {
-  //   const { user } = this.state
-  //   if (!Array.isArray(selectedBooks) || selectedBooks.length < 1) {
-  //     return
-  //   }
-
-  //   api.addBooksToUser({ userId: user.id, ids: selectedBooks })
-  //     .then((response) => {
-  //       this.setState({ user: response.data })
-  //       if (selectedBooks.length > 1) {
-  //         notify.show('Books add', 'success', 2000)
-  //       } else {
-  //         notify.show('Book add', 'success', 2000)
-  //       }
-  //     }).catch((error) => {
-  //       notify.show('error', 'error', 2000)
-  //     })
-  // }
-
   removeFromCollectiom = (bookId) => {
     this.props.removeFromCollectiom(this.props.currentUser.id, bookId)
+  }
+
+  addToCollectiom = (bookId) => {
+    this.props.addToCollectiom(this.props.currentUser.id, bookId)
   }
 
   deleteUser = (id) => {
@@ -75,6 +56,19 @@ class User extends React.Component {
   render() {
     const { user, enableChange } = this.state;
 
+    const idCurrent = this.props.currentUser.id;
+    const id = parseInt(this.props.match.params.userId);
+    let userView=''
+    if (idCurrent !== id) {
+      userView = this.props.openedUser
+    } else {
+      userView = this.props.currentUser
+    }
+
+    let userBooksId = '';
+    if (this.props.currentUser && Array.isArray(this.props.currentUser.books)) {
+      userBooksId = this.props.currentUser.books.map(book => book.id)
+    }
 
     if (!this.props.openedUser) {
       return (<div>User not found</div>)
@@ -90,16 +84,19 @@ class User extends React.Component {
             </div>
           </div>
           <div>
-            <div className="user-info">{this.props.openedUser.name}</div>
+            <div className="user-info">{userView.name}</div>
             <IconButton touch={true}
               onClick={() => { alert("click") }}>
               <Mail />
             </IconButton>
           </div>
-          <div>Collection books:{this.props.openedUser.books.length}</div>
+          <div>Collection books:{userView.books.length}</div>
         </Paper>
         <div className="user-books">
-          <Books books={this.props.openedUser.books} view={this.state.view} enableChange={this.state.enableChange} removeFromCollectiom={this.removeFromCollectiom}/>
+          <Books books={userView.books} userBooksId={userBooksId}
+           view={this.state.view} enableChange={this.state.enableChange}
+            removeFromCollectiom={this.removeFromCollectiom}
+            addToCollection={this.addToCollectiom} />
         </div>
       </div>
     )
@@ -117,7 +114,8 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
     fetchUser: ActionCreators.fetchUser,
     openedUserIsLoginedUser: ActionCreators.openedIsLogined,
-    removeFromCollectiom: ActionCreators.removeFromCollectiom
+    removeFromCollectiom: ActionCreators.removeFromCollectiom,
+    addToCollectiom: ActionCreators.addToCollection
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

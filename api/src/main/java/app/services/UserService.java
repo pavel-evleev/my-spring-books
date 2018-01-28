@@ -6,12 +6,14 @@ import app.repository.BookRepository;
 import app.repository.UserRepository;
 import app.rest.model.AddingBooks;
 import app.rest.model.CreateUserCommand;
+import app.rest.model.Recapture;
 import app.rest.model.UserInfo;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,9 +35,12 @@ public class UserService {
     }
 
     public List<UserInfo> findAll() {
-        return userRepository.findAll().stream()
-                .map(UserService::toUserInfo)
-                .collect(Collectors.toList());
+        List<UserInfo> list = new ArrayList<>();
+        for (User user : userRepository.findAll()) {
+            UserInfo userInfo = toUserInfo(user);
+            list.add(userInfo);
+        }
+        return list;
     }
 
     public UserInfo findOne(Long id) {
@@ -92,6 +97,10 @@ public class UserService {
 
     public UserInfo addBooks(AddingBooks books) {
         User user = userRepository.findOne(books.getUserId());
+        ArrayList<Long> existBookId = user.getBooks().stream().map(Book::getId).collect(Collectors.toCollection(ArrayList::new));
+        if (existBookId.contains(books.getIds())) {
+            return toUserInfo(user);
+        }
         Book findBook = bookRepository.findById(books.getIds());
         user.getBooks().add(findBook);
         return toUserInfo(userRepository.saveAndFlush(user));
@@ -110,6 +119,11 @@ public class UserService {
 
     public UserInfo findEmail(String email) {
         Optional<User> optional = userRepository.findByEmail(email);
+        return toUserInfo(optional.get());
+    }
+
+    public UserInfo recaptureAccess(Recapture recaptureAccess) {
+        Optional<User> optional = userRepository.findByToken(recaptureAccess.getToken());
         return toUserInfo(optional.get());
     }
 }

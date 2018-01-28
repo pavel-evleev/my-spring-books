@@ -17,7 +17,6 @@ class Logged extends Component {
 
 
   loggoutHandle = () => {
-    api.logout()
     this.props.loggoutUser()
     this.props.history.push('/')
   }

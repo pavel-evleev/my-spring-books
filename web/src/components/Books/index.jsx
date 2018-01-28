@@ -25,6 +25,7 @@ class Books extends React.Component {
   }
 
   render() {
+    const { userBooksId, books } = this.props
     const grid = this.props.view
     // Show loading bar if HTTP request is not completed
     if (this.state.booksLoading) {
@@ -37,17 +38,27 @@ class Books extends React.Component {
     if (!Array.isArray(this.props.books)) {
       return (<div>Dont have books...</div>)
     }
-    console.log(this.props)
+    // console.log(this.props)
     return (
       <div>
         <div className="book-wrapper">
           {(grid === "grid") ? (
             this.props.books.map((book) => {
-              return (<BookCard key={book.id} book={book}
-                buttonAction={this.props.enableChange}
-                OnClick={this.handleOnClickBook}
-                addToCollection={this.props.addToCollection}
-                removeFromCollectiom={this.props.removeFromCollectiom} />)
+              if (userBooksId.includes(book.id)) {
+                return (<BookCard key={book.id} book={book}
+                  added={true}
+                  buttonAction={this.props.enableChange}
+                  OnClick={this.handleOnClickBook}
+                  addToCollection={this.props.addToCollection}
+                  removeFromCollectiom={this.props.removeFromCollectiom} />)
+              }else{
+                return (<BookCard key={book.id} book={book}
+                  added={false}
+                  buttonAction={this.props.enableChange}
+                  OnClick={this.handleOnClickBook}
+                  addToCollection={this.props.addToCollection}
+                  removeFromCollectiom={this.props.removeFromCollectiom} />)
+              }
             })) : (this.props.books.map((book) => {
               return (<BookListItem key={book.id} book={book} OnClick={this.handleOnClickBook} addToCollection={this.props.addToCollection} removeFromCollectiomn={this.props.removeFromCollectiomn} />)
             }))

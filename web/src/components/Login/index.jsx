@@ -23,6 +23,10 @@ class Login extends React.Component {
 
   }
 
+  componentDidMount(){
+    this.props.recaptAccess()
+  }
+
   handleRegistration = () => {
     this.props.history.push(`/registration`)
   }
@@ -92,6 +96,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ request: ActionCreators.requestLogin }, dispatch)
+  bindActionCreators({
+    request: ActionCreators.requestLogin,
+    recaptAccess: ActionCreators.loginFromRefreshToken
+  }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

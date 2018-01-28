@@ -77,10 +77,10 @@ const rootReducer = (state = store, action) => {
       return state.merge({ error: action.payload })
     case UserAction.BOOK_REMOVE_FROM_COLLECTION_SUCCESS:
       notify.show("Successfully removed", 'success', 1500)
-      return state.merge({ openedUser: action.payload })
+      return state.merge({ currentUser: action.payload })
     case UserAction.BOOK_REMOVE_FROM_COLLECTION_ERROR:
       notify.show(action.payload, 'error', 1500)
-      return state.merge({ error: action.payload })
+      return state.merge({ error: action.payload, currentUser: action.payload })
     default:
       return state
   }

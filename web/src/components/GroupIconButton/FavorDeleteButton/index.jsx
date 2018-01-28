@@ -1,7 +1,7 @@
 import React from 'react'
 import IconButton from 'material-ui/IconButton'
-import Favorite from 'material-ui/svg-icons/toggle/star'
-import PossibleFavorite from 'material-ui/svg-icons/toggle/star-border'
+import AddedBook from 'material-ui/svg-icons/content/add-circle'
+import AddBook from 'material-ui/svg-icons/content/add-circle-outline'
 import Delete from 'material-ui/svg-icons/action/delete'
 
 
@@ -10,9 +10,10 @@ class FavorDeleteButton extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      favorite: false
+      // added: false
     }
   }
+  
 
   render() {
     const { handleClickFavor, handleClickUnfavor, buttonAction } = this.props
@@ -25,11 +26,13 @@ class FavorDeleteButton extends React.Component {
           <Delete />
         </IconButton> : <IconButton touch={true} onClick={(e) => {
           e.stopPropagation()
-          this.state.favorite ? handleClickUnfavor() : handleClickFavor()
-          this.setState({ favorite: !this.state.favorite })
+          debugger
+          console.log(this.props)
+          this.props.added ? handleClickUnfavor() : handleClickFavor()
+          // this.setState({ added: !this.props.added })
         }}>
             {
-              this.state.favorite ? (<Favorite />) : (<PossibleFavorite />)
+              this.props.added ? (<AddedBook />) : (<AddBook />)
             }
           </IconButton>
         }

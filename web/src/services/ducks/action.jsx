@@ -1,5 +1,8 @@
 import * as api from './../API'
+import CryptoJS from 'crypto-js'
 
+
+const keyEncrypt = 'myReadedBooks25ItStep'
 
 export const FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST"
 export const FETCH_SEARCH_REQUEST = "FETCH_SEARCH_REQUEST"
@@ -96,10 +99,14 @@ export function loadingUsers() {
 }
 
 export function loggoutUser() {
-  return {
-    type: LOGGOUT_USER,
-    payload: false
+  return function (dispatch) {
+    dispatch({
+      type: LOGGOUT_USER,
+      payload: false
+    })
+    api.logout()
   }
+
 }
 
 
@@ -109,6 +116,7 @@ export function requestLogin(email, password) {
 
     api.LoginOuath(email, password)
       .then((response) => {
+        localStorage.setItem('email', CryptoJS.AES.encrypt(email, keyEncrypt).toString())
         api.set_cookie("key", response.data.access_token, response.data.expires_in, response.data.refresh_token)
         api.fetchEmail({ email: email })
           .then((response) => {
@@ -264,5 +272,29 @@ export function removeFromCollectiom(userId, bookId) {
           })
         }
       })
+  }
+}
+
+export function loginFromRefreshToken() {
+  return function (dispatch) {
+    let byte = localStorage.getItem("email")
+    if (byte) {
+      let email = CryptoJS.AES.decrypt(byte, keyEncrypt).toString(CryptoJS.enc.Utf8)
+      reAuth(dispatch, () => {
+        api.fetchEmail({ email: email })
+        .then((response) => {
+          dispatch({
+            type: SET_CURRENT_USER,
+            payload: response.data
+          })
+        }).catch(error =>
+          dispatch({
+            type: FETCH_USERS_FAILURE,
+            payload: error.toString()
+          })
+        )
+      })
+
+    }
   }
 }

@@ -134,6 +134,8 @@ export const Login = (username, password) => {
 
 export const logout = () => {
   delete_cookie('key')
+  delete_cookie('refresh_token')
+  localStorage.clear()
   client.defaults.auth = null
 }
 
