@@ -26,10 +26,7 @@ class FavorDeleteButton extends React.Component {
           <Delete />
         </IconButton> : <IconButton touch={true} onClick={(e) => {
           e.stopPropagation()
-          debugger
-          console.log(this.props)
           this.props.added ? handleClickUnfavor() : handleClickFavor()
-          // this.setState({ added: !this.props.added })
         }}>
             {
               this.props.added ? (<AddedBook />) : (<AddBook />)

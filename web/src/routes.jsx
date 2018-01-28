@@ -20,6 +20,9 @@ import PrivateRoute from './routes/PrivateRoute'
 import SearchedBooks from './components/SearchedBooks'
 import Chat from './components/Chat'
 
+
+import Magic from './components/MagicProgress'
+
 import Page from './components/OurPage'
 
 /**
@@ -51,7 +54,7 @@ export default class Routes extends React.Component {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/login" component={Login} />
-            <Route path="/about" component={Page} />
+            <Route path="/about" component={Magic} />
             <Route path="/registration" component={AddUser} />
             <PrivateRoute exact path="/users" component={Users} />
             <PrivateRoute path='/users/add-book' component={AddBook} />

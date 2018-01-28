@@ -9,18 +9,31 @@ export default class Books extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      favorite: false
+      // favorite: false
     }
   }
 
+  handleAddFavor = () => {
+    this.props.addToCollection(this.props.book.id)
+  }
+
+  handleRemoveFavor = () => {
+    this.props.removeFromCollectiom(this.props.book.id)
+  }
+
   render() {
-    const { name } = this.props.book
+    const { book } = this.props
     return (
-      <Paper style={{ width: "100%", display: "flex", margin: "5px 0", padding: "10px 0" }} onClick={() => this.props.OnClick(this.props.book.id)}>
-        <div style={{ backgroundColor: "blue", width: "40px", height: "40px", margin: "0px 10px" }}>img</div>
-        <span style={{ maxWidth: "530px" }}>{name}</span>
+      <Paper style={{ width: "100%", display: "flex", margin: "5px 0", padding: "10px 0" }}
+        onClick={() => this.props.OnClick(this.props.book.id)}>
+
+        <div className="sm-img">
+          {book.cover ? <img src={book.cover} alt="book" width="30" height="40" />
+            : <img src={require("../../../img/book.png")} alt="book" width="40" height="40" />}
+        </div>
+        <span style={{ maxWidth: "530px" }}>{book.name}</span>
         <div style={{ marginLeft: "auto", marginRight: "10px" }}>
-          <ActionButton/>
+          <ActionButton added={this.props.added} buttonAction={this.props.buttonAction} handleClickFavor={this.handleAddFavor} handleClickUnfavor={this.handleRemoveFavor} />
         </div>
       </Paper>
     )

@@ -38,7 +38,6 @@ class Books extends React.Component {
     if (!Array.isArray(this.props.books)) {
       return (<div>Dont have books...</div>)
     }
-    // console.log(this.props)
     return (
       <div>
         <div className="book-wrapper">
@@ -51,7 +50,7 @@ class Books extends React.Component {
                   OnClick={this.handleOnClickBook}
                   addToCollection={this.props.addToCollection}
                   removeFromCollectiom={this.props.removeFromCollectiom} />)
-              }else{
+              } else {
                 return (<BookCard key={book.id} book={book}
                   added={false}
                   buttonAction={this.props.enableChange}
@@ -60,7 +59,21 @@ class Books extends React.Component {
                   removeFromCollectiom={this.props.removeFromCollectiom} />)
               }
             })) : (this.props.books.map((book) => {
-              return (<BookListItem key={book.id} book={book} OnClick={this.handleOnClickBook} addToCollection={this.props.addToCollection} removeFromCollectiomn={this.props.removeFromCollectiomn} />)
+              if (userBooksId.includes(book.id)) {
+                return (<BookListItem key={book.id} book={book}
+                  added={true}
+                  buttonAction={this.props.enableChange}
+                  OnClick={this.handleOnClickBook}
+                  addToCollection={this.props.addToCollection}
+                  removeFromCollectiom={this.props.removeFromCollectiom} />)
+              } else {
+                return (<BookListItem key={book.id} book={book}
+                  added={false}
+                  buttonAction={this.props.enableChange}
+                  OnClick={this.handleOnClickBook}
+                  addToCollection={this.props.addToCollection}
+                  removeFromCollectiom={this.props.removeFromCollectiom} />)
+              }
             }))
           }
         </div>

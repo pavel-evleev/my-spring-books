@@ -204,6 +204,12 @@ body {
     }
 }
 
+.sm-img {
+    display: flex;
+    flex-basis: 50px;
+    justify-content: center;
+}
+
 .view-books {
     grid-area: n;
     width: 818px;
@@ -271,6 +277,17 @@ body {
 
 // end scrolls
 // spinner
+.spinner-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
 .orbit-spinner,
 .orbit-spinner * {
     box-sizing: border-box;
