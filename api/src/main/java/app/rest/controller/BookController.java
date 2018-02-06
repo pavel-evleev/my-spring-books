@@ -47,15 +47,16 @@ public class BookController extends ApiErrorController {
                            @RequestParam("publisher") String publisher,
                            @RequestParam("datePublished") String datePublished,
                            @RequestParam("authorsIds") List<Long> authorsIds,
+                           @RequestParam("genreId") Long genreId,
                            @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) throws IOException {
         String compressImage = UUID.randomUUID().toString();
 
         imageService.compressAndSaveImage(image, compressImage);
         CreateBookCommand createBookCommand = null;
         if (newAuthors != null && newAuthors.size() > 0) {
-            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, newAuthors);
+            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, newAuthors, genreId);
         } else {
-            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds);
+            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, genreId);
         }
         return bookService.save(createBookCommand, compressImage);
     }
@@ -66,7 +67,7 @@ public class BookController extends ApiErrorController {
         return bookService.saveComment(createCommentCommand);
     }
 
-    @GetMapping("genre")
+    @GetMapping("genres")
     public ResponseEntity getAllGenre(HttpServletResponse response) {
         response.setHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=" + TimeUnit.DAYS.toSeconds(365));
         response.setHeader(HttpHeaders.PRAGMA, null);

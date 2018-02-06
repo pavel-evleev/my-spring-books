@@ -69,6 +69,7 @@ class BookCard extends React.Component {
           <div className="book-card-info">
             <span>Book name: {book.name}</span>
             <span>Authors: {this.groupAuthors(book.authors)}</span>
+            <span>Genre: {book.genre.name}</span>
             <span>Readed: {book.readed ? book.readed : "5"}</span>
             <ActionButton />
           </div>

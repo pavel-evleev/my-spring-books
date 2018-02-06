@@ -16,25 +16,39 @@ public class CreateBookCommand {
 
     private String publisher;
 
+    private Long genreId;
+
     private LocalDate datePublished;
 
     private List<Long> authorsIds = new ArrayList<>();
 
     private List<String> newAuthors = new ArrayList<>();
 
-    public CreateBookCommand(String name, String publisher, LocalDate datePublished, List<Long> authorsIds) {
-        this.name = name;
-        this.publisher = publisher;
-        this.datePublished = datePublished;
-        this.authorsIds = authorsIds;
-    }
 
-    public CreateBookCommand(String name, String publisher, LocalDate datePublished, List<Long> authorsIds, List<String> newAuthors) {
+    public CreateBookCommand(String name, String publisher, LocalDate datePublished, List<Long> authorsIds, List<String> newAuthors, Long genreId) {
         this.name = name;
         this.publisher = publisher;
         this.datePublished = datePublished;
         this.authorsIds = authorsIds;
         this.newAuthors = newAuthors;
+        this.genreId = genreId;
+    }
+
+    public CreateBookCommand(String name, String publisher, LocalDate datePublished, List<Long> authorsIds, Long genreId) {
+        this.name = name;
+        this.publisher = publisher;
+        this.datePublished = datePublished;
+        this.authorsIds = authorsIds;
+        this.genreId = genreId;
+    }
+
+
+    public Long getGenreId() {
+        return genreId;
+    }
+
+    public void setGenreId(Long genreId) {
+        this.genreId = genreId;
     }
 
     public String getName() {

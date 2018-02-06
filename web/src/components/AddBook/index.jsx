@@ -29,6 +29,7 @@ class AddBook extends React.Component {
       publisher: '',
       publishedDate: null,
       value: '',
+      genreId: '',
       newAuthors: '',
       file: ''
     };
@@ -36,6 +37,7 @@ class AddBook extends React.Component {
 
   componentDidMount() {
     this.props.allAuthors()
+    this.props.allGenres()
   }
 
 
@@ -55,9 +57,13 @@ class AddBook extends React.Component {
     this.setState({ publisher: event.target.value });
   }
 
-  handleSelectedChange = (event, index, value) => {
+  handleAuthorsSelectedChange = (event, index, value) => {
     this.setState({ arraySelectedAuthors: value });
     this.setState({ value });
+  }
+
+  handleGenresSelectedChange= (event, index, value)=>{
+    this.setState({genreId: value})
   }
 
   handleAddClick = () => {
@@ -67,6 +73,7 @@ class AddBook extends React.Component {
     formData.append('publisher', this.state.publisher)
     formData.append('datePublished', moment(this.state.publishedDate).format("YYYY-MM-DD"))
     formData.append('authorsIds', this.state.arraySelectedAuthors)
+    formData.append('genreId', this.state.genreId)
     if (this.state.newAuthors.length > 0) {
       formData.append('newAuthors', this.state.newAuthors.split('\n'))
     }
@@ -81,6 +88,7 @@ class AddBook extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div>
         <div style={{ margin: "0 25%", display: this.state.hidden }}>
@@ -104,13 +112,26 @@ class AddBook extends React.Component {
           <SelectField
             floatingLabelText="Authors"
             value={this.state.value}
-            onChange={this.handleSelectedChange}
+            onChange={this.handleAuthorsSelectedChange}
             multiple={true}
           >
             {
               Array.isArray(this.props.authors) ? this.props.authors.map(
                 (author, index) =>
                   <MenuItem key={index} value={author.id} primaryText={author.name} />
+              ) : <MenuItem value="none" primaryText="none" />
+            }
+          </SelectField>
+          <br />
+          <SelectField
+            floatingLabelText="Genre"
+            value={this.state.genreId}
+            onChange={this.handleGenresSelectedChange}
+          >
+            {
+              Array.isArray(this.props.genres) ? this.props.genres.map(
+                (genre, index) =>
+                  <MenuItem key={index} value={genre.id} primaryText={genre.name} />
               ) : <MenuItem value="none" primaryText="none" />
             }
           </SelectField>
@@ -140,6 +161,7 @@ const mapStateToProps = (state) => {
   return {
     books: state.allBooks,
     authors: state.allAuthors,
+    genres: state.allGenres,
     currentUserId: state.currentUser.id
   }
 }
@@ -147,7 +169,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
     creatBook: ActionCreators.creatBook,
-    allAuthors: ActionCreators.loadAllAuthors
+    allAuthors: ActionCreators.loadAllAuthors,
+    allGenres: ActionCreators.loadAllGenres
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddBook)

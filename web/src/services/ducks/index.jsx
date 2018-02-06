@@ -7,6 +7,7 @@ const store = Immutable({
   login: false,
   fetching: false,
   allAuthors: null,
+  allGenres: null,
   allBooks: [{ id: 1, name: "BookName", authors: "author1 author2", description: "Краткое описание книги" },
   { id: 2, name: "BookName Long name book not longer then 49 symbol123", authors: "author1 author2 author3", description: "Краткое описание книги" },
   { id: 3, name: "BookName", authors: "author1", description: "Краткое описание книги" },
@@ -82,12 +83,16 @@ const rootReducer = (state = store, action) => {
     case UserAction.BOOK_REMOVE_FROM_COLLECTION_ERROR:
       notify.show(action.payload, 'error', 1500)
       return state.merge({ error: action.payload })
-    case UserAction.AUTHOR_FETCH_SUCCESS:
+    case UserAction.AUTHORS_FETCH_SUCCESS:
       return state.merge({ allAuthors: action.payload })
-    case UserAction.AUTHOR_FETCH_ERROR:
+    case UserAction.AUTHORS_FETCH_ERROR:
       notify.show(action.payload, 'error', 1500)
       return state.merge({ error: action.payload })
-
+    case UserAction.GENRES_FETCH_SUCCESS:
+      return state.merge({ allGenres: action.payload })
+    case UserAction.GENRES_FETCH_ERROR:
+      notify.show(action.payload, 'error', 1500)
+      return state.merge({ error: action.payload })
 
     default:
       return state

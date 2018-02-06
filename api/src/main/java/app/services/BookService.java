@@ -58,8 +58,11 @@ public class BookService {
                     .collect(Collectors.toList())));
         }
 
+        Genre genre = genreRepository.findOne(book.getGenreId());
+
         Book newBook = new Book(book.getName(), book.getPublisher(), Date.valueOf(book.getDatePublished()), cover);
         newBook.setAuthors(authors);
+        newBook.setGenre(genre);
         return toBookInfo(bookRepository.save(newBook));
     }
 
@@ -96,6 +99,8 @@ public class BookService {
         if (book.getCover().length() > 0) {
             bookInfo.setCover("http://127.0.0.1:8080/v1/books/image/" + book.getCover());
         }
+
+        bookInfo.setGenre(toGenreInfo(book.getGenre()));
         return bookInfo;
     }
 

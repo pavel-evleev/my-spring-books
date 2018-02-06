@@ -38,9 +38,13 @@ export const BOOKS_FETCH_REQUEST = "BOOKS_FETCH_REQUEST"
 export const BOOKS_FETCH_SUCCESS = 'BOOKS_FETCH_SUCCESS'
 export const BOOKS_FETCH_ERROR = 'BOOKS_FETCH_ERROR'
 
-export const AUTHOR_FETCH_REQUEST = "AUTHOR_FETCH_REQUEST"
-export const AUTHOR_FETCH_SUCCESS = "AUTHOR_FETCH_SUCCESS"
-export const AUTHOR_FETCH_ERROR = "AUTHOR_FETCH_ERROR"
+export const AUTHORS_FETCH_REQUEST = "AUTHORS_FETCH_REQUEST"
+export const AUTHORS_FETCH_SUCCESS = "AUTHORS_FETCH_SUCCESS"
+export const AUTHORS_FETCH_ERROR = "AUTHORS_FETCH_ERROR"
+
+export const GENRES_FETCH_REQUEST = "GENRES_FETCH_REQUEST"
+export const GENRES_FETCH_SUCCESS = "GENRES_FETCH_SUCCESS"
+export const GENRES_FETCH_ERROR = "GENRES_FETCH_ERROR"
 
 function reAuth(dispatch, params) {
   let refresh_token = new Promise((resolve, reject) => {
@@ -309,11 +313,11 @@ export function loginFromRefreshToken() {
 
 export function loadAllAuthors() {
   return function (dispatch) {
-    dispatch({ type: AUTHOR_FETCH_REQUEST })
+    dispatch({ type: AUTHORS_FETCH_REQUEST })
     api.fetchAuthors().then(
       response => {
         dispatch({
-          type: AUTHOR_FETCH_SUCCESS,
+          type: AUTHORS_FETCH_SUCCESS,
           payload: response.data
         })
       }
@@ -322,7 +326,31 @@ export function loadAllAuthors() {
         reAuth(dispatch, loadAllAuthors)
       } else {
         dispatch({
-          type: AUTHOR_FETCH_ERROR,
+          type: AUTHORS_FETCH_ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+
+export function loadAllGenres() {
+  return function (dispatch) {
+    dispatch({ type: GENRES_FETCH_REQUEST })
+    api.fetchGenres().then(
+      response => {
+        dispatch({
+          type: GENRES_FETCH_SUCCESS,
+          payload: response.data
+        })
+      }
+    ).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, loadAllGenres)
+      } else {
+        dispatch({
+          type: GENRES_FETCH_ERROR,
           payload: error.toString()
         })
       }

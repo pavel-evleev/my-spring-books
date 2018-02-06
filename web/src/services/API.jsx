@@ -67,6 +67,10 @@ export const fetchAuthors = () => {
   return client.get('/v1/authors')
 }
 
+export const fetchGenres = () =>{
+  return client.get('/v1/books/genres')
+}
+
 export const fetchUsers = () => {
   return client.get('/v1/users')
 }

@@ -30,7 +30,15 @@ public class BookInfo {
 
     private String cover;
 
+    private GenreInfo genre;
 
+    public GenreInfo getGenre() {
+        return genre;
+    }
+
+    public void setGenre(GenreInfo genre) {
+        this.genre = genre;
+    }
 
     public String getCover() {
         return cover;
