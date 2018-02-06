@@ -1,9 +1,11 @@
 package app.rest.controller;
 
 
+import app.model.Genre;
 import app.rest.model.BookInfo;
 import app.rest.model.CreateBookCommand;
 import app.rest.model.CreateCommentCommand;
+import app.rest.model.GenreInfo;
 import app.services.BookService;
 import app.services.ImageService;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +32,7 @@ public class BookController extends ApiErrorController {
     private final BookService bookService;
 
     private final ImageService imageService;
+
 
     public BookController(BookService bookService, ImageService imageService) {
         this.bookService = bookService;
@@ -61,6 +64,18 @@ public class BookController extends ApiErrorController {
     @PostMapping("/comment")
     public BookInfo addComment(@RequestBody CreateCommentCommand createCommentCommand) {
         return bookService.saveComment(createCommentCommand);
+    }
+
+    @GetMapping("genre")
+    public ResponseEntity getAllGenre(HttpServletResponse response) {
+        response.setHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=" + TimeUnit.DAYS.toSeconds(365));
+        response.setHeader(HttpHeaders.PRAGMA, null);
+
+        List<GenreInfo> genres = bookService.findAllGenre();
+        if (genres != null) {
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(genres);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value = "/image/{image:.+}")

@@ -1,20 +1,15 @@
 package app.services;
 
-import app.model.Author;
-import app.model.Book;
-import app.model.Comment;
-import app.model.User;
+import app.model.*;
 import app.repository.AuthorRepository;
 import app.repository.BookRepository;
+import app.repository.GenreRepository;
 import app.repository.UserRepository;
-import app.rest.model.BookInfo;
-import app.rest.model.CommentInfo;
-import app.rest.model.CreateBookCommand;
-import app.rest.model.CreateCommentCommand;
+import app.rest.model.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,11 +22,14 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final UserRepository userRepository;
+    private final GenreRepository genreRepository;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, UserRepository userRepository) {
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository,
+                       UserRepository userRepository, GenreRepository genreRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.userRepository = userRepository;
+        this.genreRepository = genreRepository;
     }
 
     public List<BookInfo> findAll() {
@@ -101,6 +99,17 @@ public class BookService {
         return bookInfo;
     }
 
+    public static GenreInfo toGenreInfo(Genre genre) {
+        return new GenreInfo(genre.getId(), genre.getName());
+    }
+
+    public List<GenreInfo> findAllGenre() {
+        return genreRepository.findAll().stream()
+                .map(BookService::toGenreInfo)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
     public BookInfo saveComment(CreateCommentCommand createCommentCommand) {
         User authorComment = userRepository.findOne(createCommentCommand.getAuthorCommentId());
         Book book = bookRepository.findOne(createCommentCommand.getBookId());

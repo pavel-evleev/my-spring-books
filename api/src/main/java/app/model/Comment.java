@@ -76,7 +76,6 @@ public class Comment {
 
         Comment comment = (Comment) o;
 
-        if (id != null ? !id.equals(comment.id) : comment.id != null) return false;
         if (text != null ? !text.equals(comment.text) : comment.text != null) return false;
         if (authorComment != null ? !authorComment.equals(comment.authorComment) : comment.authorComment != null)
             return false;
@@ -85,8 +84,7 @@ public class Comment {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (text != null ? text.hashCode() : 0);
+        int result = text != null ? text.hashCode() : 0;
         result = 31 * result + (authorComment != null ? authorComment.hashCode() : 0);
         result = 31 * result + (datePublished != null ? datePublished.hashCode() : 0);
         return result;
