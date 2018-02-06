@@ -24,7 +24,6 @@ class AddBook extends React.Component {
       maxDate: maxDate,
       hidden: '',
       name: '',
-      authors: [],
       arraySelectedAuthors: [],
       selectedAuthors: null,
       publisher: '',
@@ -36,18 +35,9 @@ class AddBook extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ authors: [], error: null });
-    this.getAuthors();
+    this.props.allAuthors()
   }
 
-  getAuthors = () => {
-    api.fetchAuthors().then((response) => {
-      this.setState({ authors: response.data });
-    })
-      .catch((error) => {
-        this.setState({ authors: [], error: error.toString() })
-      });
-  }
 
   handleDateChange = (objNull, date) => {
     this.setState({ publishedDate: date });
@@ -118,10 +108,10 @@ class AddBook extends React.Component {
             multiple={true}
           >
             {
-              this.state.authors.map(
+              Array.isArray(this.props.authors) ? this.props.authors.map(
                 (author, index) =>
                   <MenuItem key={index} value={author.id} primaryText={author.name} />
-              )
+              ) : <MenuItem value="none" primaryText="none" />
             }
           </SelectField>
           <br />
@@ -149,11 +139,15 @@ class AddBook extends React.Component {
 const mapStateToProps = (state) => {
   return {
     books: state.allBooks,
+    authors: state.allAuthors,
     currentUserId: state.currentUser.id
   }
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ creatBook: ActionCreators.creatBook }, dispatch)
+  bindActionCreators({
+    creatBook: ActionCreators.creatBook,
+    allAuthors: ActionCreators.loadAllAuthors
+  }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddBook)

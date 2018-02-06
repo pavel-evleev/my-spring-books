@@ -4,14 +4,17 @@ import CryptoJS from 'crypto-js'
 
 const keyEncrypt = 'myReadedBooks25ItStep'
 
-export const FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST"
+
 export const FETCH_SEARCH_REQUEST = "FETCH_SEARCH_REQUEST"
 export const SUCCESS_SEARCH_BOOKS = "SUCCESS_SEARCH_BOOKS"
 export const ERROR_SEARCH_BOOKS = "ERROR_SEARCH_BOOKS"
+
 export const SUCCESS_LOGIN = 'SUCCESS_LOGIN'
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'
 export const LOGGOUT_USER = 'LOGGOUT_USER'
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
+
+export const FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST"
 export const FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE"
 
 export const SEND_COMMENT_SUCCESS = 'SEND_COMMENT_SUCCESS'
@@ -34,6 +37,10 @@ export const BOOK_REMOVE_FROM_COLLECTION_ERROR = 'BOOK_REMOVE_FROM_COLLECTION_ER
 export const BOOKS_FETCH_REQUEST = "BOOKS_FETCH_REQUEST"
 export const BOOKS_FETCH_SUCCESS = 'BOOKS_FETCH_SUCCESS'
 export const BOOKS_FETCH_ERROR = 'BOOKS_FETCH_ERROR'
+
+export const AUTHOR_FETCH_REQUEST = "AUTHOR_FETCH_REQUEST"
+export const AUTHOR_FETCH_SUCCESS = "AUTHOR_FETCH_SUCCESS"
+export const AUTHOR_FETCH_ERROR = "AUTHOR_FETCH_ERROR"
 
 function reAuth(dispatch, params) {
   let refresh_token = new Promise((resolve, reject) => {
@@ -278,23 +285,47 @@ export function removeFromCollectiom(userId, bookId) {
 export function loginFromRefreshToken() {
   return function (dispatch) {
     let byte = localStorage.getItem("email")
-    if (byte) {
+    let refresh_token = api.getCookie("refresh_token")
+    if (byte && refresh_token) {
       let email = CryptoJS.AES.decrypt(byte, keyEncrypt).toString(CryptoJS.enc.Utf8)
       reAuth(dispatch, () => {
         api.fetchEmail({ email: email })
-        .then((response) => {
-          dispatch({
-            type: SET_CURRENT_USER,
-            payload: response.data
-          })
-        }).catch(error =>
-          dispatch({
-            type: FETCH_USERS_FAILURE,
-            payload: error.toString()
-          })
-        )
+          .then((response) => {
+            dispatch({
+              type: SET_CURRENT_USER,
+              payload: response.data
+            })
+          }).catch(error =>
+            dispatch({
+              type: FETCH_USERS_FAILURE,
+              payload: error.toString()
+            })
+          )
       })
-
     }
+  }
+}
+
+
+export function loadAllAuthors() {
+  return function (dispatch) {
+    dispatch({ type: AUTHOR_FETCH_REQUEST })
+    api.fetchAuthors().then(
+      response => {
+        dispatch({
+          type: AUTHOR_FETCH_SUCCESS,
+          payload: response.data
+        })
+      }
+    ).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, loadAllAuthors)
+      } else {
+        dispatch({
+          type: AUTHOR_FETCH_ERROR,
+          payload: error.toString()
+        })
+      }
+    })
   }
 }
