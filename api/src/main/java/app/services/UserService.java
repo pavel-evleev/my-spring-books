@@ -6,12 +6,11 @@ import app.repository.BookRepository;
 import app.repository.UserRepository;
 import app.rest.model.AddingBooks;
 import app.rest.model.CreateUserCommand;
-import app.rest.model.Recapture;
 import app.rest.model.UserInfo;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,8 +121,4 @@ public class UserService {
         return toUserInfo(optional.get());
     }
 
-    public UserInfo recaptureAccess(Recapture recaptureAccess) {
-        Optional<User> optional = userRepository.findByToken(recaptureAccess.getToken());
-        return toUserInfo(optional.get());
-    }
 }

@@ -6,8 +6,8 @@ import app.rest.model.CreateAuthorCommand;
 import app.model.Author;
 import app.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
