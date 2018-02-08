@@ -42,23 +42,18 @@ class User extends React.Component {
     this.props.addToCollectiom(this.props.currentUser.id, bookId)
   }
 
-  deleteUser = (id) => {
-    api.DeleteUser(id)
-      .then((response) => {
-        notify.show('User delete', 'success', 2000)
-        setTimeout(() => { this.props.history.push(`/users`) }, 1000)
-      })
-      .catch((error) => {
-        notify.show('error', 'error', 2000)
-      })
+  handleToggleBookLike = (bookId) => {
+    this.props.toggleLikeBook({
+      "userId": this.props.currentUser.id,
+      "bookId": bookId
+    })
   }
-
   render() {
     const { user, enableChange } = this.state;
 
     const idCurrent = this.props.currentUser.id;
     const id = parseInt(this.props.match.params.userId);
-    let userView=''
+    let userView = ''
     if (idCurrent !== id) {
       userView = this.props.openedUser
     } else {
@@ -94,9 +89,11 @@ class User extends React.Component {
         </Paper>
         <div className="user-books">
           <Books books={userView.books} userBooksId={userBooksId}
-           view={this.state.view} enableChange={this.state.enableChange}
+            likedBookIds={this.props.likedBooksIds}
+            view={this.state.view} enableChange={this.state.enableChange}
             removeFromCollectiom={this.removeFromCollectiom}
-            addToCollection={this.addToCollectiom} />
+            addToCollection={this.addToCollectiom}
+            toggleLikeBook={this.handleToggleBookLike} />
         </div>
       </div>
     )
@@ -106,7 +103,8 @@ class User extends React.Component {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.currentUser,
-    openedUser: state.openedUser
+    openedUser: state.openedUser,
+    likedBooksIds: state.likedBooksIds
   }
 }
 
@@ -115,7 +113,8 @@ const mapDispatchToProps = (dispatch) =>
     fetchUser: ActionCreators.fetchUser,
     openedUserIsLoginedUser: ActionCreators.openedIsLogined,
     removeFromCollectiom: ActionCreators.removeFromCollectiom,
-    addToCollectiom: ActionCreators.addToCollection
+    addToCollectiom: ActionCreators.addToCollection,
+    toggleLikeBook: ActionCreators.toggleLikeBook
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

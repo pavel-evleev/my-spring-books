@@ -28,6 +28,15 @@ public class UserInfo {
 
     private List<BookInfo> books = new ArrayList<>();
 
+    private List<Long> likedBooksIds = new ArrayList<>();
+
+    public List<Long> getLikedBooksIds() {
+        return likedBooksIds;
+    }
+
+    public void setLikedBooksIds(List<Long> likedBooksIds) {
+        this.likedBooksIds = likedBooksIds;
+    }
 
     public Long getId() {
         return id;

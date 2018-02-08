@@ -42,6 +42,9 @@ export const AUTHORS_FETCH_REQUEST = "AUTHORS_FETCH_REQUEST"
 export const AUTHORS_FETCH_SUCCESS = "AUTHORS_FETCH_SUCCESS"
 export const AUTHORS_FETCH_ERROR = "AUTHORS_FETCH_ERROR"
 
+export const LIKE_BOOK_SUCCESS = "LIKE_BOOK_SUCCESS"
+export const LIKE_BOOK_ERROR = "LIKE_BOOK_ERROR"
+
 export const GENRES_FETCH_REQUEST = "GENRES_FETCH_REQUEST"
 export const GENRES_FETCH_SUCCESS = "GENRES_FETCH_SUCCESS"
 export const GENRES_FETCH_ERROR = "GENRES_FETCH_ERROR"
@@ -130,7 +133,7 @@ export function requestLogin(email, password) {
         localStorage.setItem('email', CryptoJS.AES.encrypt(email, keyEncrypt).toString())
         api.set_cookie("key", response.data.access_token, response.data.expires_in, response.data.refresh_token)
         api.fetchEmail({ email: email })
-          .then((response) => {
+          .then(response => {
             dispatch({
               type: SET_CURRENT_USER,
               payload: response.data
@@ -351,6 +354,29 @@ export function loadAllGenres() {
       } else {
         dispatch({
           type: GENRES_FETCH_ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+export function toggleLikeBook(likedBook) {
+  return function (dispatch) {
+    api.toggleLikeBook(likedBook).then(
+      response => {
+        dispatch({
+          type: LIKE_BOOK_SUCCESS,
+          payload: response.data
+        })
+      }
+    ).catch(error => {
+      // debugger;
+      if (error.response.status === 401) {
+        reAuth(dispatch, toggleLikeBook(likedBook))
+      } else {
+        dispatch({
+          type: LIKE_BOOK_ERROR,
           payload: error.toString()
         })
       }

@@ -1,11 +1,7 @@
 package app.rest.controller;
 
 
-import app.model.Genre;
-import app.rest.model.BookInfo;
-import app.rest.model.CreateBookCommand;
-import app.rest.model.CreateCommentCommand;
-import app.rest.model.GenreInfo;
+import app.rest.model.*;
 import app.services.BookService;
 import app.services.ImageService;
 import org.springframework.http.HttpHeaders;
@@ -42,23 +38,29 @@ public class BookController extends ApiErrorController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public BookInfo create(@RequestParam("file") MultipartFile image,
+    public BookInfo create(@RequestParam(value = "file", required = false) MultipartFile image,
                            @RequestParam("name") String name,
                            @RequestParam("publisher") String publisher,
                            @RequestParam("datePublished") String datePublished,
                            @RequestParam("authorsIds") List<Long> authorsIds,
                            @RequestParam("genreId") Long genreId,
                            @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) throws IOException {
-        String compressImage = UUID.randomUUID().toString();
 
-        imageService.compressAndSaveImage(image, compressImage);
         CreateBookCommand createBookCommand = null;
-        if (newAuthors != null && newAuthors.size() > 0) {
+        if (newAuthors != null) {
             createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, newAuthors, genreId);
         } else {
             createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, genreId);
         }
-        return bookService.save(createBookCommand, compressImage);
+
+        if (image != null) {
+            String compressImage = UUID.randomUUID().toString();
+
+            imageService.compressAndSaveImage(image, compressImage);
+            return bookService.save(createBookCommand, compressImage);
+        }
+        return bookService.save(createBookCommand, null);
+
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -76,16 +78,22 @@ public class BookController extends ApiErrorController {
         if (genres != null) {
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(genres);
         }
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping(value = "/image/{image:.+}")
     public ResponseEntity<byte[]> getCover(@PathVariable String image, HttpServletResponse response) {
-        response.setHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=" + TimeUnit.DAYS.toSeconds(365));
-        response.setHeader(HttpHeaders.PRAGMA, null);
 
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG)
-                .body(imageService.getImage(image));
+        byte[] img = imageService.getImage(image);
+
+        if (img != null) {
+            response.setHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=" + TimeUnit.DAYS.toSeconds(365));
+            response.setHeader(HttpHeaders.PRAGMA, null);
+
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG)
+                    .body(img);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{bookId}")
@@ -108,6 +116,12 @@ public class BookController extends ApiErrorController {
     @DeleteMapping
     public void deleteAll() {
         bookService.deleteAll();
+    }
+
+    @PostMapping("/toggle_rating")
+    public ResponseEntity toggleLike(@RequestBody LikeBookCommand likeBookCommand) {
+        BookInfo info = bookService.toggleLike(likeBookCommand);
+            return ResponseEntity.ok(info);
     }
 
 

@@ -67,7 +67,7 @@ export const fetchAuthors = () => {
   return client.get('/v1/authors')
 }
 
-export const fetchGenres = () =>{
+export const fetchGenres = () => {
   return client.get('/v1/books/genres')
 }
 
@@ -145,4 +145,9 @@ export const logout = () => {
 
 export const searchBooks = (searchQuery) => {
   return client.get('/v1/books/search/' + searchQuery)
+}
+
+
+export const toggleLikeBook = (likedBook) => {
+  return client.post("/v1/books/toggle_rating", likedBook)
 }

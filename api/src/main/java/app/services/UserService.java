@@ -57,6 +57,9 @@ public class UserService {
                         .map(BookService::toBookInfo)
                         .collect(Collectors.toList())
         );
+        userInfo.setLikedBooksIds(user.getLikeBooks().stream()
+                .map(rating -> rating.getBook().getId())
+                .collect(Collectors.toList()));
         return userInfo;
     }
 

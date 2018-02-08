@@ -20,6 +20,10 @@ class BookMiniCard extends React.Component {
     this.props.removeFromCollectiom(this.props.book.id)
   }
 
+  handleLikeBook = ()=>{
+    this.props.toggleLikeBook(this.props.book.id)
+  }
+
   truncateTitle = (title) => {
     if (title.length === MAX_LENGHT_TITLE) {
       return title.substr(0, 49) + '...'
@@ -29,7 +33,7 @@ class BookMiniCard extends React.Component {
 
 
   render() {
-    const { book, OnClick, added } = this.props
+    const { book, OnClick, added, liked } = this.props
 
     return (
       <Paper zDepth={1} onClick={() => OnClick(book.id)} className="bookMiniCard" style={{ position: "relative" }}>
@@ -37,7 +41,11 @@ class BookMiniCard extends React.Component {
         <div className="bookMiniCard-img">
           {book.cover ? <img src={book.cover} alt="book" width="170" height="200" /> : <img src={require("../../../img/book.png")} alt="book" width="200" height="200" />}
         </div>
-        <ActionButton added={added} buttonAction={this.props.buttonAction} handleClickFavor={this.handleAddFavor} handleClickUnfavor={this.handleRemoveFavor} />
+        <ActionButton added={added} liked={liked} buttonAction={this.props.buttonAction}
+          toggleLikeBook={this.handleLikeBook}
+          handleClickFavor={this.handleAddFavor}
+          handleClickUnfavor={this.handleRemoveFavor}
+          countLiked={book.rating} />
         {/* <div style={{ padding: "0px 10px 5px", alignSelf: "center"}}>{book.authors}</div> */}
         <div className="bookMiniCard-desc">{book.description}</div>
       </Paper>

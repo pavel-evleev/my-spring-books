@@ -30,6 +30,8 @@ public class BookInfo {
 
     private String cover;
 
+    private Integer rating;
+
     private GenreInfo genre;
 
     public GenreInfo getGenre() {
@@ -102,5 +104,13 @@ public class BookInfo {
 
     public void setComments(List<CommentInfo> comments) {
         this.comments = comments;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 }

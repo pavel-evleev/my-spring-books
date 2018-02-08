@@ -25,7 +25,7 @@ class Books extends React.Component {
   }
 
   render() {
-    const { userBooksId, books } = this.props
+    const { likedBookIds, userBooksId, books } = this.props
     const grid = this.props.view
     // Show loading bar if HTTP request is not completed
     if (this.state.booksLoading) {
@@ -46,14 +46,18 @@ class Books extends React.Component {
               if (userBooksId.includes(book.id)) {
                 return (<BookCard key={book.id} book={book}
                   added={true}
+                  liked={Array.isArray(likedBookIds) ? likedBookIds.includes(book.id) : false}
                   buttonAction={this.props.enableChange}
+                  toggleLikeBook={this.props.toggleLikeBook}
                   OnClick={this.handleOnClickBook}
                   addToCollection={this.props.addToCollection}
                   removeFromCollectiom={this.props.removeFromCollectiom} />)
               } else {
                 return (<BookCard key={book.id} book={book}
                   added={false}
+                  liked={Array.isArray(likedBookIds) ? likedBookIds.includes(book.id) : false}
                   buttonAction={this.props.enableChange}
+                  toggleLikeBook={this.props.toggleLikeBook}
                   OnClick={this.handleOnClickBook}
                   addToCollection={this.props.addToCollection}
                   removeFromCollectiom={this.props.removeFromCollectiom} />)
@@ -62,14 +66,19 @@ class Books extends React.Component {
               if (userBooksId.includes(book.id)) {
                 return (<BookListItem key={book.id} book={book}
                   added={true}
+                  liked={Array.isArray(likedBookIds) ? likedBookIds.includes(book.id) : false}
                   buttonAction={this.props.enableChange}
+                  toggleLikeBook={this.props.toggleLikeBook}
+                  toggleLikeBook={this.props.toggleLikeBook}
                   OnClick={this.handleOnClickBook}
                   addToCollection={this.props.addToCollection}
                   removeFromCollectiom={this.props.removeFromCollectiom} />)
               } else {
                 return (<BookListItem key={book.id} book={book}
                   added={false}
+                  liked={Array.isArray(likedBookIds) ? likedBookIds.includes(book.id) : false}
                   buttonAction={this.props.enableChange}
+                  toggleLikeBook={this.props.toggleLikeBook}
                   OnClick={this.handleOnClickBook}
                   addToCollection={this.props.addToCollection}
                   removeFromCollectiom={this.props.removeFromCollectiom} />)

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "books")
-public class Book  {
+public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +29,8 @@ public class Book  {
     @Column(name = "date_publisher", nullable = false)
     private Date datePublished;
 
-    @NotEmpty
-    @Column(name = "cover", nullable = false)
+
+    @Column(name = "cover")
     private String cover;
 
     @NotNull
@@ -40,9 +40,12 @@ public class Book  {
             inverseJoinColumns = @JoinColumn(name = "id_author", referencedColumnName = "id"))
     private List<Author> authors = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
+    private List<LikeBook> likeBooks = new ArrayList<>();
+
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "genre_id",nullable = false)
+    @JoinColumn(name = "genre_id", nullable = false)
     private Genre genre;
 
     @ManyToMany(mappedBy = "books")
@@ -58,11 +61,10 @@ public class Book  {
     public Book() {
     }
 
-    public Book(String name, String publisher, Date datePublished, String cover) {
+    public Book(String name, String publisher, Date datePublished) {
         this.name = name;
         this.publisher = publisher;
         this.datePublished = datePublished;
-        this.cover = cover;
     }
 
     public Long getId() {
@@ -139,6 +141,14 @@ public class Book  {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public List<LikeBook> getLikeBooks() {
+        return likeBooks;
+    }
+
+    public void setLikeBooks(List<LikeBook> likeBooks) {
+        this.likeBooks = likeBooks;
     }
 
     @Override

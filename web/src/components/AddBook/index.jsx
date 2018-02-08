@@ -62,13 +62,12 @@ class AddBook extends React.Component {
     this.setState({ value });
   }
 
-  handleGenresSelectedChange= (event, index, value)=>{
-    this.setState({genreId: value})
+  handleGenresSelectedChange = (event, index, value) => {
+    this.setState({ genreId: value })
   }
 
   handleAddClick = () => {
     const formData = new FormData()
-    formData.append('file', this.state.file, this.state.file.name)
     formData.append('name', this.state.name)
     formData.append('publisher', this.state.publisher)
     formData.append('datePublished', moment(this.state.publishedDate).format("YYYY-MM-DD"))
@@ -76,6 +75,9 @@ class AddBook extends React.Component {
     formData.append('genreId', this.state.genreId)
     if (this.state.newAuthors.length > 0) {
       formData.append('newAuthors', this.state.newAuthors.split('\n'))
+    }
+    if (this.state.file) {
+      formData.append('file', this.state.file, this.state.file.name)
     }
     this.props.creatBook(formData)
     setTimeout(() => {

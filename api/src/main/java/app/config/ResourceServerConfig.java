@@ -39,7 +39,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/v1/books/image/**",
                         "/v1/users/verify/*").permitAll()
                 .antMatchers("/v1/users/**").authenticated()
-                .antMatchers("/v1/books/**").authenticated()
+                .antMatchers("/v1/books/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/v1/users").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/post/**").hasAuthority("ROLE_ADMIN");
 

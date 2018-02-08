@@ -1,8 +1,6 @@
 package app.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +8,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +47,9 @@ public class User implements Serializable {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<LikeBook> likeBooks = new ArrayList<>();
 
     public User() {
     }
@@ -143,6 +144,14 @@ public class User implements Serializable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public List<LikeBook> getLikeBooks() {
+        return likeBooks;
+    }
+
+    public void setLikeBooks(List<LikeBook> likeBooks) {
+        this.likeBooks = likeBooks;
     }
 
     @Override

@@ -3,6 +3,8 @@ import IconButton from 'material-ui/IconButton'
 import AddedBook from 'material-ui/svg-icons/content/add-circle'
 import AddBook from 'material-ui/svg-icons/content/add-circle-outline'
 import Delete from 'material-ui/svg-icons/action/delete'
+import Like from 'material-ui/svg-icons/action/favorite'
+import Dislike from 'material-ui/svg-icons/action/favorite-border'
 
 
 class FavorDeleteButton extends React.Component {
@@ -13,10 +15,10 @@ class FavorDeleteButton extends React.Component {
       // added: false
     }
   }
-  
+
 
   render() {
-    const { handleClickFavor, handleClickUnfavor, buttonAction } = this.props
+    const { handleClickFavor, handleClickUnfavor, buttonAction, liked, countLiked, toggleLikeBook } = this.props
     return (
       <div>
         {buttonAction ? <IconButton touch={true} onClick={(e) => {
@@ -33,6 +35,14 @@ class FavorDeleteButton extends React.Component {
             }
           </IconButton>
         }
+        <IconButton touch={true} onClick={(e) => {
+          e.stopPropagation()
+          toggleLikeBook()
+        }}>
+          {liked ? <Like /> : <Dislike />}
+        </IconButton>
+        <span>{countLiked}</span>
+
       </div>
     )
   }
