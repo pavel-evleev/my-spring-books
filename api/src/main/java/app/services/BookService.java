@@ -1,8 +1,15 @@
 package app.services;
 
-import app.model.*;
-import app.repository.*;
-import app.rest.model.*;
+import app.model.Author;
+import app.model.Book;
+import app.model.Genre;
+import app.repository.AuthorRepository;
+import app.repository.BookRepository;
+import app.repository.GenreRepository;
+import app.rest.model.BookInfo;
+import app.rest.model.CommentInfo;
+import app.rest.model.CreateBookCommand;
+import app.rest.model.GenreInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -10,32 +17,28 @@ import org.springframework.util.CollectionUtils;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
-    private final UserRepository userRepository;
     private final GenreRepository genreRepository;
-    private final LikeBookRepository likeBookRepository;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository,
-                       UserRepository userRepository, GenreRepository genreRepository,
-                       LikeBookRepository likeBookRepository) {
+    public BookService(BookRepository bookRepository,
+                       AuthorRepository authorRepository,
+                       GenreRepository genreRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
-        this.userRepository = userRepository;
         this.genreRepository = genreRepository;
-        this.likeBookRepository = likeBookRepository;
     }
 
     public List<BookInfo> findAll() {
         return bookRepository.findAll().stream()
-                .map(BookService::toBookInfo)
+                .map(BookService::toBookInfoShortInformation)
                 .collect(Collectors.toList());
     }
 
@@ -43,8 +46,7 @@ public class BookService {
         return toBookInfo(bookRepository.findOne(id));
     }
 
-    @Transactional
-    public BookInfo save(CreateBookCommand book, String compressImage) {
+    public boolean save(CreateBookCommand book, String compressImage) {
 
         // Get existing authors
         List<Author> authors = book.getAuthorsIds().stream()
@@ -60,26 +62,24 @@ public class BookService {
 
         Genre genre = genreRepository.findOne(book.getGenreId());
 
-        Book newBook = new Book(book.getName(), book.getPublisher(), Date.valueOf(book.getDatePublished()));
+        Book newBook = new Book(book.getName(), book.getPublisher(),
+                Date.valueOf(book.getDatePublished()), Date.valueOf(LocalDate.now()));
         newBook.setAuthors(authors);
         newBook.setGenre(genre);
         if (compressImage != null) {
             newBook.setCover(compressImage + ".jpg");
         }
-        return toBookInfo(bookRepository.save(newBook));
+        return bookRepository.save(newBook)!=null;
     }
 
-    @Transactional
     public void delete(Long id) {
         bookRepository.delete(id);
     }
 
-    @Transactional
     public void delete(Book book) {
         bookRepository.delete(book);
     }
 
-    @Transactional
     public void deleteAll() {
         bookRepository.deleteAll();
     }
@@ -111,6 +111,10 @@ public class BookService {
         return bookInfo;
     }
 
+    public static BookInfo toBookInfoShortInformation(Book book){
+        return new BookInfo(book.getId(), book.getName(), book.getCover());
+    }
+
     public static GenreInfo toGenreInfo(Genre genre) {
         return new GenreInfo(genre.getId(), genre.getName());
     }
@@ -121,47 +125,4 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public BookInfo saveComment(CreateCommentCommand createCommentCommand) {
-        User authorComment = userRepository.findOne(createCommentCommand.getAuthorCommentId());
-        Book book = bookRepository.findOne(createCommentCommand.getBookId());
-
-        Comment newComment = new Comment();
-        newComment.setAuthorComment(authorComment);
-        newComment.setDatePublished(Date.valueOf(LocalDate.now()));
-        newComment.setText(createCommentCommand.getText());
-
-        book.addComment(newComment);
-        return toBookInfo(bookRepository.saveAndFlush(book));
-    }
-
-
-    public BookInfo toggleLike(LikeBookCommand likeBookCommand) {
-        Optional<LikeBook> ratingOptional = likeBookRepository.findByBookIdAndUserId(likeBookCommand.getBookId(), likeBookCommand.getUserId());
-
-        LikeBook likeBook;
-
-        if (ratingOptional.isPresent()) {
-            likeBookRepository.delete(ratingOptional.get().getId());
-            return toBookInfo(bookRepository.findOne(likeBookCommand.getBookId()));
-        } else {
-            Book book = bookRepository.findOne(likeBookCommand.getBookId());
-            User user = userRepository.findOne(likeBookCommand.getUserId());
-            likeBook = new LikeBook(book, user);
-        }
-
-        return toBookInfo(bookRepository
-                .findOne(likeBookRepository.saveAndFlush(likeBook)
-                        .getBook().getId()));
-    }
-//
-//    public boolean removeRating(LikeBookCommand likeBookCommand) {
-//
-//        Optional<LikeBook> ratingOptional = likeBookRepository.findByBookIdAndUserId(likeBookCommand.getBookId(), likeBookCommand.getUserId());
-//        if (ratingOptional.isPresent()) {
-//            likeBookRepository.delete(ratingOptional.get().getId());
-//            return true;
-//        }
-//        return false;
-//    }
 }

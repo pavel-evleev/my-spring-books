@@ -3,7 +3,9 @@ package app.rest.controller;
 
 import app.rest.model.*;
 import app.services.BookService;
+import app.services.CommentService;
 import app.services.ImageService;
+import app.services.LikeBookService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,25 +28,32 @@ import java.util.concurrent.TimeUnit;
 public class BookController extends ApiErrorController {
 
     private final BookService bookService;
+    private final LikeBookService likeBookService;
+    private final CommentService commentService;
 
     private final ImageService imageService;
 
 
-    public BookController(BookService bookService, ImageService imageService) {
+    public BookController(BookService bookService,
+                          ImageService imageService,
+                          CommentService commentService,
+                          LikeBookService likeBookService) {
         this.bookService = bookService;
         this.imageService = imageService;
+        this.likeBookService = likeBookService;
+        this.commentService = commentService;
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public BookInfo create(@RequestParam(value = "file", required = false) MultipartFile image,
-                           @RequestParam("name") String name,
-                           @RequestParam("publisher") String publisher,
-                           @RequestParam("datePublished") String datePublished,
-                           @RequestParam("authorsIds") List<Long> authorsIds,
-                           @RequestParam("genreId") Long genreId,
-                           @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) throws IOException {
+    public ResponseEntity create(@RequestParam(value = "file", required = false) MultipartFile image,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("publisher") String publisher,
+                                 @RequestParam("datePublished") String datePublished,
+                                 @RequestParam("authorsIds") List<Long> authorsIds,
+                                 @RequestParam("genreId") Long genreId,
+                                 @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) throws IOException {
 
         CreateBookCommand createBookCommand = null;
         if (newAuthors != null) {
@@ -57,16 +66,18 @@ public class BookController extends ApiErrorController {
             String compressImage = UUID.randomUUID().toString();
 
             imageService.compressAndSaveImage(image, compressImage);
-            return bookService.save(createBookCommand, compressImage);
+            return bookService.save(createBookCommand, compressImage)
+                    ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
         }
-        return bookService.save(createBookCommand, null);
+        return bookService.save(createBookCommand, null)
+                ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
 
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/comment")
-    public BookInfo addComment(@RequestBody CreateCommentCommand createCommentCommand) {
-        return bookService.saveComment(createCommentCommand);
+    public CommentsInfo addComment(@RequestBody CreateCommentCommand createCommentCommand) {
+        return commentService.saveComment(createCommentCommand);
     }
 
     @GetMapping("genres")
@@ -120,9 +131,8 @@ public class BookController extends ApiErrorController {
 
     @PostMapping("/toggle_rating")
     public ResponseEntity toggleLike(@RequestBody LikeBookCommand likeBookCommand) {
-        BookInfo info = bookService.toggleLike(likeBookCommand);
-            return ResponseEntity.ok(info);
+        LikeBookInfo info = likeBookService.toggleLike(likeBookCommand);
+        return ResponseEntity.ok(info);
     }
-
 
 }

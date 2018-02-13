@@ -29,12 +29,16 @@ public class Book {
     @Column(name = "date_publisher", nullable = false)
     private Date datePublished;
 
+    @NotNull
+    @Column(name = "date_created", nullable = false)
+    private Date dateCreated;
+
 
     @Column(name = "cover")
     private String cover;
 
     @NotNull
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "authors_books",
             joinColumns = @JoinColumn(name = "id_book", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id_author", referencedColumnName = "id"))
@@ -61,10 +65,11 @@ public class Book {
     public Book() {
     }
 
-    public Book(String name, String publisher, Date datePublished) {
+    public Book(String name, String publisher, Date datePublished, Date dateCreated) {
         this.name = name;
         this.publisher = publisher;
         this.datePublished = datePublished;
+        this.dateCreated = dateCreated;
     }
 
     public Long getId() {
@@ -162,6 +167,7 @@ public class Book {
         if (publisher != null ? !publisher.equals(book.publisher) : book.publisher != null) return false;
         if (datePublished != null ? !datePublished.equals(book.datePublished) : book.datePublished != null)
             return false;
+        if (dateCreated != null ? !dateCreated.equals(book.dateCreated) : book.dateCreated != null) return false;
         if (authors != null ? !authors.equals(book.authors) : book.authors != null) return false;
         return genre != null ? genre.equals(book.genre) : book.genre == null;
     }
@@ -171,20 +177,10 @@ public class Book {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (publisher != null ? publisher.hashCode() : 0);
         result = 31 * result + (datePublished != null ? datePublished.hashCode() : 0);
+        result = 31 * result + (dateCreated != null ? dateCreated.hashCode() : 0);
         result = 31 * result + (authors != null ? authors.hashCode() : 0);
         result = 31 * result + (genre != null ? genre.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", datePublished=" + datePublished +
-                ", genre=" + genre +
-                ", comments=" + comments +
-                '}';
-    }
 }
