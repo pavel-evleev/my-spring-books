@@ -136,8 +136,8 @@ export const Login = (username, password) => {
   return client.get('/v1/users/login')
 }
 
-export const logout = () => {
-  return client.post('oauth/revoke-token', { refresh_token: getCookie('refresh_token') })
+export const logout = (user) => {
+  return client.post('oauth/revoke-token', user)
 }
 
 export const removeCredentials = () => {

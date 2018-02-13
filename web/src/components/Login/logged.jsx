@@ -17,7 +17,9 @@ class Logged extends Component {
 
 
   loggoutHandle = () => {
-    this.props.loggoutUser()
+    debuggers
+    const user = { id: this.props.user.id, name: this.props.user.name }
+    this.props.loggoutUser(user)
     this.props.history.push('/')
   }
 
@@ -39,8 +41,7 @@ class Logged extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {
-  }
+  return { user: state.currentUser }
 }
 
 const mapDispatchToProps = (dispatch) =>

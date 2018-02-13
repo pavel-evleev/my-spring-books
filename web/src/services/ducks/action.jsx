@@ -112,13 +112,13 @@ export function loadingUsers() {
   }
 }
 
-export function loggoutUser() {
+export function loggoutUser(id) {
   return function (dispatch) {
     dispatch({
       type: LOGGOUT_USER,
       payload: false
     })
-    api.logout().then(()=>{
+    api.logout(id).then(()=>{
       api.removeCredentials()
     })
   }
@@ -200,10 +200,9 @@ export function addComment(comment) {
 export function creatBook(book) {
   return function (dispatch) {
     api.CreateBook(book)
-      .then(response => {
+      .then(() => {
         dispatch({
           type: BOOK_CREATED_SUCCESS,
-          payload: response.data
         })
       }).catch(error => {
         if (error.response.status === 401) {
