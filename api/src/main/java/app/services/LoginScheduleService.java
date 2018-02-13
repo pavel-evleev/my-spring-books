@@ -1,9 +1,7 @@
 package app.services;
 
 import app.model.LoginSchedule;
-import app.model.User;
 import app.repository.LoginScheduleRepository;
-import app.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -19,7 +17,6 @@ public class LoginScheduleService {
         this.repository = repository;
     }
 
-
     public void setCurrentLogin(Long userId, LocalDate currentLogin) {
         Optional<LoginSchedule> optional = repository.findByUserid(userId);
         LoginSchedule schedule = null;
@@ -29,14 +26,10 @@ public class LoginScheduleService {
         } else {
             schedule = new LoginSchedule(Date.valueOf(currentLogin), Date.valueOf(currentLogin), userId);
         }
-
         repository.saveAndFlush(schedule);
-
-
     }
 
     public void setLastLogin(Long id, LocalDate lastLogin) {
-
         Optional<LoginSchedule> optional = repository.findByUserid(id);
         LoginSchedule schedule = null;
         if (optional.isPresent()) {
@@ -45,8 +38,6 @@ public class LoginScheduleService {
         } else {
             schedule = new LoginSchedule(Date.valueOf(lastLogin), Date.valueOf(lastLogin), id);
         }
-
         repository.saveAndFlush(schedule);
-
     }
 }

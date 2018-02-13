@@ -48,14 +48,14 @@ public class Book {
     private List<LikeBook> likeBooks = new ArrayList<>();
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id", nullable = false)
     private Genre genre;
 
     @ManyToMany(mappedBy = "books")
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "books_comments",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "comment_id"))
@@ -154,6 +154,14 @@ public class Book {
 
     public void setLikeBooks(List<LikeBook> likeBooks) {
         this.likeBooks = likeBooks;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     @Override

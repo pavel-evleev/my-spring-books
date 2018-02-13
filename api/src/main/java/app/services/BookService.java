@@ -69,7 +69,7 @@ public class BookService {
         if (compressImage != null) {
             newBook.setCover(compressImage + ".jpg");
         }
-        return bookRepository.save(newBook)!=null;
+        return bookRepository.save(newBook) != null;
     }
 
     public void delete(Long id) {
@@ -111,8 +111,12 @@ public class BookService {
         return bookInfo;
     }
 
-    public static BookInfo toBookInfoShortInformation(Book book){
-        return new BookInfo(book.getId(), book.getName(), book.getCover());
+    public static BookInfo toBookInfoShortInformation(Book book) {
+        BookInfo info = new BookInfo(book.getId(), book.getName(), book.getDateCreated().toLocalDate());
+        if (book.getCover() != null && book.getCover().length() > 0) {
+            info.setCover("http://127.0.0.1:8080/v1/books/image/" + book.getCover());
+        }
+        return info;
     }
 
     public static GenreInfo toGenreInfo(Genre genre) {

@@ -36,12 +36,7 @@ public class UserService {
     }
 
     public List<UserInfo> findAll() {
-        List<UserInfo> list = new ArrayList<>();
-        for (User user : userRepository.findAll()) {
-            UserInfo userInfo = toUserInfo(user);
-            list.add(userInfo);
-        }
-        return list;
+        return userRepository.findAll().stream().map(UserService::toUserInfoShortInfo).collect(Collectors.toList());
     }
 
     public UserInfo findOne(Long id) {
@@ -50,6 +45,13 @@ public class UserService {
 
     public List<String> findNameLike(String name) {
         return userRepository.findByNameLike(name);
+    }
+
+    public static UserInfo toUserInfoShortInfo(User user){
+        UserInfo info = new UserInfo();
+        info.setId(user.getId());
+        info.setName(user.getName());
+        return info;
     }
 
     public static UserInfo toUserInfo(User user) {

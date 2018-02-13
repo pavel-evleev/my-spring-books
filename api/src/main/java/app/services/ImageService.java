@@ -29,7 +29,7 @@ public class ImageService {
     }
 
     public void compressAndSaveImage(MultipartFile image, String compressedFile) throws IOException {
-        ImageCompressor compressor = new ImageCompressor(image, compressedFile, client);
+        ImageCompressor compressor = new ImageCompressor(client);
         compressor.compressAndSaveImage(image,compressedFile);
     }
 

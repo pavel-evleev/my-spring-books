@@ -17,6 +17,16 @@ public class BookInfo {
 
     private GenreInfo genre;
 
+    private String publisher;
+
+    private LocalDate datePublished;
+
+    private LocalDate dateCreated;
+
+    private List<String> authors = new ArrayList<>();
+
+    private List<CommentInfo> comments = new ArrayList<>();
+
     public BookInfo() {
 
     }
@@ -46,6 +56,12 @@ public class BookInfo {
         this.id = id;
     }
 
+    public BookInfo(Long id, String name, LocalDate dateCreated) {
+        this.id = id;
+        this.name = name;
+        this.dateCreated = dateCreated;
+    }
+
     public GenreInfo getGenre() {
         return genre;
     }
@@ -61,14 +77,6 @@ public class BookInfo {
     public void setCover(String cover) {
         this.cover = cover;
     }
-
-    private String publisher;
-
-    private LocalDate datePublished;
-
-    private List<String> authors = new ArrayList<>();
-
-    private List<CommentInfo> comments = new ArrayList<>();
 
     public Long getId() {
         return id;
