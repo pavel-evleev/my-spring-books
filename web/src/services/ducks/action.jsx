@@ -118,7 +118,9 @@ export function loggoutUser() {
       type: LOGGOUT_USER,
       payload: false
     })
-    api.logout()
+    api.logout().then(()=>{
+      api.removeCredentials()
+    })
   }
 
 }

@@ -137,6 +137,10 @@ export const Login = (username, password) => {
 }
 
 export const logout = () => {
+  return client.post('oauth/revoke-token', { refresh_token: getCookie('refresh_token') })
+}
+
+export const removeCredentials = () => {
   delete_cookie('key')
   delete_cookie('refresh_token')
   localStorage.clear()
