@@ -4,10 +4,28 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Pavel on 08.09.2017.
- */
+
 public class BookInfo {
+
+    private Long id;
+
+    private String name;
+
+    private String cover;
+
+    private Integer rating;
+
+    private GenreInfo genre;
+
+    public BookInfo() {
+
+    }
+
+    public BookInfo(Long id, String name, String cover) {
+        this.id = id;
+        this.name = name;
+        this.cover = cover;
+    }
 
     public BookInfo(Long id, String name, String publisher, LocalDate datePublished) {
         this.id = id;
@@ -24,15 +42,9 @@ public class BookInfo {
         this.datePublished = datePublished;
     }
 
-    private Long id;
-
-    private String name;
-
-    private String cover;
-
-    private Integer rating;
-
-    private GenreInfo genre;
+    public BookInfo(Long id) {
+        this.id = id;
+    }
 
     public GenreInfo getGenre() {
         return genre;

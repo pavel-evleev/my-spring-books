@@ -19,10 +19,6 @@ import java.io.IOException;
 @Service
 public class ImageService {
 
-    @Autowired
-    private ThreadPoolTaskExecutor taskExecutor;
-
-
     private static final String ACCESS_TOKEN = "Nj7jh4RntCAAAAAAAAAAChQOewtSMM4lWqY82zUjEFZPPej9Jo6LCK6IZDtWEHeS";
 
     private DbxClientV2 client;
@@ -32,9 +28,9 @@ public class ImageService {
         this.client = new DbxClientV2(config, ACCESS_TOKEN);
     }
 
-    public void compressAndSaveImage(MultipartFile image, String compressedFile) {
+    public void compressAndSaveImage(MultipartFile image, String compressedFile) throws IOException {
         ImageCompressor compressor = new ImageCompressor(image, compressedFile, client);
-        taskExecutor.execute(compressor);
+        compressor.compressAndSaveImage(image,compressedFile);
     }
 
     public byte[] getImage(String fileName) {

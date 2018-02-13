@@ -5,6 +5,7 @@ import app.model.User;
 import app.repository.BookRepository;
 import app.repository.UserRepository;
 import app.rest.model.AddingBooks;
+import app.rest.model.BookInfo;
 import app.rest.model.CreateUserCommand;
 import app.rest.model.UserInfo;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -54,7 +56,7 @@ public class UserService {
         UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getPhone(), user.getEmail());
         userInfo.setBooks(
                 user.getBooks().stream()
-                        .map(BookService::toBookInfo)
+                        .map(BookService::toBookInfoShortInformation)
                         .collect(Collectors.toList())
         );
         userInfo.setLikedBooksIds(user.getLikeBooks().stream()
@@ -72,25 +74,21 @@ public class UserService {
         return true;
     }
 
-    @Transactional
-    public UserInfo save(CreateUserCommand user) {
+    public boolean save(CreateUserCommand user) {
         User newUser = new User(user.getName(), user.getPhone(), encoder.encode(user.getPassword()), user.getEmail());
         try {
             verifyService.verifyEmail(newUser);
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
-        newUser = userRepository.save(newUser);
-        return toUserInfo(newUser);
+        return userRepository.save(newUser)!=null;
     }
 
-    @Transactional
     public void delete(Long id) {
         userRepository.delete(id);
     }
 
 
-    @Transactional
     public UserInfo patch(Long id, Long bookId) {
         User user = userRepository.findOne(id);
         user.setBooks(user.getBooks().stream().filter(book -> !book.getId().equals(bookId)).collect(Collectors.toList()));
@@ -109,12 +107,10 @@ public class UserService {
     }
 
 
-    @Transactional
     public void delete(User user) {
         userRepository.delete(user);
     }
 
-    @Transactional
     public void deleteAll() {
         userRepository.deleteAll();
     }
