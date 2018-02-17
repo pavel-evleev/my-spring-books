@@ -1,12 +1,18 @@
 package app.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class UserInfo {
+
+    public UserInfo() {
+    }
+
+    public UserInfo(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public UserInfo(Long id, String name, String phone, String email) {
         this.id = id;
@@ -25,6 +31,15 @@ public class UserInfo {
 
     private List<BookInfo> books = new ArrayList<>();
 
+    private List<Long> likedBooksIds = new ArrayList<>();
+
+    public List<Long> getLikedBooksIds() {
+        return likedBooksIds;
+    }
+
+    public void setLikedBooksIds(List<Long> likedBooksIds) {
+        this.likedBooksIds = likedBooksIds;
+    }
 
     public Long getId() {
         return id;

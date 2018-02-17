@@ -23,6 +23,10 @@ class Login extends React.Component {
 
   }
 
+  componentDidMount(){
+    this.props.recaptAccess()
+  }
+
   handleRegistration = () => {
     this.props.history.push(`/registration`)
   }
@@ -55,7 +59,7 @@ class Login extends React.Component {
     }
 
     if (this.props.loginedUser) {
-      return <Redirect to={`/users/${this.props.loginedUser}`} />
+      return <Redirect to={`/users/${this.props.loginedUser.id}`} />
     }
 
     return (
@@ -87,11 +91,14 @@ class Login extends React.Component {
 const mapStateToProps = (state) => {
   return {
     fetching: state.fetching,
-    loginedUser: state.currentUser,
+    loginedUser: state.authorizedUser,
   }
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ request: ActionCreators.requestLogin }, dispatch)
+  bindActionCreators({
+    request: ActionCreators.requestLogin,
+    recaptAccess: ActionCreators.loginFromRefreshToken
+  }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

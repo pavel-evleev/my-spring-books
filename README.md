@@ -22,6 +22,8 @@ The application is in progress.
 ## Frontend
 
 * React
+* React-Router v4
+* Redux
 * Material-UI
 
 ### How to run

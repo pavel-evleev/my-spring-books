@@ -1,9 +1,12 @@
 package app.rest.controller;
 
-import app.rest.model.*;
-import app.services.EmailVerifyService;
+import app.rest.model.AddingBooks;
+import app.rest.model.BookInfo;
+import app.rest.model.CreateUserCommand;
+import app.rest.model.UserInfo;
 import app.services.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -11,13 +14,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/users")
-public class UserController {
+public class UserController extends ApiErrorController {
 
     private final UserService userService;
 
@@ -25,10 +27,10 @@ public class UserController {
         this.userService = service;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public UserInfo create(@RequestBody CreateUserCommand createUserCommand) {
-        return userService.save(createUserCommand);
+    public ResponseEntity create(@RequestBody CreateUserCommand createUserCommand) {
+        return userService.save(createUserCommand)
+                ? new ResponseEntity(HttpStatus.CREATED) : new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -64,8 +66,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{userId}/books/{bookId}")
-    public void deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId) {
-        userService.patch(userId, bookId);
+    public UserInfo deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId) {
+        return userService.patch(userId, bookId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -80,11 +82,6 @@ public class UserController {
         userService.deleteAll();
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleConstraintViolationException(ConstraintViolationException exception) {
-        return new ApiError(exception.getMessage());
-    }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public void logoutPage(HttpServletRequest request, HttpServletResponse response) {

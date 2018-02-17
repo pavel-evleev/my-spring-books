@@ -1,38 +1,52 @@
 package app.rest.model;
 
+import app.model.Role;
 import app.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * Created by Pavel on 20.10.2017.
  */
-public class CustomUserDetails extends User implements UserDetails {
+public class CustomUserDetails implements UserDetails, Serializable {
+
+    static final long serialVersionUID = 412124232L;
+    private String password;
+    private String username;
+    private Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(final User user) {
-        super(user);
+        this.password = user.getPassword();
+        this.username = user.getEmail();
+        this.authorities = translate(user.getRoles());
+
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles()
-                .stream()
+    private Collection<? extends GrantedAuthority> translate(Set<Role> roles) {
+        return roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_"+role.getRole().toUpperCase()))
                 .collect(Collectors.toList());
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
     public String getPassword() {
-        return super.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return super.getName();
+        return username;
     }
 
     @Override

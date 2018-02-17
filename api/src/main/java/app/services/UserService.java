@@ -5,20 +5,22 @@ import app.model.User;
 import app.repository.BookRepository;
 import app.repository.UserRepository;
 import app.rest.model.AddingBooks;
+import app.rest.model.BookInfo;
 import app.rest.model.CreateUserCommand;
 import app.rest.model.UserInfo;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -34,9 +36,7 @@ public class UserService {
     }
 
     public List<UserInfo> findAll() {
-        return userRepository.findAll().stream()
-                .map(UserService::toUserInfo)
-                .collect(Collectors.toList());
+        return userRepository.findAll().stream().map(UserService::toUserInfoShortInfo).collect(Collectors.toList());
     }
 
     public UserInfo findOne(Long id) {
@@ -47,13 +47,23 @@ public class UserService {
         return userRepository.findByNameLike(name);
     }
 
+    public static UserInfo toUserInfoShortInfo(User user){
+        UserInfo info = new UserInfo();
+        info.setId(user.getId());
+        info.setName(user.getName());
+        return info;
+    }
+
     public static UserInfo toUserInfo(User user) {
         UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getPhone(), user.getEmail());
         userInfo.setBooks(
                 user.getBooks().stream()
-                        .map(BookService::toBookInfo)
+                        .map(BookService::toBookInfoShortInformation)
                         .collect(Collectors.toList())
         );
+        userInfo.setLikedBooksIds(user.getLikeBooks().stream()
+                .map(rating -> rating.getBook().getId())
+                .collect(Collectors.toList()));
         return userInfo;
     }
 
@@ -66,46 +76,43 @@ public class UserService {
         return true;
     }
 
-    @Transactional
-    public UserInfo save(CreateUserCommand user) {
+    public boolean save(CreateUserCommand user) {
         User newUser = new User(user.getName(), user.getPhone(), encoder.encode(user.getPassword()), user.getEmail());
         try {
             verifyService.verifyEmail(newUser);
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
-        newUser = userRepository.save(newUser);
-        System.out.println(newUser.getId());
-        return toUserInfo(newUser);
+        return userRepository.save(newUser)!=null;
     }
 
-    @Transactional
     public void delete(Long id) {
         userRepository.delete(id);
     }
 
 
-    @Transactional
-    public void patch(Long id, Long bookId) {
+    public UserInfo patch(Long id, Long bookId) {
         User user = userRepository.findOne(id);
         user.setBooks(user.getBooks().stream().filter(book -> !book.getId().equals(bookId)).collect(Collectors.toList()));
-        User u = userRepository.saveAndFlush(user);
+        return toUserInfo(userRepository.saveAndFlush(user));
     }
 
     public UserInfo addBooks(AddingBooks books) {
         User user = userRepository.findOne(books.getUserId());
-        List<Book> findBooks = bookRepository.findAll(books.getIds());
-        user.getBooks().addAll(findBooks);
+        ArrayList<Long> existBookId = user.getBooks().stream().map(Book::getId).collect(Collectors.toCollection(ArrayList::new));
+        if (existBookId.contains(books.getIds())) {
+            return toUserInfo(user);
+        }
+        Book findBook = bookRepository.findById(books.getIds());
+        user.getBooks().add(findBook);
         return toUserInfo(userRepository.saveAndFlush(user));
     }
 
 
-    @Transactional
     public void delete(User user) {
         userRepository.delete(user);
     }
 
-    @Transactional
     public void deleteAll() {
         userRepository.deleteAll();
     }
@@ -114,4 +121,5 @@ public class UserService {
         Optional<User> optional = userRepository.findByEmail(email);
         return toUserInfo(optional.get());
     }
+
 }

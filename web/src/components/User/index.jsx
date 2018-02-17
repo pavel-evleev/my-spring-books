@@ -1,6 +1,8 @@
 import React from 'react'
 import { notify } from 'react-notify-toast'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as ActionCreators from './../../services/ducks/action'
 
 import IconButton from 'material-ui/IconButton'
 import Mail from 'material-ui/svg-icons/communication/email'
@@ -15,81 +17,59 @@ class User extends React.Component {
     super(props)
     this.state = {
       view: "grid",
-      enable: false,
-      user: null,
-      allBooks: []
+      enableChange: false,
+      allBooks: [],
     }
   }
 
   componentDidMount() {
-    const idCurrent = this.props.currentUserId;
+    const idCurrent = this.props.authorizedUser.id;
     const id = parseInt(this.props.match.params.userId);
-
     // Load user info
-    api.fetchUser(id).then((response) => {
-      this.setState({ user: response.data });
-    });
-
-    // Load all book for combo box
-    api.fetchBooks().then((response) => {
-      this.setState({ allBooks: response.data });
-    });
-
-    if (idCurrent === id) {
-      this.setState({ enable: true })
+    if (idCurrent !== id) {
+      this.props.fetchUser(id);
+    } else {
+      this.setState({ enableChange: true })
+      this.props.openedUserIsLoginedUser()
     }
   }
 
-  handleSelectBook = (event, index, value) => {
-    this.setState({ selectedBooks: value });
+  removeFromCollection = (bookId) => {
+    this.props.removeFromCollection(this.props.authorizedUser.id, bookId)
   }
 
-  handleAddClick = (selectedBooks) => {
-    const { user } = this.state
-    if (!Array.isArray(selectedBooks) || selectedBooks.length < 1) {
-      return
-    }
-
-    api.addBooksToUser({ userId: user.id, ids: selectedBooks })
-      .then((response) => {
-        this.setState({ user: response.data })
-        if (selectedBooks.length > 1) {
-          notify.show('Books add', 'success', 2000)
-        } else {
-          notify.show('Book add', 'success', 2000)
-        }
-      }).catch((error) => {
-        notify.show('error', 'error', 2000)
-      })
+  addToCollection = (bookId) => {
+    this.props.addToCollection(this.props.authorizedUser.id, bookId)
   }
 
-  handleDeleteBook = (userId, bookId) => {
-    const { user } = this.state
-    api.removeBookFromUser(userId, bookId)
-      .then((response) => {
-        user.books = user.books.filter(book => book.id != bookId);
-        this.setState({ user })
-        notify.show('Book removed', 'success', 2000)
-      }).catch((error) => {
-        notify.show("error", 'error', 2000)
-      })
+  viewDelete = ()=>{
+    return parseInt(this.props.match.params.userId) === this.props.authorizedUser.id
   }
 
-  deleteUser = (id) => {
-    api.DeleteUser(id)
-      .then((response) => {
-        notify.show('User delete', 'success', 2000)
-        setTimeout(() => { this.props.history.push(`/users`) }, 1000)
-      })
-      .catch((error) => {
-        notify.show('error', 'error', 2000)
-      })
+  handleToggleBookLike = (bookId) => {
+    this.props.toggleLikeBook({
+      "userId": this.props.authorizedUser.id,
+      "bookId": bookId
+    })
   }
-
   render() {
-    const { allBooks, user, enable } = this.state;
+    const { user, enableChange } = this.state;
 
-    if (!user) {
+    const idCurrent = this.props.authorizedUser.id;
+    const id = parseInt(this.props.match.params.userId);
+    let userView = ''
+    if (idCurrent !== id) {
+      userView = this.props.openedUser
+    } else {
+      userView = this.props.authorizedUser
+    }
+
+    let userBooksId = '';
+    if (this.props.authorizedUser && Array.isArray(this.props.authorizedUser.books)) {
+      userBooksId = this.props.authorizedUser.books.map(book => book.id)
+    }
+
+    if (!this.props.openedUser) {
       return (<div>User not found</div>)
     }
 
@@ -99,20 +79,27 @@ class User extends React.Component {
         <Paper className="user">
           <div className="user-ava">
             <div>
-              <img src={require("./../../img/photo40427709_329412123.jpg")} alt="user" />
+              <img src={require("./../../img/user.png")} alt="user" />
             </div>
           </div>
           <div>
-            <div className="user-info">{user.name}</div>
+            <div className="user-info">{userView.name}</div>
             <IconButton touch={true}
               onClick={() => { alert("click") }}>
               <Mail />
             </IconButton>
           </div>
-          <div>counting books:{user.books.length}</div>
+          <div>Collection books:{userView.books.length}</div>
         </Paper>
         <div className="user-books">
-          <Books books={user.books} view={this.state.view} />
+          <Books books={userView.books}
+            userBooksId={userBooksId}
+            likedBookIds={this.props.likedBooksIds}
+            view={this.state.view}
+            enableChange={this.viewDelete()}
+            removeFromCollection={this.removeFromCollection}
+            addToCollection={this.addToCollection}
+            toggleLikeBook={this.handleToggleBookLike} />
         </div>
       </div>
     )
@@ -121,8 +108,19 @@ class User extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentUserId: state.currentUser
+    authorizedUser: state.authorizedUser,
+    openedUser: state.openedUser,
+    likedBooksIds: state.likedBooksIds
   }
 }
 
-export default connect(mapStateToProps)(User)
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({
+    fetchUser: ActionCreators.fetchUser,
+    openedUserIsLoginedUser: ActionCreators.openedIsLogined,
+    removeFromCollection: ActionCreators.removeFromCollection,
+    addToCollection: ActionCreators.addToCollection,
+    toggleLikeBook: ActionCreators.toggleLikeBook
+  }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(User)

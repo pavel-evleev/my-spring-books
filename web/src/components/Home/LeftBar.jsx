@@ -58,6 +58,11 @@ class LeftBar extends React.Component {
     this.handleTouchTap();
   }
 
+  handleMyPageClick = ()=>{
+    this.props.history.push(`/users/${this.props.loginedUser}`);
+    this.handleTouchTap();
+  }
+
   render() {
 
     if (this.props.login) {
@@ -65,6 +70,7 @@ class LeftBar extends React.Component {
         <Drawer width={200} open={this.props.open} docked={false} onRequestChange={() => this.handleTouchTap()} >
           <AppBar title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
           <MenuItem onClick={this.handleHomeClick}>Home</MenuItem>
+          <MenuItem onClick={this.handleMyPageClick}>My page</MenuItem>
           <MenuItem onClick={this.handleUsersClick}>Users</MenuItem>
           <MenuItem onClick={this.handleBooksClick}>Books</MenuItem>
           <MenuItem onClick={this.handleAuthorsClick}>Authors</MenuItem>
@@ -96,7 +102,8 @@ class LeftBar extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    login: state.login
+    login: state.login,
+    loginedUser: state.authorizedUser ? state.authorizedUser.id : ''
   }
 }
 

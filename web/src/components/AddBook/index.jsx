@@ -3,14 +3,18 @@ import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import DatePicker from 'material-ui/DatePicker'
 import SelectField from 'material-ui/SelectField'
-import Snackbar from 'material-ui/Snackbar'
 import MenuItem from 'material-ui/MenuItem'
-
+import moment from 'moment'
 import ImageUpload from './../ImageUpload'
+import Spinner from './../MagicProgress'
+import { notify } from 'react-notify-toast'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
+import * as ActionCreators from './../../services/ducks/action'
 import * as api from '../../services/API'
 
-export default class AddBook extends React.Component {
+class AddBook extends React.Component {
 
   constructor(props) {
     super(props);
@@ -21,32 +25,22 @@ export default class AddBook extends React.Component {
       maxDate: maxDate,
       hidden: '',
       name: '',
-      authors: [],
       arraySelectedAuthors: [],
       selectedAuthors: null,
       publisher: '',
       publishedDate: null,
       value: '',
-      open: false,
-      message: '',
-      error: null,
-      newAuthors: ''
+      genreId: '',
+      newAuthors: '',
+      file: ''
     };
   }
 
   componentDidMount() {
-    this.setState({ authors: [], error: null });
-    this.getAuthors();
+    this.props.allAuthors()
+    this.props.allGenres()
   }
 
-  getAuthors = () => {
-    api.fetchAuthors().then((response) => {
-      this.setState({ authors: response.data });
-    })
-      .catch((error) => {
-        this.setState({ authors: [], error: error.toString() })
-      });
-  }
 
   handleDateChange = (objNull, date) => {
     this.setState({ publishedDate: date });
@@ -64,48 +58,45 @@ export default class AddBook extends React.Component {
     this.setState({ publisher: event.target.value });
   }
 
-  handleSelectedChange = (event, index, value) => {
+  handleAuthorsSelectedChange = (event, index, value) => {
     this.setState({ arraySelectedAuthors: value });
     this.setState({ value });
   }
 
-  handleAddClick = () => {
-    api.CreateBook(
-      {
-        name: this.state.name,
-        publisher: this.state.publisher,
-        datePublished: this.state.publishedDate,
-        authorsIds: this.state.arraySelectedAuthors,
-        newAuthors: this.state.newAuthors ? this.state.newAuthors.split('\n') : []
-      }).then((response) => {
-        if (response.status == 201) {
-          this.setState(
-            {
-              hidden: "none",
-              open: true,
-              message: "succes!"
-            }
-          );
-          setTimeout(() => {
-            this.props.history.push("/books")
-          }, 1001);
-        }
-      }).catch((error) => {
-        this.setState({ message: "not add because: " + error, open: true });
-      });
+  handleGenresSelectedChange = (event, index, value) => {
+    this.setState({ genreId: value })
   }
 
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
-    });
-  };
+  handleAddClick = () => {
+    const formData = new FormData()
+    formData.append('name', this.state.name)
+    formData.append('publisher', this.state.publisher)
+    formData.append('datePublished', moment(this.state.publishedDate).format("YYYY-MM-DD"))
+    formData.append('authorsIds', this.state.arraySelectedAuthors)
+    formData.append('genreId', this.state.genreId)
+    if (this.state.newAuthors.length > 0) {
+      formData.append('newAuthors', this.state.newAuthors.split('\n'))
+    }
+    if (this.state.file) {
+      formData.append('file', this.state.file, this.state.file.name)
+    }
+    this.props.creatBook(formData)
+    // setTimeout(() => {
+    //   this.props.history.push("/books")
+    // }, 1001);
+  }
+
+  handleFile = (file) => {
+    this.setState({ file: file })
+  }
 
   render() {
+    if(this.props.fetching)
+      return (<Spinner/>)
     return (
       <div>
         <div style={{ margin: "0 25%", display: this.state.hidden }}>
-          <ImageUpload/>
+          <ImageUpload handleFile={this.handleFile} />
           <TextField
             hintText="Book Name"
             floatingLabelText="Book Name"
@@ -125,14 +116,27 @@ export default class AddBook extends React.Component {
           <SelectField
             floatingLabelText="Authors"
             value={this.state.value}
-            onChange={this.handleSelectedChange}
+            onChange={this.handleAuthorsSelectedChange}
             multiple={true}
           >
             {
-              this.state.authors.map(
+              Array.isArray(this.props.authors) ? this.props.authors.map(
                 (author, index) =>
                   <MenuItem key={index} value={author.id} primaryText={author.name} />
-              )
+              ) : <MenuItem value="none" primaryText="none" />
+            }
+          </SelectField>
+          <br />
+          <SelectField
+            floatingLabelText="Genre"
+            value={this.state.genreId}
+            onChange={this.handleGenresSelectedChange}
+          >
+            {
+              Array.isArray(this.props.genres) ? this.props.genres.map(
+                (genre, index) =>
+                  <MenuItem key={index} value={genre.id} primaryText={genre.name} />
+              ) : <MenuItem value="none" primaryText="none" />
             }
           </SelectField>
           <br />
@@ -149,17 +153,29 @@ export default class AddBook extends React.Component {
             autoOk={true}
             maxDate={this.state.maxDate}
             value={this.state.publishedDate}
-            onChange={this.handleDateChange} />
+            onChange={this.handleDateChange}
+          />
           <RaisedButton label="Add" onClick={this.handleAddClick} />
-
         </div>
-        <Snackbar
-          open={this.state.open}
-          message={this.state.message}
-          autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
-        />
       </div>
     )
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    books: state.allBooks,
+    authors: state.allAuthors,
+    genres: state.allGenres,
+    authorizedUserId: state.authorizedUser.id,
+    fetching: state.fetching
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({
+    creatBook: ActionCreators.creatBook,
+    allAuthors: ActionCreators.loadAllAuthors,
+    allGenres: ActionCreators.loadAllGenres
+  }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddBook)

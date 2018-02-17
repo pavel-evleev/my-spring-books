@@ -1,7 +1,6 @@
 package app.rest.controller;
 
 
-import app.rest.model.ApiError;
 import app.rest.model.AuthorInfo;
 import app.rest.model.BookInfo;
 import app.rest.model.CreateAuthorCommand;
@@ -9,12 +8,11 @@ import app.services.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/authors")
-public class AuthorController {
+public class AuthorController extends ApiErrorController {
 
     private final AuthorService authorService;
 
@@ -55,9 +53,5 @@ public class AuthorController {
         return authorService.findOne(authorId).getBooks();
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleConstraintViolationException(ConstraintViolationException exception) {
-        return new ApiError(exception.getMessage());
-    }
+
 }

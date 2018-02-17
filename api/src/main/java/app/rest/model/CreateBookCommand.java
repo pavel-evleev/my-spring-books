@@ -1,6 +1,9 @@
 package app.rest.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +16,40 @@ public class CreateBookCommand {
 
     private String publisher;
 
-    private Date datePublished;
+    private Long genreId;
+
+    private LocalDate datePublished;
 
     private List<Long> authorsIds = new ArrayList<>();
 
     private List<String> newAuthors = new ArrayList<>();
+
+
+    public CreateBookCommand(String name, String publisher, LocalDate datePublished, List<Long> authorsIds, List<String> newAuthors, Long genreId) {
+        this.name = name;
+        this.publisher = publisher;
+        this.datePublished = datePublished;
+        this.authorsIds = authorsIds;
+        this.newAuthors = newAuthors;
+        this.genreId = genreId;
+    }
+
+    public CreateBookCommand(String name, String publisher, LocalDate datePublished, List<Long> authorsIds, Long genreId) {
+        this.name = name;
+        this.publisher = publisher;
+        this.datePublished = datePublished;
+        this.authorsIds = authorsIds;
+        this.genreId = genreId;
+    }
+
+
+    public Long getGenreId() {
+        return genreId;
+    }
+
+    public void setGenreId(Long genreId) {
+        this.genreId = genreId;
+    }
 
     public String getName() {
         return name;
@@ -35,11 +67,11 @@ public class CreateBookCommand {
         this.publisher = publisher;
     }
 
-    public Date getDatePublished() {
+    public LocalDate getDatePublished() {
         return datePublished;
     }
 
-    public void setDatePublished(Date datePublished) {
+    public void setDatePublished(LocalDate datePublished) {
         this.datePublished = datePublished;
     }
 

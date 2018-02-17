@@ -6,12 +6,13 @@ import app.rest.model.CreateAuthorCommand;
 import app.model.Author;
 import app.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
@@ -31,29 +32,21 @@ public class AuthorService {
             .collect(Collectors.toList());
     }
 
-    @Transactional
     public AuthorInfo save(CreateAuthorCommand createAuthorCommand) {
         Author author = new Author(createAuthorCommand.getName());
         return toAuthorInfo(authorRepository.save(author));
     }
 
-    @Transactional
     public void delete(Long id) {
         authorRepository.delete(id);
     }
 
-    @Transactional
     public void deleteAll() {
         authorRepository.deleteAll();
     }
 
     public static AuthorInfo toAuthorInfo(Author author) {
         AuthorInfo authorInfo = new AuthorInfo(author.getId(), author.getName());
-        authorInfo.setBooks(
-            author.getBooks().stream()
-                .map(BookService::toBookInfo)
-                .collect(Collectors.toList())
-        );
         return authorInfo;
     }
 }

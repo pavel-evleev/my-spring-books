@@ -1,37 +1,47 @@
 import React from 'react'
-
-import Favorite from 'material-ui/svg-icons/toggle/star'
-import Delete from 'material-ui/svg-icons/action/delete'
-import PossibleFavorite from 'material-ui/svg-icons/toggle/star-border'
-import IconButton from 'material-ui/IconButton'
+import ActionButton from './../../GroupIconButton/FavorDeleteButton'
 import Paper from 'material-ui/Paper'
 
 /*
- * View for listing books.
+ * View for list books.
  */
 export default class Books extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      favorite: false
+      // favorite: false
     }
   }
 
+  handleAddFavor = () => {
+    this.props.addToCollection(this.props.book.id)
+  }
+
+  handleRemoveFavor = () => {
+    this.props.removeFromCollection(this.props.book.id)
+  }
+
+  handleLikeBook = () => {
+    this.props.toggleLikeBook(this.props.book.id)
+  }
+
   render() {
-    const { name } = this.props.book
+    const { book } = this.props
     return (
-      <Paper style={{ width: "100%", display: "flex", margin: "5px 0", padding: "10px 0" }}>
-        <div style={{ backgroundColor: "blue", width: "40px", height: "40px", margin: "0px 10px" }}>img</div>
-        <span style={{ maxWidth: "530px" }}>{name}</span>
+      <Paper style={{ width: "100%", display: "flex", margin: "5px 0", padding: "10px 0" }}
+        onClick={() => this.props.OnClick(this.props.book.id)}>
+
+        <div className="sm-img">
+          {book.cover ? <img src={book.cover} alt="book" width="30" height="40" />
+            : <img src={require("../../../img/book.png")} alt="book" width="40" height="40" />}
+        </div>
+        <span style={{ maxWidth: "530px" }}>{book.name}</span>
         <div style={{ marginLeft: "auto", marginRight: "10px" }}>
-          <IconButton touch={true} onClick={() => this.setState({ favorite: !this.state.favorite })}>
-            {
-              this.state.favorite ? (<Favorite />) : (<PossibleFavorite />)
-            }
-          </IconButton>
-          <IconButton touch={true} onClick={()=>this.props.onDelete}>
-            <Delete />
-          </IconButton>
+          <ActionButton added={this.props.added} liked={this.props.liked}
+          buttonAction={this.props.buttonAction}
+          toggleLikeBook={this.handleLikeBook} 
+          handleClickFavor={this.handleAddFavor} 
+          handleClickUnfavor={this.handleRemoveFavor} />
         </div>
       </Paper>
     )

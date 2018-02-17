@@ -1,9 +1,7 @@
 import React from 'react'
 import Paper from 'material-ui/Paper'
-import IconButton from 'material-ui/IconButton'
-import Favorite from 'material-ui/svg-icons/toggle/star'
-import Delete from 'material-ui/svg-icons/action/delete'
-import PossibleFavorite from 'material-ui/svg-icons/toggle/star-border'
+import ActionButton from './../../GroupIconButton/FavorDeleteButton'
+
 
 const MAX_LENGHT_TITLE = 52
 
@@ -11,11 +9,19 @@ class BookMiniCard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      favorite: false
     }
   }
 
-  deleteBook = (id) => {
+  handleAddFavor = () => {
+    this.props.addToCollection(this.props.book.id)
+  }
+
+  handleRemoveFavor = () => {
+    this.props.removeFromCollection(this.props.book.id)
+  }
+
+  handleLikeBook = () => {
+    this.props.toggleLikeBook(this.props.book.id)
   }
 
   truncateTitle = (title) => {
@@ -25,29 +31,22 @@ class BookMiniCard extends React.Component {
     return title
   }
 
+
   render() {
-    const { book, OnClick } = this.props
+    const { book, OnClick, added, liked } = this.props
 
     return (
       <Paper zDepth={1} onClick={() => OnClick(book.id)} className="bookMiniCard" style={{ position: "relative" }}>
         <div className="bookMiniCard-title" >{this.truncateTitle(book.name)}</div>
-        <div className="bookMiniCard-img"></div>
-        <div >
-          <IconButton touch={true} onClick={(e) => {
-            e.stopPropagation()
-            this.setState({ favorite: !this.state.favorite })
-          }}>
-            {
-              this.state.favorite ? (<Favorite />) : (<PossibleFavorite />)
-            }
-          </IconButton>
-          <IconButton touch={true} onClick={(e) => {
-            e.stopPropagation()
-            this.props.onDelete
-          }}>
-            <Delete />
-          </IconButton>
+        <div className="bookMiniCard-img">
+          {book.cover ? <img src={book.cover} alt="book" width="170" height="200" /> : <img src={require("../../../img/book.png")} alt="book" width="200" height="200" />}
         </div>
+        <ActionButton added={added} liked={liked}
+          buttonAction={this.props.buttonAction}
+          toggleLikeBook={this.handleLikeBook}
+          handleClickFavor={this.handleAddFavor}
+          handleClickUnfavor={this.handleRemoveFavor}
+          countLiked={book.rating} />
         {/* <div style={{ padding: "0px 10px 5px", alignSelf: "center"}}>{book.authors}</div> */}
         <div className="bookMiniCard-desc">{book.description}</div>
       </Paper>
@@ -55,6 +54,6 @@ class BookMiniCard extends React.Component {
   }
 }
 
-BookMiniCard.defaultProps = { deleteBool: false }
+BookMiniCard.defaultProps = { buttonAction: false }
 
 export default BookMiniCard

@@ -33,7 +33,7 @@ class Chat extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentUserId: state.currentUser,
+    authorizedUserId: state.authorizedUser.id,
     converations: state.converations
   }
 }

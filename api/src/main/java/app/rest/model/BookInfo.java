@@ -1,30 +1,82 @@
 package app.rest.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Pavel on 08.09.2017.
- */
+
 public class BookInfo {
 
-    public BookInfo(Long id, String name, String publisher, Date datePublished) {
+    private Long id;
+
+    private String name;
+
+    private String cover;
+
+    private Integer rating;
+
+    private GenreInfo genre;
+
+    private String publisher;
+
+    private LocalDate datePublished;
+
+    private LocalDate dateCreated;
+
+    private List<String> authors = new ArrayList<>();
+
+    private List<CommentInfo> comments = new ArrayList<>();
+
+    public BookInfo() {
+
+    }
+
+    public BookInfo(Long id, String name, String cover) {
+        this.id = id;
+        this.name = name;
+        this.cover = cover;
+    }
+
+    public BookInfo(Long id, String name, String publisher, LocalDate datePublished) {
         this.id = id;
         this.name = name;
         this.publisher = publisher;
         this.datePublished = datePublished;
     }
 
-    private Long id;
+    public BookInfo(Long id, String name, String publisher, LocalDate datePublished, String cover) {
+        this.id = id;
+        this.name = name;
+        this.cover = cover;
+        this.publisher = publisher;
+        this.datePublished = datePublished;
+    }
 
-    private String name;
+    public BookInfo(Long id) {
+        this.id = id;
+    }
 
-    private String publisher;
+    public BookInfo(Long id, String name, LocalDate dateCreated) {
+        this.id = id;
+        this.name = name;
+        this.dateCreated = dateCreated;
+    }
 
-    private Date datePublished;
+    public GenreInfo getGenre() {
+        return genre;
+    }
 
-    private List<String> authors = new ArrayList<>();
+    public void setGenre(GenreInfo genre) {
+        this.genre = genre;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
 
     public Long getId() {
         return id;
@@ -50,11 +102,11 @@ public class BookInfo {
         this.publisher = publisher;
     }
 
-    public Date getDatePublished() {
+    public LocalDate getDatePublished() {
         return datePublished;
     }
 
-    public void setDatePublished(Date datePublished) {
+    public void setDatePublished(LocalDate datePublished) {
         this.datePublished = datePublished;
     }
 
@@ -64,5 +116,21 @@ public class BookInfo {
 
     public void setAuthors(List<String> authors) {
         this.authors = authors;
+    }
+
+    public List<CommentInfo> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentInfo> comments) {
+        this.comments = comments;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 }

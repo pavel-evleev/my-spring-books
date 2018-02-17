@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "authors")
-public class Author implements Serializable {
+public class Author  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,15 +60,13 @@ public class Author implements Serializable {
 
         Author author = (Author) o;
 
-        if (id != null ? !id.equals(author.id) : author.id != null) return false;
         if (name != null ? !name.equals(author.name) : author.name != null) return false;
         return books != null ? books.equals(author.books) : author.books == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (books != null ? books.hashCode() : 0);
         return result;
     }
@@ -76,7 +74,6 @@ public class Author implements Serializable {
     @Override
     public String toString() {
         return "Author{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", books=" + books +
                 '}';

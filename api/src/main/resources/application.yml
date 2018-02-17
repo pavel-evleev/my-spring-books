@@ -10,4 +10,10 @@ spring:
     properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
   profiles:
     include: 'email'
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
 logging.level.org.hibernate.SQL: debug
+logging.level.org.springframework.web: DEBUG
+logging.level.org.hibernate: ERROR

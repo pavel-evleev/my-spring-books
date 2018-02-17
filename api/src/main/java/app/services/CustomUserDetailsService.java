@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -20,12 +21,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private LoginScheduleService scheduleService;
+
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
         //it's need for get user which confirm email, so that active:true
         Optional<User> optionalUser = userRepository.findByEmailAndActive(userEmail, true);
         optionalUser
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        scheduleService.setCurrentLogin(optionalUser.get().getId(), LocalDate.now());
         return optionalUser
                 .map(CustomUserDetails::new).get();
     }
