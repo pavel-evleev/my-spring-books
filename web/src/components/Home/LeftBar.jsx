@@ -103,7 +103,7 @@ class LeftBar extends React.Component {
 const mapStateToProps = (state) => {
   return {
     login: state.login,
-    loginedUser: state.currentUser ? state.currentUser.id : ''
+    loginedUser: state.authorizedUser ? state.authorizedUser.id : ''
   }
 }
 

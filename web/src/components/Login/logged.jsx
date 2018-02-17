@@ -41,7 +41,7 @@ class Logged extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { user: state.currentUser }
+  return { user: state.authorizedUser }
 }
 
 const mapDispatchToProps = (dispatch) =>

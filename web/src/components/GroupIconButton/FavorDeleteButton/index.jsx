@@ -41,7 +41,7 @@ class FavorDeleteButton extends React.Component {
         }}>
           {liked ? <Like /> : <Dislike />}
         </IconButton>
-        <span>{countLiked}</span>
+        <span style={{display: "inline"}}>{countLiked}</span>
 
       </div>
     )

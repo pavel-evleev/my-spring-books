@@ -87,6 +87,10 @@ export const fetchUser = (id) => {
   return client.get('/v1/users/' + id)
 }
 
+export const fetchBook = (id) => {
+  return client.get(`v1/books/${id}`)
+}
+
 export const fetchEmail = (email) => {
   return client.post('/v1/users/findEmail', email);
 }

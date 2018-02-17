@@ -21,24 +21,24 @@ class Page extends React.Component {
   }
 
   addToCollection = (bookId) => {
-    this.props.addToCollection(this.props.currentUser.id, bookId)
+    this.props.addToCollection(this.props.authorizedUser.id, bookId)
   }
 
-  removeFromCollectiom = (bookId) => {
-    this.props.removeFromCollectiom(this.props.currentUser.id, bookId)
+  removeFromCollection = (bookId) => {
+    this.props.removeFromCollection(this.props.authorizedUser.id, bookId)
   }
 
   handleToggleBookLike = (bookId) => {
     this.props.toggleLikeBook({
-      "userId": this.props.currentUser.id,
+      "userId": this.props.authorizedUser.id,
       "bookId": bookId
     })
   }
 
   render() {
     let userBooksId = '';
-    if (this.props.currentUser && Array.isArray(this.props.currentUser.books)) {
-      userBooksId = this.props.currentUser.books.map(book => book.id)
+    if (this.props.authorizedUser && Array.isArray(this.props.authorizedUser.books)) {
+      userBooksId = this.props.authorizedUser.books.map(book => book.id)
     }
     return (
       <div>
@@ -47,7 +47,7 @@ class Page extends React.Component {
           searchComponent={<Search />} />
         <div className="user-books">
           {this.props.fetching ? <Progress /> : <Books books={this.props.books} userBooksId={userBooksId} view={this.state.view}
-            addToCollection={this.addToCollection} removeFromCollectiom={this.removeFromCollectiom} toggleLikeBook={this.handleToggleBookLike} likedBookIds={this.props.likedBooksIds} />}
+            addToCollection={this.addToCollection} removeFromCollection={this.removeFromCollection} toggleLikeBook={this.handleToggleBookLike} likedBookIds={this.props.likedBooksIds} />}
         </div>
       </div>
     )
@@ -58,7 +58,7 @@ class Page extends React.Component {
 const mapStateToProps = (state) => {
   return {
     books: state.allBooks,
-    currentUser: state.currentUser,
+    authorizedUser: state.authorizedUser,
     fetching: state.fetching,
     likedBooksIds: state.likedBooksIds
   }
@@ -68,7 +68,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
     getBooks: ActionCreators.getBooks,
     addToCollection: ActionCreators.addToCollection,
-    removeFromCollectiom: ActionCreators.removeFromCollectiom,
+    removeFromCollection: ActionCreators.removeFromCollection,
     toggleLikeBook: ActionCreators.toggleLikeBook
   }, dispatch)
 

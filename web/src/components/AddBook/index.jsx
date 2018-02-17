@@ -6,6 +6,7 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import moment from 'moment'
 import ImageUpload from './../ImageUpload'
+import Spinner from './../MagicProgress'
 import { notify } from 'react-notify-toast'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -80,9 +81,9 @@ class AddBook extends React.Component {
       formData.append('file', this.state.file, this.state.file.name)
     }
     this.props.creatBook(formData)
-    setTimeout(() => {
-      this.props.history.push("/books")
-    }, 1001);
+    // setTimeout(() => {
+    //   this.props.history.push("/books")
+    // }, 1001);
   }
 
   handleFile = (file) => {
@@ -90,7 +91,8 @@ class AddBook extends React.Component {
   }
 
   render() {
-    console.log(this.props)
+    if(this.props.fetching)
+      return (<Spinner/>)
     return (
       <div>
         <div style={{ margin: "0 25%", display: this.state.hidden }}>
@@ -164,7 +166,8 @@ const mapStateToProps = (state) => {
     books: state.allBooks,
     authors: state.allAuthors,
     genres: state.allGenres,
-    currentUserId: state.currentUser.id
+    authorizedUserId: state.authorizedUser.id,
+    fetching: state.fetching
   }
 }
 

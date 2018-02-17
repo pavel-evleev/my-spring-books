@@ -2,37 +2,6 @@ import React from 'react'
 import ActionButton from './../GroupIconButton/FavorDeleteButton'
 import Comments from './../Comments'
 
-const com = [
-  {
-    id: 1,
-    authorComment: "Pavel",
-    text: "text comment",
-    time: "12/12/2007"
-  },
-  {
-    id: 2,
-    authorComment: "Pavel",
-    text: "text comment",
-    time: "12/12/2007"
-  },
-  {
-    id: 3,
-    authorComment: "Pavel",
-    text: "text comment",
-    time: "12/12/2007"
-  },
-  {
-    id: 4,
-    authorComment: "Pavel",
-    text: "text comment",
-    time: "12/12/2007"
-  }
-]
-
-
-/**
- * Simple book list item.
- */
 class BookCard extends React.Component {
 
   constructor(props) {
@@ -56,7 +25,7 @@ class BookCard extends React.Component {
 
 
   render() {
-    const { book, edit } = this.props;
+    const { book, edit, added, liked } = this.props;
     return (
       <div>
         <div className="book-card-container">
@@ -70,8 +39,13 @@ class BookCard extends React.Component {
             <span>Book name: {book.name}</span>
             <span>Authors: {this.groupAuthors(book.authors)}</span>
             <span>Genre: {book.genre.name}</span>
-            <span>Readed: {book.readed ? book.readed : "5"}</span>
-            <ActionButton />
+            <ActionButton
+              added={added} liked={liked}
+              toggleLikeBook={this.props.handleToggleLikeBook}
+              handleClickFavor={this.props.handleAddToCollection}
+              handleClickUnfavor={this.props.handleRemoveFromCollection}
+              countLiked={book.rating}
+            />
           </div>
           <div className="book-card-description">
             {book.description}

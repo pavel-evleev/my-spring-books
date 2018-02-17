@@ -25,6 +25,7 @@ export const USER_OPEN_SECCESS = 'USER_OPEN_SECCESS'
 export const USER_OPEN_ERROR = 'USER_OPEN_ERROR'
 export const OPENED_USER_IS_LOGINED_USER = 'OPENED_USER_IS_LOGINED_USER'
 
+export const BOOK_CREATED_REQUEST = 'BOOK_CREATED_REQUEST'
 export const BOOK_CREATED_SUCCESS = 'BOOK_CREATED_SUCCESS'
 export const BOOK_CREATED_ERROR = 'BOOK_CREATED_ERROR'
 
@@ -37,6 +38,11 @@ export const BOOK_REMOVE_FROM_COLLECTION_ERROR = 'BOOK_REMOVE_FROM_COLLECTION_ER
 export const BOOKS_FETCH_REQUEST = "BOOKS_FETCH_REQUEST"
 export const BOOKS_FETCH_SUCCESS = 'BOOKS_FETCH_SUCCESS'
 export const BOOKS_FETCH_ERROR = 'BOOKS_FETCH_ERROR'
+
+export const BOOK_FETCH_REQUEST = 'BOOK_FETCH_REQUEST'
+export const BOOK_FETCH_SUCCESS = 'BOOK_FETCH_SUCCESS'
+export const BOOK_FETCH_ERROR = 'BOOK_FETCH_ERROR'
+
 
 export const AUTHORS_FETCH_REQUEST = "AUTHORS_FETCH_REQUEST"
 export const AUTHORS_FETCH_SUCCESS = "AUTHORS_FETCH_SUCCESS"
@@ -118,7 +124,7 @@ export function loggoutUser(id) {
       type: LOGGOUT_USER,
       payload: false
     })
-    api.logout(id).then(()=>{
+    api.logout(id).then(() => {
       api.removeCredentials()
     })
   }
@@ -199,6 +205,7 @@ export function addComment(comment) {
 
 export function creatBook(book) {
   return function (dispatch) {
+    dispatch({ type: BOOK_CREATED_REQUEST })
     api.CreateBook(book)
       .then(() => {
         dispatch({
@@ -216,7 +223,23 @@ export function creatBook(book) {
       })
   }
 }
-
+export function getBookById(id) {
+  return function (dispatch) {
+    dispatch({ type: BOOK_FETCH_REQUEST })
+    api.fetchBook(id).then(response => {
+      dispatch({ type: BOOK_FETCH_SUCCESS, payload: response.data })
+    }).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, getBookById(id))
+      } else {
+        dispatch({
+          type: BOOK_FETCH_ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
 
 export function getBooks() {
   return function (dispatch) {
@@ -268,7 +291,7 @@ export function addToCollection(loginedUser, bookId) {
   }
 }
 
-export function removeFromCollectiom(userId, bookId) {
+export function removeFromCollection(userId, bookId) {
   return function (dispatch) {
 
     api.removeBookFromUser(userId, bookId)
@@ -279,7 +302,7 @@ export function removeFromCollectiom(userId, bookId) {
         })
       }).catch(error => {
         if (error.response.status === 401) {
-          reAuth(dispatch, removeFromCollectiom(userId, bookId))
+          reAuth(dispatch, removeFromCollection(userId, bookId))
         } else {
           dispatch({
             type: BOOK_REMOVE_FROM_COLLECTION_ERROR,

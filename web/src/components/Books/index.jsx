@@ -21,6 +21,7 @@ class Books extends React.Component {
   }
 
   handleOnClickBook = (id) => {
+    
     this.props.history.push(`/books/${id}`);
   }
 
@@ -51,7 +52,7 @@ class Books extends React.Component {
                   toggleLikeBook={this.props.toggleLikeBook}
                   OnClick={this.handleOnClickBook}
                   addToCollection={this.props.addToCollection}
-                  removeFromCollectiom={this.props.removeFromCollectiom} />)
+                  removeFromCollection={this.props.removeFromCollection} />)
               } else {
                 return (<BookCard key={book.id} book={book}
                   added={false}
@@ -60,7 +61,7 @@ class Books extends React.Component {
                   toggleLikeBook={this.props.toggleLikeBook}
                   OnClick={this.handleOnClickBook}
                   addToCollection={this.props.addToCollection}
-                  removeFromCollectiom={this.props.removeFromCollectiom} />)
+                  removeFromCollection={this.props.removeFromCollection} />)
               }
             })) : (this.props.books.map((book) => {
               if (userBooksId.includes(book.id)) {
@@ -72,7 +73,7 @@ class Books extends React.Component {
                   toggleLikeBook={this.props.toggleLikeBook}
                   OnClick={this.handleOnClickBook}
                   addToCollection={this.props.addToCollection}
-                  removeFromCollectiom={this.props.removeFromCollectiom} />)
+                  removeFromCollection={this.props.removeFromCollection} />)
               } else {
                 return (<BookListItem key={book.id} book={book}
                   added={false}
@@ -81,7 +82,7 @@ class Books extends React.Component {
                   toggleLikeBook={this.props.toggleLikeBook}
                   OnClick={this.handleOnClickBook}
                   addToCollection={this.props.addToCollection}
-                  removeFromCollectiom={this.props.removeFromCollectiom} />)
+                  removeFromCollection={this.props.removeFromCollection} />)
               }
             }))
           }

@@ -17,10 +17,10 @@ class BookMiniCard extends React.Component {
   }
 
   handleRemoveFavor = () => {
-    this.props.removeFromCollectiom(this.props.book.id)
+    this.props.removeFromCollection(this.props.book.id)
   }
 
-  handleLikeBook = ()=>{
+  handleLikeBook = () => {
     this.props.toggleLikeBook(this.props.book.id)
   }
 
@@ -41,7 +41,8 @@ class BookMiniCard extends React.Component {
         <div className="bookMiniCard-img">
           {book.cover ? <img src={book.cover} alt="book" width="170" height="200" /> : <img src={require("../../../img/book.png")} alt="book" width="200" height="200" />}
         </div>
-        <ActionButton added={added} liked={liked} buttonAction={this.props.buttonAction}
+        <ActionButton added={added} liked={liked}
+          buttonAction={this.props.buttonAction}
           toggleLikeBook={this.handleLikeBook}
           handleClickFavor={this.handleAddFavor}
           handleClickUnfavor={this.handleRemoveFavor}

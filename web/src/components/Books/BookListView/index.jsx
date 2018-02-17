@@ -18,7 +18,7 @@ export default class Books extends React.Component {
   }
 
   handleRemoveFavor = () => {
-    this.props.removeFromCollectiom(this.props.book.id)
+    this.props.removeFromCollection(this.props.book.id)
   }
 
   render() {

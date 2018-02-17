@@ -116,6 +116,7 @@ public class BookService {
         if (book.getCover() != null && book.getCover().length() > 0) {
             info.setCover("http://127.0.0.1:8080/v1/books/image/" + book.getCover());
         }
+        info.setRating(book.getLikeBooks().size());
         return info;
     }
 

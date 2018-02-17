@@ -23,7 +23,7 @@ class User extends React.Component {
   }
 
   componentDidMount() {
-    const idCurrent = this.props.currentUser.id;
+    const idCurrent = this.props.authorizedUser.id;
     const id = parseInt(this.props.match.params.userId);
     // Load user info
     if (idCurrent !== id) {
@@ -34,35 +34,35 @@ class User extends React.Component {
     }
   }
 
-  removeFromCollectiom = (bookId) => {
-    this.props.removeFromCollectiom(this.props.currentUser.id, bookId)
+  removeFromCollection = (bookId) => {
+    this.props.removeFromCollection(this.props.authorizedUser.id, bookId)
   }
 
-  addToCollectiom = (bookId) => {
-    this.props.addToCollectiom(this.props.currentUser.id, bookId)
+  addToCollection = (bookId) => {
+    this.props.addToCollection(this.props.authorizedUser.id, bookId)
   }
 
   handleToggleBookLike = (bookId) => {
     this.props.toggleLikeBook({
-      "userId": this.props.currentUser.id,
+      "userId": this.props.authorizedUser.id,
       "bookId": bookId
     })
   }
   render() {
     const { user, enableChange } = this.state;
 
-    const idCurrent = this.props.currentUser.id;
+    const idCurrent = this.props.authorizedUser.id;
     const id = parseInt(this.props.match.params.userId);
     let userView = ''
     if (idCurrent !== id) {
       userView = this.props.openedUser
     } else {
-      userView = this.props.currentUser
+      userView = this.props.authorizedUser
     }
 
     let userBooksId = '';
-    if (this.props.currentUser && Array.isArray(this.props.currentUser.books)) {
-      userBooksId = this.props.currentUser.books.map(book => book.id)
+    if (this.props.authorizedUser && Array.isArray(this.props.authorizedUser.books)) {
+      userBooksId = this.props.authorizedUser.books.map(book => book.id)
     }
 
     if (!this.props.openedUser) {
@@ -88,11 +88,13 @@ class User extends React.Component {
           <div>Collection books:{userView.books.length}</div>
         </Paper>
         <div className="user-books">
-          <Books books={userView.books} userBooksId={userBooksId}
+          <Books books={userView.books}
+            userBooksId={userBooksId}
             likedBookIds={this.props.likedBooksIds}
-            view={this.state.view} enableChange={this.state.enableChange}
-            removeFromCollectiom={this.removeFromCollectiom}
-            addToCollection={this.addToCollectiom}
+            view={this.state.view}
+            enableChange={this.state.enableChange}
+            removeFromCollection={this.removeFromCollection}
+            addToCollection={this.addToCollection}
             toggleLikeBook={this.handleToggleBookLike} />
         </div>
       </div>
@@ -102,7 +104,7 @@ class User extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser,
+    authorizedUser: state.authorizedUser,
     openedUser: state.openedUser,
     likedBooksIds: state.likedBooksIds
   }
@@ -112,8 +114,8 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
     fetchUser: ActionCreators.fetchUser,
     openedUserIsLoginedUser: ActionCreators.openedIsLogined,
-    removeFromCollectiom: ActionCreators.removeFromCollectiom,
-    addToCollectiom: ActionCreators.addToCollection,
+    removeFromCollection: ActionCreators.removeFromCollection,
+    addToCollection: ActionCreators.addToCollection,
     toggleLikeBook: ActionCreators.toggleLikeBook
   }, dispatch)
 
