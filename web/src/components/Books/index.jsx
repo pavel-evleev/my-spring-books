@@ -70,7 +70,6 @@ class Books extends React.Component {
                   liked={Array.isArray(likedBookIds) ? likedBookIds.includes(book.id) : false}
                   buttonAction={this.props.enableChange}
                   toggleLikeBook={this.props.toggleLikeBook}
-                  toggleLikeBook={this.props.toggleLikeBook}
                   OnClick={this.handleOnClickBook}
                   addToCollection={this.props.addToCollection}
                   removeFromCollection={this.props.removeFromCollection} />)

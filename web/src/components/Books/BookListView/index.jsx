@@ -21,6 +21,10 @@ export default class Books extends React.Component {
     this.props.removeFromCollection(this.props.book.id)
   }
 
+  handleLikeBook = () => {
+    this.props.toggleLikeBook(this.props.book.id)
+  }
+
   render() {
     const { book } = this.props
     return (
@@ -33,7 +37,11 @@ export default class Books extends React.Component {
         </div>
         <span style={{ maxWidth: "530px" }}>{book.name}</span>
         <div style={{ marginLeft: "auto", marginRight: "10px" }}>
-          <ActionButton added={this.props.added} buttonAction={this.props.buttonAction} handleClickFavor={this.handleAddFavor} handleClickUnfavor={this.handleRemoveFavor} />
+          <ActionButton added={this.props.added} liked={this.props.liked}
+          buttonAction={this.props.buttonAction}
+          toggleLikeBook={this.handleLikeBook} 
+          handleClickFavor={this.handleAddFavor} 
+          handleClickUnfavor={this.handleRemoveFavor} />
         </div>
       </Paper>
     )

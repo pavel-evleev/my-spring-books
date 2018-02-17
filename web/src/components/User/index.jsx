@@ -79,7 +79,7 @@ class User extends React.Component {
         <Paper className="user">
           <div className="user-ava">
             <div>
-              <img src={require("./../../img/photo40427709_329412123.jpg")} alt="user" />
+              <img src={require("./../../img/user.png")} alt="user" />
             </div>
           </div>
           <div>
