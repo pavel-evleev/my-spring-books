@@ -37,6 +37,9 @@ public class User  {
     @Column(name = "uuid", nullable = false)
     private String uuid;
 
+    @Column(name = "user_avatar")
+    private String avatar;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "users_books",
             joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
@@ -154,6 +157,14 @@ public class User  {
         this.likeBooks = likeBooks;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -178,14 +189,4 @@ public class User  {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
-//                ", books=" + books +
-                '}';
-    }
 }

@@ -123,7 +123,8 @@ const rootReducer = (state = store, action) => {
           { books: state.authorizedUser.books.map(b => b.id === action.payload.id ? Object.assign({}, b, { rating: action.payload.count }) : b) }),
         openedBook: Object.assign({}, state.openedBook, { rating: action.payload.count })
       })
-
+    case UserAction.AVATAR_CHANGE_SUCCESS:
+      return state.merge({ authorizedUser: Object.assign({}, state.authorizedUser, { avatar: action.payload }) })
 
     default:
       return state

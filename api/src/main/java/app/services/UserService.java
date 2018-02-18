@@ -5,9 +5,10 @@ import app.model.User;
 import app.repository.BookRepository;
 import app.repository.UserRepository;
 import app.rest.model.AddingBooks;
-import app.rest.model.BookInfo;
 import app.rest.model.CreateUserCommand;
+import app.rest.model.UserExistedException;
 import app.rest.model.UserInfo;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,27 +28,21 @@ public class UserService {
     private final BookRepository bookRepository;
     private final EmailVerifyService verifyService;
     private final BCryptPasswordEncoder encoder;
+    private static String pathImg;
 
-    public UserService(UserRepository userRepository, BookRepository bookRepository, EmailVerifyService verifyService, BCryptPasswordEncoder encoder) {
+    public UserService(UserRepository userRepository,
+                       BookRepository bookRepository,
+                       EmailVerifyService verifyService,
+                       BCryptPasswordEncoder encoder,
+                       Environment env) {
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         this.verifyService = verifyService;
         this.encoder = encoder;
+        this.pathImg = env.getProperty("image.url");
     }
 
-    public List<UserInfo> findAll() {
-        return userRepository.findAll().stream().map(UserService::toUserInfoShortInfo).collect(Collectors.toList());
-    }
-
-    public UserInfo findOne(Long id) {
-        return toUserInfo(userRepository.findOne(id));
-    }
-
-    public List<String> findNameLike(String name) {
-        return userRepository.findByNameLike(name);
-    }
-
-    public static UserInfo toUserInfoShortInfo(User user){
+    public static UserInfo toUserInfoShortInfo(User user) {
         UserInfo info = new UserInfo();
         info.setId(user.getId());
         info.setName(user.getName());
@@ -64,7 +59,22 @@ public class UserService {
         userInfo.setLikedBooksIds(user.getLikeBooks().stream()
                 .map(rating -> rating.getBook().getId())
                 .collect(Collectors.toList()));
+        if (!user.getAvatar().isEmpty()) {
+            userInfo.setAvatar(pathImg + user.getAvatar());
+        }
         return userInfo;
+    }
+
+    public List<UserInfo> findAll() {
+        return userRepository.findAll().stream().map(UserService::toUserInfoShortInfo).collect(Collectors.toList());
+    }
+
+    public UserInfo findOne(Long id) {
+        return toUserInfo(userRepository.findOne(id));
+    }
+
+    public List<String> findNameLike(String name) {
+        return userRepository.findByNameLike(name);
     }
 
     public boolean confirmEmail(String uuid) {
@@ -76,14 +86,18 @@ public class UserService {
         return true;
     }
 
-    public boolean save(CreateUserCommand user) {
+    public boolean save(CreateUserCommand user) throws UserExistedException {
+        Optional<User> existed = userRepository.findByEmail(user.getEmail());
+        if (existed.isPresent())
+            throw new UserExistedException("This email already exist in the system, please login or choose another email.");
+
         User newUser = new User(user.getName(), user.getPhone(), encoder.encode(user.getPassword()), user.getEmail());
         try {
             verifyService.verifyEmail(newUser);
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
-        return userRepository.save(newUser)!=null;
+        return userRepository.save(newUser) != null;
     }
 
     public void delete(Long id) {
@@ -122,4 +136,13 @@ public class UserService {
         return toUserInfo(optional.get());
     }
 
+    public String changeAvatar(Long userId, String compressImage) {
+        User user = userRepository.findOne(userId);
+        user.setAvatar(compressImage+".jpg");
+        return userRepository.saveAndFlush(user).getAvatar();
+    }
+
+    public Optional<String> getAvatarIfExist(Long userId) {
+        return userRepository.findAvatarById(userId);
+    }
 }

@@ -37,6 +37,8 @@ public class UserInfo {
         return likedBooksIds;
     }
 
+    public String avatar;
+
     public void setLikedBooksIds(List<Long> likedBooksIds) {
         this.likedBooksIds = likedBooksIds;
     }
@@ -79,5 +81,13 @@ public class UserInfo {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

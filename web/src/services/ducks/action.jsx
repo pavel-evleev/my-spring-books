@@ -55,6 +55,10 @@ export const GENRES_FETCH_REQUEST = "GENRES_FETCH_REQUEST"
 export const GENRES_FETCH_SUCCESS = "GENRES_FETCH_SUCCESS"
 export const GENRES_FETCH_ERROR = "GENRES_FETCH_ERROR"
 
+export const AVATAR_CHANGE_SUCCESS = "AVATAR_CHANGE_SUCCESS"
+export const AVATAR_CHANGE_ERROR = "AVATAR_CHANGE_ERROR"
+
+
 function reAuth(dispatch, params) {
   let refresh_token = new Promise((resolve, reject) => {
     let token = api.getCookie("refresh_token");
@@ -138,7 +142,7 @@ export function requestLogin(email, password) {
 
     api.LoginOuath(email, password)
       .then((response) => {
-        localStorage.setItem('email', CryptoJS.AES.encrypt(email, keyEncrypt).toString())
+        localStorage.setItem('a', CryptoJS.AES.encrypt(email, keyEncrypt).toString())
         api.set_cookie("key", response.data.access_token, response.data.expires_in, response.data.refresh_token)
         api.fetchEmail({ email: email })
           .then(response => {
@@ -315,7 +319,7 @@ export function removeFromCollection(userId, bookId) {
 
 export function loginFromRefreshToken() {
   return function (dispatch) {
-    let byte = localStorage.getItem("email")
+    let byte = localStorage.getItem("a")
     let refresh_token = api.getCookie("refresh_token")
     if (byte && refresh_token) {
       let email = CryptoJS.AES.decrypt(byte, keyEncrypt).toString(CryptoJS.enc.Utf8)
@@ -401,6 +405,33 @@ export function toggleLikeBook(likedBook) {
       } else {
         dispatch({
           type: LIKE_BOOK_ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+
+
+export function changeAvatar(file, userId) {
+  return function (dispatch) {
+    const imgUpload = new FormData()
+    imgUpload.append('file', file, file.name)
+    imgUpload.append('userId', userId)
+    api.changeAvatar(imgUpload).then(
+      response => {
+        dispatch({
+          type: AVATAR_CHANGE_SUCCESS,
+          payload: response.data
+        })
+      }
+    ).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, changeAvatar(file))
+      } else {
+        dispatch({
+          type: AVATAR_CHANGE_ERROR,
           payload: error.toString()
         })
       }

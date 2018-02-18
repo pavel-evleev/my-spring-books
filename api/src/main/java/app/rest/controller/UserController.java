@@ -1,9 +1,6 @@
 package app.rest.controller;
 
-import app.rest.model.AddingBooks;
-import app.rest.model.BookInfo;
-import app.rest.model.CreateUserCommand;
-import app.rest.model.UserInfo;
+import app.rest.model.*;
 import app.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +25,7 @@ public class UserController extends ApiErrorController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody CreateUserCommand createUserCommand) {
+    public ResponseEntity create(@RequestBody CreateUserCommand createUserCommand) throws UserExistedException {
         return userService.save(createUserCommand)
                 ? new ResponseEntity(HttpStatus.CREATED) : new ResponseEntity(HttpStatus.BAD_REQUEST);
     }

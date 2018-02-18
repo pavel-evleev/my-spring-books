@@ -24,7 +24,8 @@ export default class AddUser extends React.Component {
       validPassword: '',
       validPhone: '',
       validEmail: '',
-      disabledButton: true
+      disabledButton: true,
+      verifyEmail: false
     }
   }
 
@@ -37,29 +38,21 @@ export default class AddUser extends React.Component {
         password: this.state.userPassword
       }
     ).then((response) => {
-      notify.show('User successfully add', 'success', 1000)
-      setTimeout(() => { this.props.history.push(`/user/${response.data.id}`) }, 1001)
+      notify.show('User successfully add', 'success', 2000)
+      this.setState({ verifyEmail: true })
     }).catch((error) => {
-      notify.show(error, 'error')
+      if (error.response) {
+        if (error.response.status === 409)
+          notify.show(error.response.data.message.toString(), 'error', 2500)
+      }
+      notify.show(error.message.toString(), 'error')
     });
   }
 
   handleUserNameChange = (event) => {
     const userNameEvent = event.target.value;
-    if (userNameEvent.length == 1) {
-      api.test(userNameEvent).then((response) => {
-        this.setState({ users: response.data });
-      });
-    }
-    let error = '';
     this.setState({ userName: userNameEvent, validName: '' });
-    this.state.users.forEach((user) => {
-      if (!userNameEvent.localeCompare(user)) {
-        this.setState({ validName: nameExisted });
-        error = nameExisted;
-      }
-    });
-    this.disabledButton(userNameEvent, undefined, undefined, error);
+    this.disabledButton(userNameEvent, undefined, undefined);
   }
 
   handlePasswordChange = (event) => {
@@ -120,6 +113,9 @@ export default class AddUser extends React.Component {
   }
 
   render() {
+    if (this.stateverifyEmail) {
+      return (<div>Check your email, we will send you an email to make sure that the mail exists. <span onClick={()=>this.props.history.push(`/`)} >main page</span></div>)
+    }
     return (
       <div style={{ margin: "0 25%", display: this.state.hidden }}>
         <TextField id="name"

@@ -159,3 +159,7 @@ export const searchBooks = (searchQuery) => {
 export const toggleLikeBook = (likedBook) => {
   return client.post("/v1/books/toggle_rating", likedBook)
 }
+
+export const changeAvatar = (img) => {
+  return client.post('/v1/img/change_avatar', img)
+}

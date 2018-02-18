@@ -17,3 +17,8 @@ spring:
 logging.level.org.hibernate.SQL: debug
 logging.level.org.springframework.web: DEBUG
 logging.level.org.hibernate: ERROR
+image:
+  url: "http://127.0.0.1:8080/v1/img/"
+verify:
+  email:
+    url: "http://localhost:8080/v1/users/verify/"

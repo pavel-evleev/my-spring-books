@@ -228,10 +228,10 @@ body {
         width: 200px; // height: 200px;
         object-fit: cover; // border-radius: 120px;
     }
-    div {
+    div.ava {
         width: 200px;
-        height: 200px;
-        border-radius: 100px;
+        max-height: 200px;
+        // border-radius: 100px;
         overflow: hidden;
         margin: auto;
     }
@@ -240,6 +240,21 @@ body {
 .user-books {
     grid-area: b;
     overflow: auto;
+}
+
+// toast override
+#notification-wrapper {
+    .toast-notification {
+        span {
+            display: inline-block !important;
+            border-radius: 4px !important;
+        }
+    }
+}
+
+// image uploader for ava
+.imgUploaderAva {
+    .imgPreview {}
 }
 
 // scrolls

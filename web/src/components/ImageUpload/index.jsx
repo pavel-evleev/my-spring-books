@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class ImageUpload extends React.Component {
+class ImageUpload extends React.Component {
   constructor(props) {
     super(props);
     this.state = { file: '', imagePreviewUrl: '' };
@@ -36,7 +36,7 @@ export default class ImageUpload extends React.Component {
       $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
     }
     return (
-      <div className="previewComponent">
+      <div className={"previewComponent " + this.props.className} >
         <form onSubmit={(e) => this._handleSubmit(e)}>
           <input className="fileInput"
             type="file"
@@ -44,14 +44,22 @@ export default class ImageUpload extends React.Component {
               this._handleImageChange(e)
               this.props.handleFile(e.target.files[0])
             }} />
-          <button className="submitButton"
+          {/* <button className="submitButton"
             type="submit"
-            onClick={(e) => this._handleSubmit(e)}>Upload Image</button>
+            onClick={(e) => this._handleSubmit(e)}>Upload Image</button> */}
         </form>
-        <div className="imgPreview">
-          {$imagePreview}
-        </div>
+        {this.props.preview ?
+          <div className="imgPreview">
+            {$imagePreview}
+          </div> : ''}
       </div>
     )
   }
 }
+
+
+ImageUpload.defaultProps = {
+  preview: true,
+}
+
+export default ImageUpload

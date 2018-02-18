@@ -45,7 +45,6 @@ public class BookController extends ApiErrorController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity create(@RequestParam(value = "file", required = false) MultipartFile image,
                                  @RequestParam("name") String name,
@@ -67,10 +66,10 @@ public class BookController extends ApiErrorController {
 
             imageService.compressAndSaveImage(image, compressImage);
             return bookService.save(createBookCommand, compressImage)
-                    ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+                    ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.badRequest().build();
         }
         return bookService.save(createBookCommand, null)
-                ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+                ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.badRequest().build();
 
     }
 
@@ -90,21 +89,6 @@ public class BookController extends ApiErrorController {
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(genres);
         }
         return ResponseEntity.badRequest().build();
-    }
-
-    @GetMapping(value = "/image/{image:.+}")
-    public ResponseEntity<byte[]> getCover(@PathVariable String image, HttpServletResponse response) {
-
-        byte[] img = imageService.getImage(image);
-
-        if (img != null) {
-            response.setHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=" + TimeUnit.DAYS.toSeconds(365));
-            response.setHeader(HttpHeaders.PRAGMA, null);
-
-            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG)
-                    .body(img);
-        }
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{bookId}")

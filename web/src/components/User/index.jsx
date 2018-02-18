@@ -6,7 +6,11 @@ import * as ActionCreators from './../../services/ducks/action'
 
 import IconButton from 'material-ui/IconButton'
 import Mail from 'material-ui/svg-icons/communication/email'
+import Ava from 'material-ui/svg-icons/image/add-a-photo'
 import Paper from 'material-ui/Paper'
+import FlatButton from 'material-ui/FlatButton'
+import Dialog from 'material-ui/Dialog'
+import ImageUploader from './../ImageUpload'
 import Books from './../Books'
 import ToolBar from './../ToolBar'
 import * as api from '../../services/API'
@@ -19,6 +23,8 @@ class User extends React.Component {
       view: "grid",
       enableChange: false,
       allBooks: [],
+      open: false,
+      file: null
     }
   }
 
@@ -34,6 +40,28 @@ class User extends React.Component {
     }
   }
 
+  handleOpen = () => {
+    this.setState({ open: true })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
+  }
+
+  handleSendImg = () => {
+    if (this.state.file) {
+      this.props.changeAvatar(this.state.file, this.props.authorizedUser.id)
+      this.setState({ open: false })
+      notify.show("Image send", "success", 1500)
+    } else {
+      notify.show("Image didn't select", "error", 1500)
+    }
+  }
+
+  handleFile = (file) => {
+    this.setState({ file: file })
+  }
+
   removeFromCollection = (bookId) => {
     this.props.removeFromCollection(this.props.authorizedUser.id, bookId)
   }
@@ -42,7 +70,7 @@ class User extends React.Component {
     this.props.addToCollection(this.props.authorizedUser.id, bookId)
   }
 
-  viewDelete = ()=>{
+  viewDelete = () => {
     return parseInt(this.props.match.params.userId) === this.props.authorizedUser.id
   }
 
@@ -54,7 +82,19 @@ class User extends React.Component {
   }
   render() {
     const { user, enableChange } = this.state;
-
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={this.handleClose}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onClick={this.handleSendImg}
+      />,
+    ]
     const idCurrent = this.props.authorizedUser.id;
     const id = parseInt(this.props.match.params.userId);
     let userView = ''
@@ -78,9 +118,24 @@ class User extends React.Component {
         <ToolBar changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }} className="view-books" />
         <Paper className="user">
           <div className="user-ava">
-            <div>
-              <img src={require("./../../img/user.png")} alt="user" />
+            <div className="ava">
+              <img src={userView.avatar ? userView.avatar : require("./../../img/user.png")} alt="user" />
             </div>
+            {idCurrent === id ?
+              <div>
+                <Dialog
+                  title="Dialog With Actions"
+                  actions={actions}
+                  modal={false}
+                  open={this.state.open}
+                  onRequestClose={this.handleClose}>
+                  <ImageUploader className={"imgUploaderAva"} preview={true} handleFile={this.handleFile} />
+                </Dialog>
+                <IconButton
+                  onClick={this.handleOpen}>
+                  <Ava />
+                </IconButton></div> : ''}
+
           </div>
           <div>
             <div className="user-info">{userView.name}</div>
@@ -88,6 +143,7 @@ class User extends React.Component {
               onClick={() => { alert("click") }}>
               <Mail />
             </IconButton>
+
           </div>
           <div>Collection books:{userView.books.length}</div>
         </Paper>
@@ -120,7 +176,8 @@ const mapDispatchToProps = (dispatch) =>
     openedUserIsLoginedUser: ActionCreators.openedIsLogined,
     removeFromCollection: ActionCreators.removeFromCollection,
     addToCollection: ActionCreators.addToCollection,
-    toggleLikeBook: ActionCreators.toggleLikeBook
+    toggleLikeBook: ActionCreators.toggleLikeBook,
+    changeAvatar: ActionCreators.changeAvatar
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

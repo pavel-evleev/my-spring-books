@@ -1,6 +1,7 @@
 package app.rest.controller;
 
 import app.rest.model.ApiError;
+import app.rest.model.UserExistedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,4 +20,10 @@ public class ApiErrorController {
     public ResponseEntity<ApiError> handleConstraintViolationException(ConstraintViolationException exception) {
         return ResponseEntity.badRequest().body(new ApiError(exception.getMessage()));
     }
+
+    @ExceptionHandler(UserExistedException.class)
+    public ResponseEntity<ApiError> handleUserExistedException(UserExistedException e){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(e.getMessage()));
+    }
+
 }

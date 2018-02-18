@@ -4,9 +4,8 @@ import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.DeleteResult;
 import com.dropbox.core.v2.files.FileMetadata;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +29,7 @@ public class ImageService {
 
     public void compressAndSaveImage(MultipartFile image, String compressedFile) throws IOException {
         ImageCompressor compressor = new ImageCompressor(client);
-        compressor.compressAndSaveImage(image,compressedFile);
+        compressor.compressAndSaveImage(image, compressedFile);
     }
 
     public byte[] getImage(String fileName) {
@@ -44,5 +43,15 @@ public class ImageService {
             e.printStackTrace();
         }
         return byteFile;
+    }
+
+    public void remove(String s) {
+        try {
+            DeleteResult result = client.files().deleteV2("/" + s);
+            result.toString();
+
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
     }
 }

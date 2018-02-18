@@ -15,8 +15,6 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
@@ -36,11 +34,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/v1/books/image/**",
-                        "/v1/users/verify/*").permitAll()
+                .antMatchers("/v1/users/verify/*").permitAll()
+                .antMatchers(HttpMethod.POST, "/v1/users").permitAll()
+                .antMatchers(HttpMethod.POST, "/v1/img/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/v1/img/**").permitAll()
                 .antMatchers("/v1/users/**").authenticated()
                 .antMatchers("/v1/books/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/v1/users").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/post/**").hasAuthority("ROLE_ADMIN");
 
     }

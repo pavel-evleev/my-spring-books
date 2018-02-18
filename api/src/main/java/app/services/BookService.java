@@ -10,6 +10,7 @@ import app.rest.model.BookInfo;
 import app.rest.model.CommentInfo;
 import app.rest.model.CreateBookCommand;
 import app.rest.model.GenreInfo;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -28,12 +29,16 @@ public class BookService {
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
 
+    private static String pathImg;
+
     public BookService(BookRepository bookRepository,
                        AuthorRepository authorRepository,
-                       GenreRepository genreRepository) {
+                       GenreRepository genreRepository,
+                       Environment env) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
+        this.pathImg = env.getProperty("image.url");
     }
 
     public List<BookInfo> findAll() {
@@ -100,7 +105,7 @@ public class BookService {
         }
 
         if (book.getCover() != null && book.getCover().length() > 0) {
-            bookInfo.setCover("http://127.0.0.1:8080/v1/books/image/" + book.getCover());
+            bookInfo.setCover(pathImg + book.getCover());
         }
 
         bookInfo.setGenre(toGenreInfo(book.getGenre()));
@@ -114,7 +119,7 @@ public class BookService {
     public static BookInfo toBookInfoShortInformation(Book book) {
         BookInfo info = new BookInfo(book.getId(), book.getName(), book.getDateCreated().toLocalDate());
         if (book.getCover() != null && book.getCover().length() > 0) {
-            info.setCover("http://127.0.0.1:8080/v1/books/image/" + book.getCover());
+            info.setCover(pathImg + book.getCover());
         }
         info.setRating(book.getLikeBooks().size());
         return info;
