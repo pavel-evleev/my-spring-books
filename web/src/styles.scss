@@ -84,6 +84,10 @@ h1 {
     }
 }
 
+.grdient-effect {
+    background: linear-gradient(82deg, #6b6bcc 10%, #00c2e7 100%);
+}
+
 // end book-card
 // imageUpload
 .fileInput {
@@ -230,8 +234,7 @@ body {
     }
     div.ava {
         width: 200px;
-        max-height: 200px;
-        // border-radius: 100px;
+        max-height: 200px; // border-radius: 100px;
         overflow: hidden;
         margin: auto;
     }
@@ -258,35 +261,35 @@ body {
 }
 
 // scrolls
- ::-webkit-scrollbar-button {
+::-webkit-scrollbar-button {
     background-image: url('');
     background-repeat: no-repeat;
     width: 5px;
     height: 0px
 }
 
- ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background-color: #ecedee
 }
 
- ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     -webkit-border-radius: 0px;
     border-radius: 0px;
     background-color: #6dc0c8;
 }
 
- ::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background-color: #56999f;
 }
 
- ::-webkit-resizer {
+::-webkit-resizer {
     background-image: url('');
     background-repeat: no-repeat;
     width: 4px;
     height: 0px
 }
 
- ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 4px;
 }
 

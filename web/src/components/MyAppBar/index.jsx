@@ -16,6 +16,7 @@ class MyAppbar extends React.Component {
     return (
       <AppBar
         title="MySpringBooks"
+        className="grdient-effect"
         onLeftIconButtonTouchTap={this.props.onLeftIconButtonTouchTap}
         iconElementRight={this.props.logged ? <LoggedButton /> : <RightButtons />}
       />

@@ -68,7 +68,7 @@ class LeftBar extends React.Component {
     if (this.props.login) {
       return (
         <Drawer width={200} open={this.props.open} docked={false} onRequestChange={() => this.handleTouchTap()} >
-          <AppBar title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
+          <AppBar className="grdient-effect" title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
           <MenuItem onClick={this.handleHomeClick}>Home</MenuItem>
           <MenuItem onClick={this.handleMyPageClick}>My page</MenuItem>
           <MenuItem onClick={this.handleUsersClick}>Users</MenuItem>
@@ -90,7 +90,7 @@ class LeftBar extends React.Component {
 
     return (
       <Drawer width={200} open={this.props.open} docked={false} onRequestChange={() => this.handleTouchTap()} >
-        <AppBar title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
+        <AppBar className="grdient-effect" title="Menu" onLeftIconButtonTouchTap={this.handleTouchTap} />
         <MenuItem onClick={this.handleHomeClick}>Home</MenuItem>
         <MenuItem onClick={this.handleAboutClick} >About</MenuItem>
       </Drawer>
