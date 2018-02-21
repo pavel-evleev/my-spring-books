@@ -59,7 +59,7 @@ public class UserService {
         userInfo.setLikedBooksIds(user.getLikeBooks().stream()
                 .map(rating -> rating.getBook().getId())
                 .collect(Collectors.toList()));
-        if (!user.getAvatar().isEmpty()) {
+        if (user.getAvatar()!=null) {
             userInfo.setAvatar(pathImg + user.getAvatar());
         }
         return userInfo;
@@ -92,11 +92,11 @@ public class UserService {
             throw new UserExistedException("This email already exist in the system, please login or choose another email.");
 
         User newUser = new User(user.getName(), user.getPhone(), encoder.encode(user.getPassword()), user.getEmail());
-        try {
-            verifyService.verifyEmail(newUser);
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-        }
+//        try {
+//            verifyService.verifyEmail(newUser);
+//        } catch (Exception ex) {
+//            System.err.println(ex.getMessage());
+//        }
         return userRepository.save(newUser) != null;
     }
 

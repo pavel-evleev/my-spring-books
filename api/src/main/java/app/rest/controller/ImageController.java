@@ -51,7 +51,7 @@ public class ImageController extends ApiErrorController {
         String compressImage = UUID.randomUUID().toString();
         Optional<String> avatar = userService.getAvatarIfExist(userId);
 
-        if(!avatar.get().isEmpty()){
+        if(avatar.isPresent()){
            imageService.remove(avatar.get());
         }
 
