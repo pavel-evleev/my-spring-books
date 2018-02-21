@@ -3,7 +3,6 @@ package app.services;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.UploadErrorException;
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.IIOImage;
@@ -12,6 +11,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,7 +59,7 @@ public class ImageCompressor {
                 }
                 byte[] byteImage = outputStream.toByteArray();
 
-                ByteInputStream byteInputStream = new ByteInputStream(byteImage, byteImage.length);
+                ByteArrayInputStream byteInputStream = new ByteArrayInputStream(byteImage);
                 client.files().uploadBuilder("/" + compressedFile + ".jpg").uploadAndFinish(byteInputStream);
 
             } catch (IOException e) {

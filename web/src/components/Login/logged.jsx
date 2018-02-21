@@ -17,7 +17,6 @@ class Logged extends Component {
 
 
   loggoutHandle = () => {
-    debuggers
     const user = { id: this.props.user.id, name: this.props.user.name }
     this.props.loggoutUser(user)
     this.props.history.push('/')

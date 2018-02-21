@@ -7,7 +7,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -38,15 +37,15 @@ public class EmailVerifyService {
 
     private void sendVerify(User user) throws MessagingException {
 
-        MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-        String host = environment.getProperty("verify.email.url") + user.getUuid();
-        helper.setTo(user.getEmail());
-        helper.setText("<html><body>Please confirm your email! <a href=" + host + ">Confirm<a/><body></html>", true);
-        helper.setSubject("Confirm email for BeWorm service");
-
-        sender.send(message);
+//        MimeMessage message = sender.createMimeMessage();
+//        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+//
+//        String host = environment.getProperty("verify.email.url") + user.getUuid();
+//        helper.setTo(user.getEmail());
+//        helper.setText("<html><body>Please confirm your email! <a href=" + host + ">Confirm<a/><body></html>", true);
+//        helper.setSubject("Confirm email for BeWorm service");
+//
+//        sender.send(message);
     }
 
 

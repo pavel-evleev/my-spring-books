@@ -1,26 +1,5 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet id="drop-1" author="Pavel">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="ClientDetails"/>
-        </preConditions>
-        <dropTable tableName="ClientDetails" cascadeConstraints="true"/>
-    </changeSet>
-    <changeSet id="drop-2" author="Pavel">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="authors"/>
-        </preConditions>
-        <dropTable tableName="authors" cascadeConstraints="true"/>
-    </changeSet>
-    <changeSet id="drop-3" author="Pavel">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="authors"/>
-        </preConditions>
-        <dropTable tableName="authors" cascadeConstraints="true"/>
-    </changeSet>
-
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <changeSet author="Pavel (generated)" id="1519154612742-1">
         <createTable tableName="ClientDetails">
             <column name="appId" type="VARCHAR(255)">
@@ -133,10 +112,6 @@
         </createTable>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-9">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="oauth_access_token"/>
-        </preConditions>
-        <dropTable tableName="oauth_access_token" cascadeConstraints="true"/>
         <createTable tableName="oauth_access_token">
             <column name="token_id" type="VARCHAR(255)"/>
             <column name="token" type="MEDIUMBLOB"/>
@@ -155,11 +130,11 @@
             <column name="clientId" type="VARCHAR(255)"/>
             <column name="scope" type="VARCHAR(255)"/>
             <column name="status" type="VARCHAR(10)"/>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="expiresAt" type="TIMESTAMP(19)">
-                <constraints nullable="false"/>
+            <column  name="expiresAt" type="TIMESTAMP(19)">
+                <constraints nullable="true"/>
             </column>
-            <column defaultValue="0000-00-00 00:00:00" name="lastModifiedAt" type="TIMESTAMP(19)">
-                <constraints nullable="false"/>
+            <column  name="lastModifiedAt" type="TIMESTAMP(19)">
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -309,8 +284,7 @@
         <addUniqueConstraint columnNames="role_id" constraintName="UK_it77eq964jhfqtu54081ebtio" tableName="user_role"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-28">
-        <addUniqueConstraint columnNames="comment_id" constraintName="UK_nxxyr35hbtswg2tmq1gr6uigy"
-                             tableName="books_comments"/>
+        <addUniqueConstraint columnNames="comment_id" constraintName="UK_nxxyr35hbtswg2tmq1gr6uigy" tableName="books_comments"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-29">
         <createIndex indexName="FK1772grqowq9hj6tilwxpj9r23" tableName="comments">
@@ -358,75 +332,39 @@
         </createIndex>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-38">
-        <addForeignKeyConstraint baseColumnNames="author_comment_fk" baseTableName="comments"
-                                 constraintName="FK1772grqowq9hj6tilwxpj9r23" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="author_comment_fk" baseTableName="comments" constraintName="FK1772grqowq9hj6tilwxpj9r23" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-39">
-        <addForeignKeyConstraint baseColumnNames="id_author" baseTableName="authors_books"
-                                 constraintName="FK1vu2kc7yjk2hk90eysryoxaxj" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="authors"/>
+        <addForeignKeyConstraint baseColumnNames="id_author" baseTableName="authors_books" constraintName="FK1vu2kc7yjk2hk90eysryoxaxj" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authors"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-40">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="rating_book"
-                                 constraintName="FK2odg78kcxmf4cr348velh4o8" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="rating_book" constraintName="FK2odg78kcxmf4cr348velh4o8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-41">
-        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="books_comments"
-                                 constraintName="FK84hr92qei224ck9nphdxhcg6t" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="books"/>
+        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="books_comments" constraintName="FK84hr92qei224ck9nphdxhcg6t" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="books"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-42">
-        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_role"
-                                 constraintName="FKa68196081fvovjhkek5m97n3y" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="role"/>
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_role" constraintName="FKa68196081fvovjhkek5m97n3y" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-43">
-        <addForeignKeyConstraint baseColumnNames="genre_id" baseTableName="books"
-                                 constraintName="FKad8kkytqpsb8n9wmbsi0nk6ce" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="genre"/>
+        <addForeignKeyConstraint baseColumnNames="genre_id" baseTableName="books" constraintName="FKad8kkytqpsb8n9wmbsi0nk6ce" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="genre"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-44">
-        <addForeignKeyConstraint baseColumnNames="id_book" baseTableName="authors_books"
-                                 constraintName="FKakuayyeujyrvcy7a6jwl18pok" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="books"/>
+        <addForeignKeyConstraint baseColumnNames="id_book" baseTableName="authors_books" constraintName="FKakuayyeujyrvcy7a6jwl18pok" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="books"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-45">
-        <addForeignKeyConstraint baseColumnNames="id_books" baseTableName="users_books"
-                                 constraintName="FKegvkxmog61x77j71vwj8fl26q" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="books"/>
+        <addForeignKeyConstraint baseColumnNames="id_books" baseTableName="users_books" constraintName="FKegvkxmog61x77j71vwj8fl26q" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="books"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-46">
-        <addForeignKeyConstraint baseColumnNames="id_user" baseTableName="users_books"
-                                 constraintName="FKf3cbhlyxj8kunwa3ein5316pu" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="id_user" baseTableName="users_books" constraintName="FKf3cbhlyxj8kunwa3ein5316pu" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-47">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role"
-                                 constraintName="FKj345gk1bovqvfame88rcx7yyx" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role" constraintName="FKj345gk1bovqvfame88rcx7yyx" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-48">
-        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="rating_book"
-                                 constraintName="FKmgpubbptpmltxp6ewx47dkfq9" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="books"/>
+        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="rating_book" constraintName="FKmgpubbptpmltxp6ewx47dkfq9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="books"/>
     </changeSet>
     <changeSet author="Pavel (generated)" id="1519154612742-49">
-        <addForeignKeyConstraint baseColumnNames="comment_id" baseTableName="books_comments"
-                                 constraintName="FKsmve5suvxr08sgmu6kppny9ft" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
-                                 referencedColumnNames="id" referencedTableName="comments"/>
+        <addForeignKeyConstraint baseColumnNames="comment_id" baseTableName="books_comments" constraintName="FKsmve5suvxr08sgmu6kppny9ft" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="comments"/>
     </changeSet>
 </databaseChangeLog>

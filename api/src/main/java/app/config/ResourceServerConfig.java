@@ -1,10 +1,12 @@
 package app.config;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -26,9 +28,9 @@ import javax.sql.DataSource;
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-
-    @Autowired
-    Environment env;
+//
+//    @Autowired
+//    Environment env;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -75,25 +77,20 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return pool;
     }
 
-    @Bean
-    public DataSource getDataSource() {
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setUrl(env.getProperty("spring.datasource.url"));
-        dataSource.setUser(env.getProperty("spring.datasource.username"));
-        dataSource.setPassword(env.getProperty("spring.datasource.password"));
-        return dataSource;
-    }
 
+    @Bean
+    @Primary
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource getDataSource() {
+        return DataSourceBuilder.create().build();
+    }
 //    @Bean
-//    public WebMvcConfigurerAdapter webConfigurer () {
-//        return new WebMvcConfigurerAdapter() {
-//            @Override
-//            public void addResourceHandlers (ResourceHandlerRegistry registry) {
-//                registry.addResourceHandler("D:/testImage/**")
-//                        .addResourceLocations("/testImage/")
-//                        .setCachePeriod(60*60*60*24*90);
-//            }
-//        };
+//    public DataSource getDataSource() {
+//        MysqlDataSource dataSource = new MysqlDataSource();
+//        dataSource.setUrl(env.getProperty("spring.datasource.url"));
+//        dataSource.setUser(env.getProperty("spring.datasource.username"));
+//        dataSource.setPassword(env.getProperty("spring.datasource.password"));
+//        return dataSource;
 //    }
 
 }

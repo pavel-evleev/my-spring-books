@@ -1,0 +1,432 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="drop-1" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="ClientDetails"/>
+        </preConditions>
+        <dropTable tableName="ClientDetails" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-2" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="authors"/>
+        </preConditions>
+        <dropTable tableName="authors" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-3" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="authors"/>
+        </preConditions>
+        <dropTable tableName="authors" cascadeConstraints="true"/>
+    </changeSet>
+
+    <changeSet author="Pavel (generated)" id="1519154612742-1">
+        <createTable tableName="ClientDetails">
+            <column name="appId" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resourceIds" type="VARCHAR(255)"/>
+            <column name="appSecret" type="VARCHAR(255)"/>
+            <column name="scope" type="VARCHAR(255)"/>
+            <column name="grantTypes" type="VARCHAR(255)"/>
+            <column name="redirectUrl" type="VARCHAR(255)"/>
+            <column name="authorities" type="VARCHAR(255)"/>
+            <column name="access_token_validity" type="INT"/>
+            <column name="refresh_token_validity" type="INT"/>
+            <column name="additionalInformation" type="VARCHAR(4096)"/>
+            <column name="autoApproveScopes" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-2">
+        <createTable tableName="authors">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-3">
+        <createTable tableName="authors_books">
+            <column name="id_book" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_author" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-4">
+        <createTable tableName="books">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="cover" type="VARCHAR(255)"/>
+            <column name="date_created" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_publisher" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name_book" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="publisher" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="genre_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-5">
+        <createTable tableName="books_comments">
+            <column name="book_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comment_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-6">
+        <createTable tableName="comments">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date_published" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_comment_fk" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-7">
+        <createTable tableName="genre">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name_book" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-8">
+        <createTable tableName="login_schedule">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="current_login" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_login" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-9">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="oauth_access_token"/>
+        </preConditions>
+        <dropTable tableName="oauth_access_token" cascadeConstraints="true"/>
+        <createTable tableName="oauth_access_token">
+            <column name="token_id" type="VARCHAR(255)"/>
+            <column name="token" type="MEDIUMBLOB"/>
+            <column name="authentication_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_name" type="VARCHAR(255)"/>
+            <column name="client_id" type="VARCHAR(255)"/>
+            <column name="authentication" type="MEDIUMBLOB"/>
+            <column name="refresh_token" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-10">
+        <createTable tableName="oauth_approvals">
+            <column name="userId" type="VARCHAR(255)"/>
+            <column name="clientId" type="VARCHAR(255)"/>
+            <column name="scope" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(10)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="expiresAt" type="TIMESTAMP(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="0000-00-00 00:00:00" name="lastModifiedAt" type="TIMESTAMP(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-11">
+        <createTable tableName="oauth_client_details">
+            <column name="client_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resource_ids" type="VARCHAR(255)"/>
+            <column name="client_secret" type="VARCHAR(255)"/>
+            <column name="scope" type="VARCHAR(255)"/>
+            <column name="authorized_grant_types" type="VARCHAR(255)"/>
+            <column name="web_server_redirect_uri" type="VARCHAR(255)"/>
+            <column name="authorities" type="VARCHAR(255)"/>
+            <column name="access_token_validity" type="INT"/>
+            <column name="refresh_token_validity" type="INT"/>
+            <column name="additional_information" type="VARCHAR(4096)"/>
+            <column name="autoapprove" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-12">
+        <createTable tableName="oauth_client_token">
+            <column name="token_id" type="VARCHAR(255)"/>
+            <column name="token" type="MEDIUMBLOB"/>
+            <column name="authentication_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_name" type="VARCHAR(255)"/>
+            <column name="client_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-13">
+        <createTable tableName="oauth_code">
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="authentication" type="MEDIUMBLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-14">
+        <createTable tableName="oauth_refresh_token">
+            <column name="token_id" type="VARCHAR(255)"/>
+            <column name="token" type="MEDIUMBLOB"/>
+            <column name="authentication" type="MEDIUMBLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-15">
+        <createTable tableName="persistent_logins">
+            <column name="username" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="series" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="last_used" type="TIMESTAMP(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-16">
+        <createTable tableName="rating_book">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="book_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-17">
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="role" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-18">
+        <createTable tableName="user_role">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-19">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="active" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_avatar" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uuid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-20">
+        <createTable tableName="users_books">
+            <column name="id_user" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_books" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-21">
+        <addPrimaryKey columnNames="appId" constraintName="PRIMARY" tableName="ClientDetails"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-22">
+        <addPrimaryKey columnNames="authentication_id" constraintName="PRIMARY" tableName="oauth_access_token"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-23">
+        <addPrimaryKey columnNames="client_id" constraintName="PRIMARY" tableName="oauth_client_details"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-24">
+        <addPrimaryKey columnNames="authentication_id" constraintName="PRIMARY" tableName="oauth_client_token"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-25">
+        <addPrimaryKey columnNames="series" constraintName="PRIMARY" tableName="persistent_logins"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-26">
+        <addPrimaryKey columnNames="user_id, role_id" constraintName="PRIMARY" tableName="user_role"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-27">
+        <addUniqueConstraint columnNames="role_id" constraintName="UK_it77eq964jhfqtu54081ebtio" tableName="user_role"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-28">
+        <addUniqueConstraint columnNames="comment_id" constraintName="UK_nxxyr35hbtswg2tmq1gr6uigy"
+                             tableName="books_comments"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-29">
+        <createIndex indexName="FK1772grqowq9hj6tilwxpj9r23" tableName="comments">
+            <column name="author_comment_fk"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-30">
+        <createIndex indexName="FK1vu2kc7yjk2hk90eysryoxaxj" tableName="authors_books">
+            <column name="id_author"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-31">
+        <createIndex indexName="FK2odg78kcxmf4cr348velh4o8" tableName="rating_book">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-32">
+        <createIndex indexName="FK84hr92qei224ck9nphdxhcg6t" tableName="books_comments">
+            <column name="book_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-33">
+        <createIndex indexName="FKad8kkytqpsb8n9wmbsi0nk6ce" tableName="books">
+            <column name="genre_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-34">
+        <createIndex indexName="FKakuayyeujyrvcy7a6jwl18pok" tableName="authors_books">
+            <column name="id_book"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-35">
+        <createIndex indexName="FKegvkxmog61x77j71vwj8fl26q" tableName="users_books">
+            <column name="id_books"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-36">
+        <createIndex indexName="FKf3cbhlyxj8kunwa3ein5316pu" tableName="users_books">
+            <column name="id_user"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-37">
+        <createIndex indexName="FKmgpubbptpmltxp6ewx47dkfq9" tableName="rating_book">
+            <column name="book_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-38">
+        <addForeignKeyConstraint baseColumnNames="author_comment_fk" baseTableName="comments"
+                                 constraintName="FK1772grqowq9hj6tilwxpj9r23" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-39">
+        <addForeignKeyConstraint baseColumnNames="id_author" baseTableName="authors_books"
+                                 constraintName="FK1vu2kc7yjk2hk90eysryoxaxj" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="authors"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-40">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="rating_book"
+                                 constraintName="FK2odg78kcxmf4cr348velh4o8" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-41">
+        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="books_comments"
+                                 constraintName="FK84hr92qei224ck9nphdxhcg6t" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="books"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-42">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_role"
+                                 constraintName="FKa68196081fvovjhkek5m97n3y" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="role"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-43">
+        <addForeignKeyConstraint baseColumnNames="genre_id" baseTableName="books"
+                                 constraintName="FKad8kkytqpsb8n9wmbsi0nk6ce" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="genre"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-44">
+        <addForeignKeyConstraint baseColumnNames="id_book" baseTableName="authors_books"
+                                 constraintName="FKakuayyeujyrvcy7a6jwl18pok" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="books"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-45">
+        <addForeignKeyConstraint baseColumnNames="id_books" baseTableName="users_books"
+                                 constraintName="FKegvkxmog61x77j71vwj8fl26q" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="books"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-46">
+        <addForeignKeyConstraint baseColumnNames="id_user" baseTableName="users_books"
+                                 constraintName="FKf3cbhlyxj8kunwa3ein5316pu" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-47">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role"
+                                 constraintName="FKj345gk1bovqvfame88rcx7yyx" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-48">
+        <addForeignKeyConstraint baseColumnNames="book_id" baseTableName="rating_book"
+                                 constraintName="FKmgpubbptpmltxp6ewx47dkfq9" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="books"/>
+    </changeSet>
+    <changeSet author="Pavel (generated)" id="1519154612742-49">
+        <addForeignKeyConstraint baseColumnNames="comment_id" baseTableName="books_comments"
+                                 constraintName="FKsmve5suvxr08sgmu6kppny9ft" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="comments"/>
+    </changeSet>
+</databaseChangeLog>

@@ -97,6 +97,7 @@ public class UserService {
 //        } catch (Exception ex) {
 //            System.err.println(ex.getMessage());
 //        }
+        newUser.setActive(true);
         return userRepository.save(newUser) != null;
     }
 
