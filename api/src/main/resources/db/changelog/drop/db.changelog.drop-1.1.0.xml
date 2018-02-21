@@ -1,0 +1,266 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet id="drop-1" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="ClientDetails"/>
+        </preConditions>
+        <dropTable tableName="ClientDetails" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-2" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="authors"/>
+        </preConditions>
+        <dropTable tableName="authors" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-3" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="books"/>
+        </preConditions>
+        <dropTable tableName="books" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-4" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="books_comments"/>
+        </preConditions>
+        <dropTable tableName="books_comments" cascadeConstraints="true"/>
+    </changeSet>
+
+    <changeSet id="drop-5" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="comments"/>
+        </preConditions>
+        <dropTable tableName="comments" cascadeConstraints="true"/>
+    </changeSet>
+
+    <changeSet id="drop-6" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="genre"/>
+        </preConditions>
+        <dropTable tableName="genre" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-7" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="login_schedule"/>
+        </preConditions>
+        <dropTable tableName="login_schedule" cascadeConstraints="true"/>
+    </changeSet>
+
+    <changeSet id="drop-8" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="oauth_access_token"/>
+        </preConditions>
+        <dropTable tableName="oauth_access_token" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-9" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="oauth_approvals"/>
+        </preConditions>
+        <dropTable tableName="oauth_approvals" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-10" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="oauth_client_details"/>
+        </preConditions>
+        <dropTable tableName="oauth_client_details" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-11" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="oauth_client_token"/>
+        </preConditions>
+        <dropTable tableName="oauth_client_token" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-12" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="oauth_code"/>
+        </preConditions>
+        <dropTable tableName="oauth_code" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-13" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="oauth_refresh_token"/>
+        </preConditions>
+        <dropTable tableName="oauth_refresh_token" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-14" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="persistent_logins"/>
+        </preConditions>
+        <dropTable tableName="persistent_logins" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-15" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="rating_book"/>
+        </preConditions>
+        <dropTable tableName="rating_book" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-16" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="role"/>
+        </preConditions>
+        <dropTable tableName="role" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-17" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="user_role"/>
+        </preConditions>
+        <dropTable tableName="user_role" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-18" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="users"/>
+        </preConditions>
+        <dropTable tableName="users" cascadeConstraints="true"/>
+    </changeSet>
+    <changeSet id="drop-19" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="users_books"/>
+        </preConditions>
+        <dropTable tableName="users_books" cascadeConstraints="true"/>
+    </changeSet>
+
+    <changeSet id="drop-20" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyTableName="books_comments"/>
+        </preConditions>
+        <dropAllForeignKeyConstraints baseTableName="books_comments"/>
+    </changeSet>
+    <changeSet id="drop-21" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyTableName="rating_book"/>
+        </preConditions>
+        <dropAllForeignKeyConstraints baseTableName="rating_book"/>
+    </changeSet>
+    <changeSet id="drop-22" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyTableName="user_role"/>
+        </preConditions>
+        <dropAllForeignKeyConstraints baseTableName="user_role"/>
+    </changeSet>
+    <changeSet id="drop-23" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyTableName="users_books"/>
+        </preConditions>
+        <dropAllForeignKeyConstraints baseTableName="users_books"/>
+    </changeSet>
+    <changeSet id="drop-24" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyTableName="authors_books"/>
+        </preConditions>
+        <dropAllForeignKeyConstraints baseTableName="authors_books"/>
+    </changeSet>
+    <changeSet id="drop-25" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyTableName="comments"/>
+        </preConditions>
+        <dropAllForeignKeyConstraints baseTableName="comments"/>
+    </changeSet>
+    <changeSet id="drop-26" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists foreignKeyTableName="books"/>
+        </preConditions>
+        <dropAllForeignKeyConstraints baseTableName="books"/>
+    </changeSet>
+
+    <!--<changeSet id="drop-27" author="Pavel">-->
+        <!--<preConditions onFail="MARK_RAN">-->
+            <!--<primaryKeyExists tableName="ClientDetails"/>-->
+        <!--</preConditions>-->
+        <!--<dropPrimaryKey tableName="ClientDetails"/>-->
+    <!--</changeSet>-->
+    <changeSet id="drop-28" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <primaryKeyExists tableName="oauth_access_token"/>
+        </preConditions>
+        <dropPrimaryKey tableName="oauth_access_token"/>
+    </changeSet>
+    <changeSet id="drop-29" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <primaryKeyExists tableName="oauth_client_details"/>
+        </preConditions>
+        <dropPrimaryKey tableName="oauth_client_details"/>
+    </changeSet>
+    <changeSet id="drop-30" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <primaryKeyExists tableName="oauth_client_token"/>
+        </preConditions>
+        <dropPrimaryKey tableName="oauth_client_token"/>
+    </changeSet>
+    <!--<changeSet id="drop-31" author="Pavel">-->
+        <!--<preConditions onFail="MARK_RAN">-->
+            <!--<primaryKeyExists tableName="persistent_logins"/>-->
+        <!--</preConditions>-->
+        <!--<dropPrimaryKey tableName="persistent_logins"/>-->
+    <!--</changeSet>-->
+    <!--<changeSet id="drop-32" author="Pavel">-->
+        <!--<preConditions onFail="MARK_RAN">-->
+            <!--<primaryKeyExists tableName="user_role"/>-->
+        <!--</preConditions>-->
+        <!--<dropPrimaryKey tableName="user_role"/>-->
+    <!--</changeSet>-->
+    <!--<changeSet id="drop-33" author="Pavel">-->
+        <!--<dropUniqueConstraint tableName="user_role"/>-->
+    <!--</changeSet>-->
+    <!--<changeSet id="drop-34" author="Pavel">-->
+        <!--<dropUniqueConstraint tableName="books_comments"/>-->
+    <!--</changeSet>-->
+
+    <changeSet id="drop-35" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <indexExists tableName="rating_book"/>
+        </preConditions>
+        <dropIndex tableName="rating_book" indexName="FKmgpubbptpmltxp6ewx47dkfq9"/>
+    </changeSet>
+    <changeSet id="drop-36" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <indexExists tableName="users_books"/>
+        </preConditions>
+        <dropIndex tableName="users_books" indexName="FKf3cbhlyxj8kunwa3ein5316pu"/>
+    </changeSet>
+    <changeSet id="drop-37" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <indexExists tableName="users_books"/>
+        </preConditions>
+        <dropIndex tableName="users_books" indexName="FKegvkxmog61x77j71vwj8fl26q"/>
+    </changeSet>
+    <changeSet id="drop-38" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <indexExists tableName="authors_books"/>
+        </preConditions>
+        <dropIndex tableName="authors_books" indexName="FKakuayyeujyrvcy7a6jwl18pok"/>
+    </changeSet>
+    <changeSet id="drop-39" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <indexExists tableName="books"/>
+        </preConditions>
+        <dropIndex tableName="books" indexName="FKad8kkytqpsb8n9wmbsi0nk6ce"/>
+    </changeSet>
+    <changeSet id="drop-40" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <indexExists tableName="books_comments"/>
+        </preConditions>
+        <dropIndex tableName="books_comments" indexName="FK84hr92qei224ck9nphdxhcg6t"/>
+    </changeSet>
+    <changeSet id="drop-41" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <indexExists tableName="rating_book"/>
+        </preConditions>
+        <dropIndex tableName="rating_book" indexName="FK2odg78kcxmf4cr348velh4o8"/>
+    </changeSet>
+    <changeSet id="drop-42" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <indexExists tableName="authors_books"/>
+        </preConditions>
+        <dropIndex tableName="authors_books" indexName="FK1vu2kc7yjk2hk90eysryoxaxj"/>
+    </changeSet>
+    <changeSet id="drop-43" author="Pavel">
+        <preConditions onFail="MARK_RAN">
+            <indexExists tableName="comments"/>
+        </preConditions>
+        <dropIndex tableName="comments" indexName="FK1772grqowq9hj6tilwxpj9r23"/>
+    </changeSet>
+
+
+
+</databaseChangeLog>
