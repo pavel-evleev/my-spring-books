@@ -10,9 +10,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.web.multipart.MultipartResolver;
@@ -27,6 +29,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableResourceServer
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //
 //    @Autowired
@@ -38,11 +41,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/v1/users/verify/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/v1/users").permitAll()
-                .antMatchers(HttpMethod.POST, "/v1/img/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/v1/img/**").access("hasRole('ADMIN') or hasRole('USER')")
                 .antMatchers(HttpMethod.GET, "/v1/img/**").permitAll()
                 .antMatchers("/v1/users/**").authenticated()
-                .antMatchers("/v1/books/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/post/**").hasAuthority("ROLE_ADMIN");
+                .antMatchers("/v1/books/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/post/**").hasAuthority("ROLE_ADMIN")
+        .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
+        ;
 
     }
 

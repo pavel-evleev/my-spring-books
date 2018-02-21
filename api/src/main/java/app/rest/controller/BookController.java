@@ -44,7 +44,7 @@ public class BookController extends ApiErrorController {
         this.commentService = commentService;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity create(@RequestParam(value = "file", required = false) MultipartFile image,
                                  @RequestParam("name") String name,
