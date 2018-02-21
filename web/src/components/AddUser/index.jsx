@@ -113,8 +113,8 @@ export default class AddUser extends React.Component {
   }
 
   render() {
-    if (this.stateverifyEmail) {
-      return (<div>Check your email, we will send you an email to make sure that the mail exists. <span onClick={()=>this.props.history.push(`/`)} >main page</span></div>)
+    if (this.state.verifyEmail) {
+      return (<div>Check your email, we will send you an email to make sure that the mail exists. <span onClick={() => this.props.history.push(`/`)} >main page</span></div>)
     }
     return (
       <div style={{ margin: "0 25%", display: this.state.hidden }}>
@@ -150,6 +150,9 @@ export default class AddUser extends React.Component {
         </TextField>
         <br />
         <RaisedButton label="Add User" disabled={this.state.disabledButton} onClick={this.handleSubmit} />
+        <div>Your email is only needed to contact you if something goes wrong.
+            We will not send you a mailing list if you did not subscribe to it.
+            you can always unsubscribe from the mailing list. </div>
       </div>
     )
   }

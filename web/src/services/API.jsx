@@ -29,13 +29,13 @@ export const validateStatus = (status) => {
 }
 
 export const client = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'https://vast-inlet-46833.herokuapp.com/',
   headers: DEFAULT_HTTP_HEADERS,
   validateStatus: validateStatus
 })
 
 export const clientForLogin = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'https://vast-inlet-46833.herokuapp.com/',
   headers: { "Content-type": "application/x-www-form-urlencoded; charset=utf-8" },
   validateStatus: validateStatus
 })
