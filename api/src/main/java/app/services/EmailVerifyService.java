@@ -1,7 +1,9 @@
 package app.services;
 
+import app.model.Role;
 import app.model.User;
-
+import app.repository.RoleRepository;
+import app.repository.UserRepository;
 import com.sendpulse.restapi.Sendpulse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -9,25 +11,35 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import javax.validation.ConstraintViolationException;
+import java.util.*;
 
 /**
  * Created by Pavel on 26.10.2017.
  */
 @Service
 public class EmailVerifyService {
-    private final String userId = "4c4b3aa37fdf1cbe8d6269eefb64b273";
-    private final String secret = "1b554d0bb781e96348ccc7a5bffeb225";
 
+    private final String secret;
+    private final String userId;
     @Autowired
     private Environment environment;
     @Autowired
     private ThreadPoolTaskExecutor executor;
 
-    public void verifyEmail(User user) {
+    @Autowired
+    private RoleRepository roleRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+
+    public EmailVerifyService(Environment environment) {
+        this.secret = environment.getProperty("verify.secret");
+        this.userId = environment.getProperty("verify.userId");
+    }
+
+    public void verifyEmail(User user) {
         executor.execute(() -> {
             try {
                 sendVerify(user);
@@ -46,7 +58,6 @@ public class EmailVerifyService {
                 "<div>Confirm please your email " + innerText + "</div>" +
                 "<p>Email will be used to contact you and other users if you want.</p></body>";
 
-
         try {
             Sendpulse sendpulse = new Sendpulse(userId, secret);
             smtpSendMail(sendpulse, "From BeWorm", fromSender, "New user", user.getEmail(),
@@ -57,9 +68,22 @@ public class EmailVerifyService {
 
     }
 
+    public boolean confirmEmail(String uuid) {
+        Optional<User> optionalUser = userRepository.findByUuid(uuid);
+        optionalUser.orElseThrow(() -> new ConstraintViolationException("Username not found", null));
+        User user = optionalUser.get();
+        user.setRoles(new HashSet<Role>() {{
+            add(roleRepository.findByRole("USER"));
+        }});
+        user.setActive(true);
+        userRepository.saveAndFlush(user);
+        return true;
+    }
+
     private void smtpSendMail(Sendpulse sendpulse, String from_name, String from_email,
-                                             String name_to, String email_to, String html, String text, String subject,
-                                             Map<String, String> attachments) {
+                              String name_to, String email_to, String html,
+                              String text, String subject,
+                              Map<String, String> attachments) {
         Map<String, Object> from = new HashMap<>();
         from.put("name", from_name);
         from.put("email", from_email);

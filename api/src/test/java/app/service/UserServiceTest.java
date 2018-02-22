@@ -1,19 +1,25 @@
 package app.service;
 
-import app.rest.model.CreateUserCommand;
 import app.model.User;
 import app.repository.UserRepository;
-import app.services.UserService;
+import app.rest.model.CreateUserCommand;
+import app.rest.model.UserExistedException;
 import app.rest.model.UserInfo;
+import app.services.EmailVerifyService;
+import app.services.UserService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -30,6 +36,21 @@ public class UserServiceTest {
 
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    Environment environment;
+
+    @Mock
+    BCryptPasswordEncoder encoder;
+
+    @Mock
+    EmailVerifyService verifyService;
+
+    @Before
+    public void init() {
+        given(environment.getProperty("image.url")).willReturn("MockEnv");
+        doNothing().when(verifyService).verifyEmail(any());
+    }
 
     @Test
     public void should_call_user_repository_find_one_method_in_user_service() {
@@ -71,7 +92,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void should_call_user_repository_save_method_in_user_service() {
+    public void shouldCallUserRepositorySaveMethodInUserService_thenReturnSavedUser() {
         CreateUserCommand creCMD = new CreateUserCommand() {{
             setName("Piter Pen");
             setPassword("asdd");
@@ -83,11 +104,19 @@ public class UserServiceTest {
                 creCMD.getPhone(), creCMD.getPassword(), creCMD.getEmail());
 
         given(userRepository.save(user)).willReturn(user);
+        given(userRepository.findByEmail(creCMD.getEmail())).willReturn(Optional.empty());
+        given(encoder.encode(creCMD.getPassword())).willReturn(creCMD.getPassword());
 
-        UserInfo returnedUser = userService.save(creCMD);
+        User returnedUser = null;
+        try {
+            returnedUser = userService.save(creCMD);
+        } catch (UserExistedException e) {
+            e.printStackTrace();
+        }
 
         assertThat(returnedUser.getName()).isEqualTo(creCMD.getName());
         assertThat(returnedUser.getPhone()).isEqualTo(creCMD.getPhone());
+        assertThat(returnedUser.getEmail()).isEqualTo(creCMD.getEmail());
     }
 
     @Test

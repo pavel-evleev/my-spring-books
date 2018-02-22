@@ -12,6 +12,7 @@ classes/
 */target/
 webapp/
 */logs/
+/doc/
 
 #
 # Front-end

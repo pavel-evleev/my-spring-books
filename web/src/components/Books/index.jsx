@@ -21,7 +21,6 @@ class Books extends React.Component {
   }
 
   handleOnClickBook = (id) => {
-    
     this.props.history.push(`/books/${id}`);
   }
 

@@ -1,13 +1,11 @@
 package app.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -31,9 +29,6 @@ import javax.sql.DataSource;
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-//
-//    @Autowired
-//    Environment env;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -46,8 +41,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/v1/users/**").authenticated()
                 .antMatchers("/v1/books/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/post/**").hasAuthority("ROLE_ADMIN")
-        .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler())
-        ;
+                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 
     }
 
@@ -89,13 +83,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public DataSource getDataSource() {
         return DataSourceBuilder.create().build();
     }
-//    @Bean
-//    public DataSource getDataSource() {
-//        MysqlDataSource dataSource = new MysqlDataSource();
-//        dataSource.setUrl(env.getProperty("spring.datasource.url"));
-//        dataSource.setUser(env.getProperty("spring.datasource.username"));
-//        dataSource.setPassword(env.getProperty("spring.datasource.password"));
-//        return dataSource;
-//    }
+
 
 }

@@ -44,31 +44,34 @@ public class BookController extends ApiErrorController {
         this.commentService = commentService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity create(@RequestParam(value = "file", required = false) MultipartFile image,
                                  @RequestParam("name") String name,
                                  @RequestParam("publisher") String publisher,
                                  @RequestParam("datePublished") String datePublished,
+                                 @RequestParam("dateCreated") String dateCreated,
                                  @RequestParam("authorsIds") List<Long> authorsIds,
                                  @RequestParam("genreId") Long genreId,
                                  @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) throws IOException {
 
         CreateBookCommand createBookCommand = null;
         if (newAuthors != null) {
-            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, newAuthors, genreId);
+            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE),
+                    LocalDate.parse(dateCreated, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, newAuthors, genreId);
         } else {
-            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, genreId);
+            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE),
+                    LocalDate.parse(dateCreated, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, genreId);
         }
 
         if (image != null) {
             String compressImage = UUID.randomUUID().toString();
 
             imageService.compressAndSaveImage(image, compressImage);
-            return bookService.save(createBookCommand, compressImage)
+            return bookService.save(createBookCommand, compressImage) != null
                     ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.badRequest().build();
         }
-        return bookService.save(createBookCommand, null)
+        return bookService.save(createBookCommand, null) != null
                 ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.badRequest().build();
 
     }

@@ -2,11 +2,10 @@ package app.rest.controller;
 
 import app.rest.model.*;
 import app.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,13 +19,16 @@ public class UserController extends ApiErrorController {
 
     private final UserService userService;
 
+    @Autowired
+    Environment environment;
+
     public UserController(UserService service) {
         this.userService = service;
     }
 
     @PostMapping
     public ResponseEntity create(@RequestBody CreateUserCommand createUserCommand) throws UserExistedException {
-        return userService.save(createUserCommand)
+        return userService.save(createUserCommand) != null
                 ? new ResponseEntity(HttpStatus.CREATED) : new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
@@ -79,15 +81,6 @@ public class UserController extends ApiErrorController {
         userService.deleteAll();
     }
 
-
-//    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-//    public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth != null) {
-//            new SecurityContextLogoutHandler().logout(request, response, auth);
-//        }
-//    }
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public void loginPage() {
     }
@@ -96,12 +89,11 @@ public class UserController extends ApiErrorController {
     public void confirmEmail(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) {
         try {
             if (userService.confirmEmail(uuid))
-                response.sendRedirect("//localhost:8888");
+                response.sendRedirect(environment.getProperty("verify.redirect.url"));
             else
-                response.sendRedirect("//localhost:8888/login");
+                response.sendRedirect(environment.getProperty("verify.redirect.url") + "/registration");
         } catch (IOException e) {
             e.printStackTrace();
-
         }
     }
 }

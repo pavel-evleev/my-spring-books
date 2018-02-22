@@ -1,40 +1,65 @@
 package app.repository;
 
 import app.Application;
-import app.model.Comment;
+import app.model.Book;
+import app.model.Genre;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-import java.util.Optional;
+import java.sql.Date;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by Pavel on 13.02.2018.
- */
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-@AutoConfigureMockMvc
 public class BookRepositoryTest {
+    @Autowired
+    private BookRepository bookRepository;
 
     @Autowired
-    private CommentRepository commentRepository;
+    private GenreRepository genreRepository;
+
+    private Book harryPotter;
+
+    @Before
+    public void initDb() {
+        Genre genre = new Genre();
+        genre.setName("Magic");
+        genre = genreRepository.saveAndFlush(genre);
+        // given
+        Book harryPotter = new Book();
+        harryPotter.setName("Harry Potter");
+        harryPotter.setGenre(genre);
+        harryPotter.setDatePublished(Date.valueOf(LocalDate.now()));
+        harryPotter.setPublisher("Soc");
+        harryPotter.setDateCreated(Date.valueOf(LocalDate.now()));
+
+        this.harryPotter = bookRepository.saveAndFlush(harryPotter);
+    }
+
+    @After
+    public void cleanDB() {
+        genreRepository.deleteAll();
+        bookRepository.deleteAll();
+    }
+
 
     @Test
-    public void shoulReturnAllCommentsOfBook() {
+    public void whenFindByBookId_thenReturnBook() {
 
-        Optional<List<Comment>> optional = commentRepository.findCommentByBookId(1L);
+        // when
+        Book found = bookRepository.findOne(1L);
 
-        System.out.println(optional.isPresent());
-
-        assertThat(optional).isNotNull();
+        // then
+        assertThat(found.getName())
+                .isEqualTo(harryPotter.getName());
     }
 
 

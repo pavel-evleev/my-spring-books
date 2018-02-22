@@ -6,6 +6,7 @@ spring:
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:123456}
     driver-class-name: org.postgresql.Driver
+    platform: POSTGRESQL
   jpa:
     show-sql: true
     hibernate.ddl-auto: update
@@ -22,7 +23,11 @@ logging.level.org.hibernate: ERROR
 image:
   url: "http://localhost:8080/v1/img/"
 verify:
+  userId: "4c4b3aa37fdf1cbe8d6269eefb64b273"
+  secret: "1b554d0bb781e96348ccc7a5bffeb225"
   email:
     url: "http://localhost:8080/v1/users/verify/"
+  redirect:
+    url: "http://localhost:8888"
 #liquibase:
 #  change-log: classpath:db/changelog/db.changelog-master.xml

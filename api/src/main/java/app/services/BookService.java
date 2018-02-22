@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +50,7 @@ public class BookService {
         return toBookInfo(bookRepository.findOne(id));
     }
 
-    public boolean save(CreateBookCommand book, String compressImage) {
+    public Book save(CreateBookCommand book, String compressImage) {
 
         // Get existing authors
         List<Author> authors = book.getAuthorsIds().stream()
@@ -68,13 +67,13 @@ public class BookService {
         Genre genre = genreRepository.findOne(book.getGenreId());
 
         Book newBook = new Book(book.getName(), book.getPublisher(),
-                Date.valueOf(book.getDatePublished()), Date.valueOf(LocalDate.now()));
+                Date.valueOf(book.getDatePublished()), Date.valueOf(book.getDateCreated()));
         newBook.setAuthors(authors);
         newBook.setGenre(genre);
         if (compressImage != null) {
             newBook.setCover(compressImage + ".jpg");
         }
-        return bookRepository.save(newBook) != null;
+        return bookRepository.save(newBook);
     }
 
     public void delete(Long id) {
