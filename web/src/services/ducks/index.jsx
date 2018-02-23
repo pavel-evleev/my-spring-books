@@ -69,7 +69,7 @@ const rootReducer = (state = store, action) => {
       return state.merge({ error: action.payload })
     // Load Book
     case UserAction.BOOK_FETCH_REQUEST:
-      return state.merge({ fetching: true })
+      return state.merge({ fetching: true, openedBook: null })
     case UserAction.BOOK_FETCH_SUCCESS:
       notify.show("Book open", 'success', 1500)
       return state.merge({ fetching: false, openedBook: action.payload })
