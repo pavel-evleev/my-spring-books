@@ -1,4 +1,6 @@
-import axios from 'axios'
+import axios from 'axios';
+
+const serverUrl = "https://quiet-hollows-30693.herokuapp.com/";
 
 export const getCookie = (name) => {
   var value = "; " + document.cookie;
@@ -29,13 +31,13 @@ export const validateStatus = (status) => {
 }
 
 export const client = axios.create({
-  baseURL: 'http://localhost:8080/',
+  baseURL: serverUrl,
   headers: DEFAULT_HTTP_HEADERS,
   validateStatus: validateStatus
 })
 
 export const clientForLogin = axios.create({
-  baseURL: 'http://localhost:8080/',
+  baseURL: serverUrl,
   headers: { "Content-type": "application/x-www-form-urlencoded; charset=utf-8" },
   validateStatus: validateStatus
 })

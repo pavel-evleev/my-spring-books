@@ -119,7 +119,7 @@ class User extends React.Component {
         <Paper className="user">
           <div className="user-ava">
             <div className="ava">
-              <img src={userView.avatar ? userView.avatar : require("./../../img/user.png")} alt="user" />
+              <img src={userView.avatar ? userView.avatar : require("../../img/user.png")} alt="user" />
             </div>
             {idCurrent === id ?
               <div>
