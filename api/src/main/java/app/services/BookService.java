@@ -24,11 +24,10 @@ import java.util.stream.Collectors;
 @Transactional
 public class BookService {
 
+    private static String pathImg;
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
-
-    private static String pathImg;
 
     public BookService(BookRepository bookRepository,
                        AuthorRepository authorRepository,
@@ -38,54 +37,6 @@ public class BookService {
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
         this.pathImg = env.getProperty("image.url");
-    }
-
-    public List<BookInfo> findAll() {
-        return bookRepository.findAll().stream()
-                .map(BookService::toBookInfoShortInformation)
-                .collect(Collectors.toList());
-    }
-
-    public BookInfo findOne(Long id) {
-        return toBookInfo(bookRepository.findOne(id));
-    }
-
-    public Book save(CreateBookCommand book, String compressImage) {
-
-        // Get existing authors
-        List<Author> authors = book.getAuthorsIds().stream()
-                .map(authorRepository::findOne)
-                .collect(Collectors.toList());
-
-        // Create new authors
-        if (!CollectionUtils.isEmpty(book.getNewAuthors())) {
-            authors.addAll(authorRepository.save(book.getNewAuthors().stream()
-                    .map(Author::new)
-                    .collect(Collectors.toList())));
-        }
-
-        Genre genre = genreRepository.findOne(book.getGenreId());
-
-        Book newBook = new Book(book.getName(), book.getPublisher(),
-                Date.valueOf(book.getDatePublished()), Date.valueOf(book.getDateCreated()));
-        newBook.setAuthors(authors);
-        newBook.setGenre(genre);
-        if (compressImage != null) {
-            newBook.setCover(compressImage + ".jpg");
-        }
-        return bookRepository.save(newBook);
-    }
-
-    public void delete(Long id) {
-        bookRepository.delete(id);
-    }
-
-    public void delete(Book book) {
-        bookRepository.delete(book);
-    }
-
-    public void deleteAll() {
-        bookRepository.deleteAll();
     }
 
     public static BookInfo toBookInfo(Book book) {
@@ -126,6 +77,57 @@ public class BookService {
 
     public static GenreInfo toGenreInfo(Genre genre) {
         return new GenreInfo(genre.getId(), genre.getName());
+    }
+
+    public List<BookInfo> findAll() {
+        return bookRepository.findAll().stream()
+                .map(BookService::toBookInfoShortInformation)
+                .collect(Collectors.toList());
+    }
+
+    public BookInfo findOne(Long id) {
+        return toBookInfo(bookRepository.findOne(id));
+    }
+
+    public Book save(CreateBookCommand book, String compressImage) {
+
+        Book newBook = null;
+
+        // Get existing authors
+        List<Author> authors = book.getAuthorsIds().stream()
+                .map(authorRepository::findOne)
+                .collect(Collectors.toList());
+
+        // Create new authors
+        if (!CollectionUtils.isEmpty(book.getNewAuthors())) {
+            authors.addAll(authorRepository.save(book.getNewAuthors().stream()
+                    .map(Author::new)
+                    .collect(Collectors.toList())));
+        }
+
+        Genre genre = genreRepository.findOne(book.getGenreId());
+
+        newBook = new Book(book.getName(), book.getPublisher(),
+                Date.valueOf(book.getDatePublished()), Date.valueOf(book.getDateCreated()));
+        newBook.setAuthors(authors);
+        newBook.setGenre(genre);
+        if (compressImage != null) {
+            newBook.setCover(compressImage + ".jpg");
+        }
+
+        return bookRepository.save(newBook);
+    }
+
+    public void delete(Long id) {
+        bookRepository.delete(id);
+    }
+
+    public void delete(Book book) {
+        bookRepository.delete(book);
+    }
+
+    public void deleteAll() {
+        bookRepository.deleteAll();
     }
 
     public List<GenreInfo> findAllGenre() {
