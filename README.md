@@ -16,7 +16,7 @@ The application is in progress.
 
 ## DB
 
-* MySQL
+* PostgreSQL
 
 ## Frontend
 
