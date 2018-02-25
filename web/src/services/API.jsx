@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const serverUrl = "https://quiet-hollows-30693.herokuapp.com/";
-
+// const serverUrl = "https://myspringbooks.herokuapp.com/";
+const serverUrl = "http://localhost:8080/";
 export const getCookie = (name) => {
   var value = "; " + document.cookie;
   var parts = value.split("; " + name + "=");

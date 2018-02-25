@@ -50,7 +50,7 @@ export default class Routes extends React.Component {
           onClose={this.handleTouchTap}
           open={this.state.open}
         />
-        <div style={{width: "1160px", margin: "auto"}}>
+        <div className="route-container">
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/login" component={Login} />
@@ -62,7 +62,7 @@ export default class Routes extends React.Component {
             <PrivateRoute path='/users/add-author' component={AddAuthor} />
             <PrivateRoute path='/users/:userId/books/:bookId' component={Book} />
             <PrivateRoute path='/users/:userId' component={User} />
-            <PrivateRoute path='/authors' component={Authors} />
+            {/* <PrivateRoute path='/authors' component={Authors} /> */}
             <PrivateRoute exact path='/books' component={BooksPage} />
             <PrivateRoute path='/books/:bookId' component={Book} />
             <PrivateRoute path='/search-books/:searchBooks' component={SearchedBooks} />

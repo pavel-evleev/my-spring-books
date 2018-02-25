@@ -72,7 +72,7 @@ public class EmailVerifyService {
         Optional<User> optionalUser = userRepository.findByUuid(uuid);
         optionalUser.orElseThrow(() -> new ConstraintViolationException("Username not found", null));
         User user = optionalUser.get();
-        user.setRoles(new HashSet<Role>() {{
+        user.setRoles(new ArrayList<Role>() {{
             add(roleRepository.findByRole("USER"));
         }});
         user.setActive(true);

@@ -115,37 +115,43 @@ class User extends React.Component {
 
     return (
       <div className="page">
-        <ToolBar changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }} className="view-books" />
+        <div className="view-books">
+          <ToolBar className="view-toolbar" changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }} />
+        </div>
         <Paper className="user">
-          <div className="user-ava">
-            <div className="ava">
-              <img src={userView.avatar ? userView.avatar : require("../../img/user.png")} alt="user" />
-            </div>
-            {idCurrent === id ?
-              <div>
-                <Dialog
-                  title="Dialog With Actions"
-                  actions={actions}
-                  modal={false}
-                  open={this.state.open}
-                  onRequestClose={this.handleClose}>
-                  <ImageUploader className={"imgUploaderAva"} preview={true} handleFile={this.handleFile} />
-                </Dialog>
-                <IconButton
-                  onClick={this.handleOpen}>
-                  <Ava />
-                </IconButton></div> : ''}
-
-          </div>
-          <div>
-            <div className="user-info">{userView.name}</div>
-            <IconButton touch={true}
+          <div className="user-container">
+            <div className="user-name grdient-effect">{userView.name}</div>
+            {/* <IconButton touch={true}
               onClick={() => { alert("click") }}>
               <Mail />
-            </IconButton>
+            </IconButton> */}
 
+            <div className="user-ava">
+              <div className="ava">
+                <img src={userView.avatar ? userView.avatar :
+                  require("../../img/photo40427709_329412123.jpg")
+                  // "https://myspringbooks.herokuapp.com/v1/img/user.png"
+                } alt="user" />
+              </div>
+              {idCurrent === id ?
+                <div className="change-ava">
+                  <Dialog
+                    title="Dialog With Actions"
+                    actions={actions}
+                    modal={false}
+                    open={this.state.open}
+                    onRequestClose={this.handleClose}>
+                    <ImageUploader className={"imgUploaderAva"} preview={true} handleFile={this.handleFile} />
+                  </Dialog>
+                  <IconButton
+                    onClick={this.handleOpen}>
+                    <Ava />
+                  </IconButton></div> : ''}
+
+            </div>
+
+            <div className="user-info">Collection books:{userView.books.length}</div>
           </div>
-          <div>Collection books:{userView.books.length}</div>
         </Paper>
         <div className="user-books">
           <Books books={userView.books}

@@ -38,7 +38,8 @@ class ImageUpload extends React.Component {
     return (
       <div className={"previewComponent " + this.props.className} >
         <form onSubmit={(e) => this._handleSubmit(e)}>
-          <input className="fileInput"
+        <label className="file-input-btn" htmlFor="upload-img">Select img...</label>
+          <input className="fileInput" id="upload-img"
             type="file"
             onChange={(e) => {
               this._handleImageChange(e)

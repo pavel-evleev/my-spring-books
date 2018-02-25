@@ -42,8 +42,11 @@ class Page extends React.Component {
     }
     return (
       <div>
-        <ToolBar
-          changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }}
+        <ToolBar className="view-toolbar"
+          changeViewOnClick={() => {
+            (this.state.view === "grid")
+            ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" }))
+          }}
           searchComponent={<Search />} />
         <div className="user-books">
           {this.props.fetching ? <Progress /> : <Books books={this.props.books} userBooksId={userBooksId} view={this.state.view}

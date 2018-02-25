@@ -36,10 +36,12 @@ class BookMiniCard extends React.Component {
     const { book, OnClick, added, liked } = this.props
 
     return (
-      <Paper zDepth={1} onClick={() => OnClick(book.id)} className="bookMiniCard" style={{ position: "relative" }}>
+      <Paper zDepth={1} onClick={() => OnClick(book.id)} 
+      className="bookMiniCard" style={{ position: "relative" }}>
         <div className="bookMiniCard-title" >{this.truncateTitle(book.name)}</div>
         <div className="bookMiniCard-img">
-          {book.cover ? <img src={book.cover} alt="book" width="170" height="200" /> : <img src={require("../../../img/book.png")} alt="book" width="200" height="200" />}
+          {book.cover ? <img src={book.cover}
+           alt="book" width="140" height="170" /> : <img src={require("../../../img/book.png")} alt="book" width="170" height="170" />}
         </div>
         <ActionButton added={added} liked={liked}
           buttonAction={this.props.buttonAction}

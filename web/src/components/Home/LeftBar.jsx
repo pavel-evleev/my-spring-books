@@ -73,16 +73,17 @@ class LeftBar extends React.Component {
           <MenuItem onClick={this.handleMyPageClick}>My page</MenuItem>
           <MenuItem onClick={this.handleUsersClick}>Users</MenuItem>
           <MenuItem onClick={this.handleBooksClick}>Books</MenuItem>
-          <MenuItem onClick={this.handleAuthorsClick}>Authors</MenuItem>
-          <MenuItem
+          <MenuItem onClick={this.handleAddBookClick}> Add Book</MenuItem>
+          {/* <MenuItem onClick={this.handleAuthorsClick}>Authors</MenuItem> */}
+          {/* <MenuItem
             primaryText="Add Entity"
             rightIcon={<ArrowDropRight />}
             menuItems={[
               <MenuItem onClick={this.handleAddAuthorClick}> Add Author</MenuItem>,
               <MenuItem onClick={this.handleAddUserClick}> Add User</MenuItem>,
-              <MenuItem onClick={this.handleAddBookClick}> Add Book</MenuItem>
+              
             ]}
-          />
+          /> */}
           <MenuItem onClick={this.handleAboutClick} >About</MenuItem>
         </Drawer>
       );

@@ -3,7 +3,54 @@ h1 {
     font-weight: 900;
     font-size: 54px;
     text-align: center;
-    text-shadow: 0 1px 3px #555;
+    // text-shadow: 0 1px 3px #555;
+}
+
+.el-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.ab-title-center {
+    padding-bottom: 8px;
+    h1 {
+        height: initial;
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+    }
+}
+
+.radius {
+    border: #efefef 7px solid;
+    border-radius: 20px;
+    width: max-content;
+    margin: auto;
+    h1 {
+        text-transform: uppercase;
+        color: snow;
+        margin: 20px;
+    }
+}
+
+.container-flex {
+    display: flex;
+    margin: 10px 0;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.item-flex {
+    padding-top: 10px;
+    margin: auto;
 }
 
 // chat
@@ -90,30 +137,35 @@ h1 {
 
 // end book-card
 // imageUpload
-.fileInput {
-    border-bottom: 4px solid lightgray;
-    border-right: 4px solid lightgray;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    padding: 10px;
-    margin: 15px;
+.file-input-btn {
+    display: block;
     cursor: pointer;
+    background-color: white;
+    width: 100px;
+    text-align: center;
+    padding: 9px;
+    border-radius: 15px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.fileInput {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
 }
 
 .imgPreview {
+    display: block;
     text-align: center;
-    margin: 5px 15px;
-    height: 200px;
-    width: 500px;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray;
-    border-top: 5px solid gray;
-    border-bottom: 5px solid gray;
+    height: 250px;
+    width: 210px;
+    border: 1px solid;
+    overflow: hidden;
 }
 
 .imgPreview>img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    height: auto;
 }
 
 .previewText {
@@ -159,6 +211,7 @@ body {
     margin: 5px;
     padding: 10px;
     font-family: "Roboto, Arial";
+    border-radius: 15px !important;
 }
 
 .bookMiniCard:hover {
@@ -191,11 +244,11 @@ body {
 .page {
     display: grid;
     width: 1150px;
-    margin: 30px auto;
-    grid-row-gap: 15px;
-    grid-template-columns: 3fr 250px;
-    grid-template-rows: 50px 886px;
-    grid-template-areas: "n u" "b u";
+    margin: auto;
+    // grid-row-gap: 15px;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(11, 72px);
+    // grid-template-areas: ". u" ". u" "n u" "b u";
     .book-wrapper {
         max-width: 830px;
     }
@@ -208,6 +261,14 @@ body {
     }
 }
 
+.size-img-uploader {
+    width: 210px;
+}
+
+.list-item-radius {
+    border-radius: 15px !important;
+}
+
 .sm-img {
     display: flex;
     flex-basis: 50px;
@@ -215,33 +276,54 @@ body {
 }
 
 .view-books {
-    grid-area: n;
-    width: 818px;
+    grid-row: 2/span 9;
+    grid-column: 2/span 13;
+    width: 100%;
     margin: 0px auto; // box-shadow: 0px 0px 5px 1px rgba(128, 128, 128, 0.4);
 }
 
 .user {
-    grid-area: u;
+    grid-row: 1/span 11;
+    grid-column: 16/span 20;
     max-height: 40 0px; // margin: 5px 0 0;
-}
-
-.user-ava {
-    overflow: hidden;
-    margin: 30px auto;
-    img {
-        width: 200px; // height: 200px;
-        object-fit: cover; // border-radius: 120px;
-    }
-    div.ava {
+    .user-container {
+        display: flex;
+        flex-direction: column;
+        margin: 60px auto 0;
         width: 200px;
-        max-height: 200px; // border-radius: 100px;
-        overflow: hidden;
-        margin: auto;
+        .user-name {
+            flex: auto;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            margin: 10px auto;
+            text-transform: uppercase;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 10px 15px;
+        }
+        .user-ava {
+            overflow: hidden;
+            margin: 10px auto;
+            img {
+                width: 200px; // height: 200px;
+                object-fit: cover; // border-radius: 120px;
+            }
+            div.ava {
+                width: 200px;
+                max-height: 200px;
+                border-radius: 20px;
+                overflow: hidden;
+                margin: auto;
+            }
+        }
     }
 }
 
 .user-books {
-    grid-area: b;
+    grid-row: 3/12;
+    grid-column: 1/span 15;
     overflow: auto;
 }
 
@@ -264,7 +346,7 @@ body {
 ::-webkit-scrollbar-button {
     background-image: url('');
     background-repeat: no-repeat;
-    width: 5px;
+    width: 10px;
     height: 0px
 }
 
@@ -275,7 +357,7 @@ body {
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 0px;
     border-radius: 0px;
-    background-color: #6dc0c8;
+    background: linear-gradient(110deg, #00c2e7 10%, #6b6bcc 100%);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -290,7 +372,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-    width: 4px;
+    width: 15px;
 }
 
 // end scrolls
@@ -376,41 +458,306 @@ body {
 
 // end spinner
 
-/* Portrait and Landscape */
+/*
+ * Author: http://stuffandnonsense.co.uk/blog/about/hardboiled_css3_media_queries/
+ */
 
-@media only screen and (min-width: 320px) and (max-width: 480px) {
+
+/* Smartphones (portrait and landscape) ----------- */
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    /* Styles */
     .page {
-        width: 300px;
+        width: 310px;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(10, 55px);
+        grid-gap: 5px;
+    }
+    .user {
+        grid-column: 1/span 12;
+        grid-row: 1/5;
+        .user-container {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            width: 150px;
+            .user-name {
+                flex: auto;
+                align-items: center;
+                justify-content: center;
+                border-radius: 20px;
+                margin: 2px auto;
+                text-transform: uppercase;
+                color: white;
+                font-size: 15px;
+                font-weight: 700;
+                padding: 5px 15px;
+            }
+            .user-ava {
+                overflow: hidden;
+                margin: 5px auto;
+                img {
+                    width: 120px; // height: 200px;
+                    object-fit: cover; // border-radius: 120px;
+                }
+                div.ava {
+                    width: 120px;
+                    max-height: 120px;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    margin: auto;
+                }
+            }
+        }
+    }
+    .view-books {
+        grid-column: 1/span 12;
+        grid-row: 5/6;
+        .view-toolbar {
+            height: 20px !important;
+        }
+    }
+    .user-books {
+        grid-column: 1/span 12;
+        grid-row: 6/11;
+    }
+    .book-wrapper {
+        padding: 0px;
+        width: 320px !important;
+        max-width: 480px;
+        margin: auto;
+        .bookMiniCard {
+            margin: auto;
+            width: 260px;
+        }
     }
 }
 
 
-/* Portrait */
+/* Smartphones (landscape) ----------- */
 
-@media only screen and (min-width: 320px) and (max-width: 480px) and (orientation: portrait) {}
-
-
-/* Landscape */
-
-@media only screen and (min-width: 320px) and (max-width: 480px) and (orientation: landscape) {}
+@media only screen and (min-width: 321px) {
+    /* Styles */
+}
 
 
-/* ----------- iPhone 5, 5S, 5C and 5SE ----------- */
+/* Smartphones (portrait) ----------- */
+
+@media only screen and (max-width: 320px) {
+    /* Styles */
+}
+
+@media only screen and (min-device-width: 480px) and (max-device-width: 768px) {
+    /* Styles */
+    .page {
+        width: 470px;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(13, 60px);
+        .user {
+            grid-column: 9/span 12;
+            grid-row: 1/14;
+            .user-container {
+                display: flex;
+                flex-direction: column;
+                margin: 60px auto 0;
+                width: 150px;
+                .user-name {
+                    flex: auto;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 20px;
+                    margin: 10px auto;
+                    text-transform: uppercase;
+                    color: white;
+                    font-size: 15px;
+                    font-weight: 700;
+                    padding: 10px 15px;
+                }
+                .user-ava {
+                    overflow: hidden;
+                    margin: 10px auto;
+                    img {
+                        width: 120px; // height: 200px;
+                        object-fit: cover; // border-radius: 120px;
+                    }
+                    div.ava {
+                        width: 120px;
+                        max-height: 120px;
+                        border-radius: 20px;
+                        overflow: hidden;
+                        margin: auto;
+                    }
+                }
+            }
+        }
+        .view-books {
+            grid-column: 1/span 7;
+        }
+        .user-books {
+            grid-column: 1/span 8;
+            grid-row: 3/14;
+        }
+    }
+    .book-wrapper {
+        padding: 0px;
+        width: 480px !important;
+        max-width: 768px;
+        margin: auto;
+        .bookMiniCard {
+            width: 230px;
+        }
+    }
+}
 
 
-/* Portrait and Landscape */
+/* iPads (portrait and landscape) ----------- */
 
-@media only screen and (min-width: 320px) and (max-width: 568px) {}
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+    /* Styles */
+    .page {
+        width: 770px;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(13, 60px);
+    }
+    .user {
+        grid-column: 10/span 12;
+        grid-row: 1/14;
+        .user-container {
+            display: flex;
+            flex-direction: column;
+            margin: 60px auto 0;
+            width: 150px;
+            .user-name {
+                flex: auto;
+                align-items: center;
+                justify-content: center;
+                border-radius: 20px;
+                margin: 10px auto;
+                text-transform: uppercase;
+                color: white;
+                font-size: 15px;
+                font-weight: 700;
+                padding: 10px 15px;
+            }
+            .user-ava {
+                overflow: hidden;
+                margin: 10px auto;
+                img {
+                    width: 150px; // height: 200px;
+                    object-fit: cover; // border-radius: 120px;
+                }
+                div.ava {
+                    width: 150px;
+                    max-height: 150px;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    margin: auto;
+                }
+            }
+        }
+    }
+    .view-books {
+        grid-column: 2/span 7;
+    }
+    .user-books {
+        grid-column: 1/span 9;
+        grid-row: 3/14;
+    }
+    .book-wrapper {
+        width: 760px;
+    }
+}
 
 
-/* Portrait */
+/* iPads (landscape) ----------- */
 
-@media only screen and (min-width: 320px) and (max-width: 568px) and (orientation: portrait) {}
-
-
-/* Landscape */
-
-@media only screen and (min-width: 320px) and (max-width: 568px) and (orientation: landscape) {}
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+    /* Styles */
+}
 
 
-/* ----------- iPhone 6, 6S, 7 and 8 ----------- */
+/* iPads (portrait) ----------- */
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+    /* Styles */
+    // .page {
+    //     width: 600px;
+    // }
+}
+
+
+/* Desktops and laptops ----------- */
+
+@media only screen and (min-width: 1024px) and (max-width:1324px) {
+    /* Styles */
+    .view-toolbar {
+        max-width: 1024px;
+    }
+    .page {
+        width: 1000px;
+        grid-template-columns: repeat(16, 1fr);
+        grid-template-rows: repeat(13, 60px);
+    }
+    .user {
+        grid-column: 13/span 16;
+        grid-row: 1/14;
+        .user-container {
+            display: flex;
+            flex-direction: column;
+            margin: 60px auto 0;
+            width: 200px;
+            .user-name {
+                flex: auto;
+                align-items: center;
+                justify-content: center;
+                border-radius: 20px;
+                margin: 10px auto;
+                text-transform: uppercase;
+                color: white;
+                font-size: 18px;
+                font-weight: 700;
+                padding: 10px 15px;
+            }
+            .user-ava {
+                overflow: hidden;
+                margin: 10px auto;
+                img {
+                    width: 200px; // height: 200px;
+                    object-fit: cover; // border-radius: 120px;
+                }
+                div.ava {
+                    width: 200px;
+                    max-height: 200px;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    margin: auto;
+                }
+            }
+        }
+    }
+    .view-books {
+        grid-column: 2/span 10;
+    }
+    .user-books {
+        grid-column: 1/span 12;
+        grid-row: 3/14;
+        .bookMiniCard {
+            width: 230px;
+        }
+    }
+}
+
+
+/* Large screens ----------- */
+
+@media only screen and (min-width: 1824px) {
+    /* Styles */
+}
+
+
+/* iPhone 4 ----------- */
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5) {
+    /* Styles */
+}
