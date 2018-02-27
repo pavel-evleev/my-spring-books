@@ -8,7 +8,7 @@ import './styles.scss'
 export default class About extends React.Component {
   render() {
     return (
-      <div style={{ margin: "0 25%" }}>
+      <div>
         <h2>About</h2>
         
         <p className='introduction'>

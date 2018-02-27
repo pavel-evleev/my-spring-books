@@ -23,7 +23,7 @@ export default class ToolbarExamplesSimple extends React.Component {
 			button = <Grid />
 		}
 		return (
-			<Toolbar style={{borderRadius:"15px"}} className={this.className}>
+			<Toolbar style={{borderRadius:"15px"}} className={this.props.className}>
 				<ToolbarGroup firstChild={true}>
 					<IconButton touch={true}
 						onClick={() => {

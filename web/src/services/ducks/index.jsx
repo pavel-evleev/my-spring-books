@@ -11,7 +11,8 @@ const store = Immutable({
   allGenres: [],
   likedBooksIds: [],
   allBooks: [],
-  users: []
+  users: [],
+  searchedBooks:[]
 })
 
 const rootReducer = (state = store, action) => {

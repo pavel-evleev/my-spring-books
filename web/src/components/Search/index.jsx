@@ -13,13 +13,18 @@ class Search extends React.Component {
     }
   }
 
+  handleOnClick = () => {
+    const searchOnClick = this.props.onClick
+    this.state.searchText ?
+      (searchOnClick ? searchOnClick(this.state.searchText) : this.props.history.push(`/search-books/${this.state.searchText}`)) : ''
+  }
   render() {
     return (
-      <div style={{ height: "48px" }}>
-        <TextField name="search" value={this.state.searchText}
+      <div style={{ height: "48px", width: "222px" }}>
+        <TextField style={{ width: "174px" }} name="search" value={this.state.searchText}
           onChange={(event) => this.setState({ searchText: event.target.value })} />
         <IconButton>
-          <SearchIcon onClick={() => this.props.history.push(`/search-books/${this.state.searchText}`)} />
+          <SearchIcon onClick={() => this.handleOnClick()} />
         </IconButton>
       </div>
     )

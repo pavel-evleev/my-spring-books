@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -136,4 +138,16 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
+    public List<BookInfo> findBookByNameLike(String bookLike) {
+
+        Optional<List<Book>> listOptional = bookRepository.findByNameContaining(bookLike);
+        List<BookInfo> listBookInfo = new ArrayList<>();
+        if(listOptional.isPresent()){
+            List<Book> bookList = listOptional.get();
+            for (Book b: bookList) {
+                listBookInfo.add(toBookInfoShortInformation(b));
+            }
+        }
+        return listBookInfo;
+    }
 }

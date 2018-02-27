@@ -14,10 +14,15 @@ class MyButton extends React.Component {
           style={{ borderRadius: "10px" }}
           overlayStyle={{ borderRadius: "10px" }}
           label={this.props.label}
+          disabled={this.props.disabled}
           onClick={this.props.onClick} />
       </div>)
   }
 }
+MyButton.defaultProps={
+  disabled:false
+}
+
 export default MyButton
 
 

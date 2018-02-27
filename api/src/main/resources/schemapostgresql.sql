@@ -467,7 +467,7 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 --
 
 ALTER TABLE ONLY authors
-  ADD CONSTRAINT authors_pkey PRIMARY KEY (id);
+  ADD CONSTRAINT  authors_pkey PRIMARY KEY (id);
 
 
 --

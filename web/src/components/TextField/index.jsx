@@ -35,7 +35,7 @@ class MyTextField extends React.Component {
           value={this.props.value}
           onBlur={this.props.onBlur}
           multiLine={this.props.multiLine}
-        />
+        >{this.props.innerElement}</TextField>
       </div>
     )
   }

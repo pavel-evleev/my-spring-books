@@ -39,6 +39,7 @@ class Login extends React.Component {
   }
 
   handleEmailChange = (event) => {
+    this.validateEmail()
     this.setState({ email: event.target.value, validEmail: '' })
   }
 

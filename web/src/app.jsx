@@ -4,7 +4,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import rootReducer from './services/ducks'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import { ping } from './services/ducks/middleware'
 import thunk from 'redux-thunk'
 
@@ -21,11 +21,11 @@ export default class App extends React.Component {
   render() {
     return (
       <MuiThemeProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Provider store={store}>
             <Routes />
           </Provider >
-        </BrowserRouter>
+        </HashRouter>
       </MuiThemeProvider>
     )
   }

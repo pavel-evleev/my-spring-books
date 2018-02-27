@@ -30,9 +30,7 @@ public class BookController extends ApiErrorController {
     private final BookService bookService;
     private final LikeBookService likeBookService;
     private final CommentService commentService;
-
     private final ImageService imageService;
-
 
     public BookController(BookService bookService,
                           ImageService imageService,
@@ -120,6 +118,12 @@ public class BookController extends ApiErrorController {
     public ResponseEntity toggleLike(@RequestBody LikeBookCommand likeBookCommand) {
         LikeBookInfo info = likeBookService.toggleLike(likeBookCommand);
         return ResponseEntity.ok(info);
+    }
+
+    @GetMapping("/search/{bookLike}")
+    public ResponseEntity searchBook(@PathVariable String bookLike) {
+        List<BookInfo> result = bookService.findBookByNameLike(bookLike);
+        return ResponseEntity.ok().body(result);
     }
 
 }

@@ -41,7 +41,7 @@ class BookMiniCard extends React.Component {
         <div className="bookMiniCard-title" >{this.truncateTitle(book.name)}</div>
         <div className="bookMiniCard-img">
           {book.cover ? <img src={book.cover}
-           alt="book" width="140" height="170" /> : <img src={require("../../../img/book.png")} alt="book" width="170" height="170" />}
+           alt="book" width="140" height="170" /> : <img src={require("../../../img/book.png")} className="preview-default" alt="book"  />}
         </div>
         <ActionButton added={added} liked={liked}
           buttonAction={this.props.buttonAction}
