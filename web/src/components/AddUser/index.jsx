@@ -88,7 +88,6 @@ export default class AddUser extends React.Component {
   handlePhoneChange = (event) => {
     let numberPhone = event.target.value;
     this.setState({ phone: event.target.value });
-    console.log(event.target.value.trim())
     this.disabledButton(undefined, undefined, event.target.value);
   }
 

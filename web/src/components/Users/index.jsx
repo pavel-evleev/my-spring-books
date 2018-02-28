@@ -35,10 +35,10 @@ class Users extends React.Component {
     return (
       <div>
         <h2>Users</h2>
-        <List style={{ backgroundColor: "#ffffff59" }}>
+        <List>
           {this.props.users.map(
             (user, index) =>
-              <ListItem style={{backgroundColor:"white", margin:"5px 0", borderRadius:"10px"}} key={index} primaryText={user.name}
+              <ListItem style={{ backgroundColor: "white", margin: "5px 0", borderRadius: "10px", boxShadow: "rgba(0, 0, 0, 0.16) 6px -3px 20px, rgba(0, 0, 0, 0.23) 0px 3px 10px" }} key={index} primaryText={user.name}
                 onClick={() => this.props.history.push(`/users/${user.id}`)}
                 leftAvatar={<Avatar src={user.avatar ? user.avatar :
                   require("../../img/photo40427709_329412123.jpg")

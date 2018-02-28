@@ -6,10 +6,12 @@ import RaisedButton from 'material-ui/RaisedButton'
 class MyButton extends React.Component {
 
   render() {
+    let float = this.props.style? this.props.style.float : ''
+    let backgroundColor = this.props.style ? this.props.style.backgroundColor : ''
     return (
-      <div className={this.props.className}>
+      <div className={this.props.className} style={{ float }}>
         <RaisedButton
-          buttonStyle={{ borderRadius: "10px" }}
+          buttonStyle={{ borderRadius: "10px", backgroundColor }}
           rippleStyle={{ borderRadius: "10px" }}
           style={{ borderRadius: "10px" }}
           overlayStyle={{ borderRadius: "10px" }}
@@ -19,8 +21,8 @@ class MyButton extends React.Component {
       </div>)
   }
 }
-MyButton.defaultProps={
-  disabled:false
+MyButton.defaultProps = {
+  disabled: false
 }
 
 export default MyButton

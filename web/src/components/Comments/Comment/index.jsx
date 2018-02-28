@@ -1,4 +1,5 @@
 import React from 'react'
+import Paper from 'material-ui/Paper'
 
 class Comment extends React.Component {
   constructor(props) {
@@ -10,13 +11,15 @@ class Comment extends React.Component {
   render() {
     const { authorComment, text, datePublished } = this.props.comment
     return (
-      <div className="b-comment">
+      <Paper className="b-comment">
+      <div >
         <div className="a-cont">
           <div>{authorComment.name ? authorComment.name : "Author comment is here"}</div>
           <div>{datePublished}</div>
         </div>
         <p>{text ? text : "Your comment is here......"}</p>
       </div>
+      </Paper>
     )
   }
 }

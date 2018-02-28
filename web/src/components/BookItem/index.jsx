@@ -1,5 +1,6 @@
 import React from 'react'
 import ActionButton from './../GroupIconButton/FavorDeleteButton'
+import Paper from 'material-ui/Paper'
 import Comments from './../Comments'
 
 class BookCard extends React.Component {
@@ -27,18 +28,17 @@ class BookCard extends React.Component {
   render() {
     const { book, edit, added, liked } = this.props;
     return (
-      <div>
-        <div className="book-card-container">
-          <div className="book-card-img">
-            <div>
-              <img src={book.cover ? book.cover : require("../../img/book.png")} alt="book" width="226" height="300" />
-            </div>
-
+      <div className="book-card-container">
+        <div className="book-card-img">
+          <div>
+            <img src={book.cover ? book.cover : require("../../img/book.png")} alt="book" width="226" height="300" />
           </div>
+        </div>
+        <Paper zDepth={2} className="box-card-info">
           <div className="book-card-info">
-            <span>Book name: {book.name}</span>
-            <span>Authors: {this.groupAuthors(book.authors)}</span>
-            <span>Genre: {book.genre.name}</span>
+            <p>Book name: {book.name}</p>
+            <p>Authors: {this.groupAuthors(book.authors)}</p>
+            <p>Genre: {book.genre ? book.genre.name : ''}</p>
             <ActionButton
               added={added} liked={liked}
               toggleLikeBook={this.props.handleToggleLikeBook}
@@ -47,11 +47,11 @@ class BookCard extends React.Component {
               countLiked={book.rating}
             />
           </div>
-          <div className="book-card-description">
-            {book.description}
-          </div>
-          <Comments className="book-comments" comments={book.comments} handleSendComment={this.props.handleSendComment} />
+        </Paper>
+        <div className="book-card-description">
+        Description:{book.description}
         </div>
+        <Comments className="book-comments" comments={book.comments} handleSendComment={this.props.handleSendComment} />
       </div>
     )
   }

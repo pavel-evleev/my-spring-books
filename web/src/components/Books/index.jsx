@@ -39,7 +39,6 @@ class Books extends React.Component {
       return (<div>Dont have books...</div>)
     }
     return (
-      <div>
         <div className="book-wrapper">
           {(grid === "grid") ? (
             this.props.books.map((book) => {
@@ -89,7 +88,6 @@ class Books extends React.Component {
             }))
           }
         </div>
-      </div>
     )
   }
 }

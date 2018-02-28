@@ -39,7 +39,7 @@ class SearchedBooks extends React.Component {
     // debugger;
 
     return (
-      <div>
+      <div style={{marginTop:"25px"}}>
         <ToolBar
           changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }}
           searchComponent={<Search onClick={this.props.searchBooksRequest} />} />

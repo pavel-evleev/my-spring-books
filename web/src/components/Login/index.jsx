@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Ok from 'material-ui/svg-icons/action/check-circle'
 import Error from 'material-ui/svg-icons/alert/error'
-import CircularProgress from 'material-ui/CircularProgress'
+import Progress from './../MagicProgress'
 import * as axios from './../../services/API'
 
 
@@ -66,7 +66,7 @@ class Login extends React.Component {
 
   render() {
     if (this.props.fetching) {
-      return (<CircularProgress />)
+      return (<Progress />)
     }
 
     if (this.props.loginedUser) {
