@@ -36,9 +36,9 @@ class BookCard extends React.Component {
         </div>
         <Paper zDepth={2} className="box-card-info">
           <div className="book-card-info">
-            <p>Book name: {book.name}</p>
-            <p>Authors: {this.groupAuthors(book.authors)}</p>
-            <p>Genre: {book.genre ? book.genre.name : ''}</p>
+            <p><span> Book name:</span> {book.name}</p>
+            <p><span>Authors:</span> {this.groupAuthors(book.authors)}</p>
+            <p><span>Genre:</span> {book.genre ? book.genre.name : ''}</p>
             <ActionButton
               added={added} liked={liked}
               toggleLikeBook={this.props.handleToggleLikeBook}

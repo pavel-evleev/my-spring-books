@@ -33,9 +33,9 @@ class Users extends React.Component {
     }
 
     return (
-      <div>
+      <div style={{ maxWidth: "500px", margin: "auto" }}>
         <h2>Users</h2>
-        <List>
+        <List >
           {this.props.users.map(
             (user, index) =>
               <ListItem style={{ backgroundColor: "white", margin: "5px 0", borderRadius: "10px", boxShadow: "rgba(0, 0, 0, 0.16) 6px -3px 20px, rgba(0, 0, 0, 0.23) 0px 3px 10px" }} key={index} primaryText={user.name}

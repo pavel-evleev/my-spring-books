@@ -12,7 +12,7 @@ const store = Immutable({
   likedBooksIds: [],
   allBooks: [],
   users: [],
-  searchedBooks:[]
+  searchedBooks: []
 })
 
 const rootReducer = (state = store, action) => {
@@ -67,7 +67,7 @@ const rootReducer = (state = store, action) => {
       return state.merge({ fetching: false })
     case UserAction.BOOK_CREATED_ERROR:
       notify.show(action.payload, 'error', 1000)
-      return state.merge({ error: action.payload })
+      return state.merge({ error: action.payload, fetching: false })
     // Load Book
     case UserAction.BOOK_FETCH_REQUEST:
       return state.merge({ fetching: true, openedBook: null })

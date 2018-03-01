@@ -97,118 +97,115 @@ class AddBook extends React.Component {
     if (this.props.fetching)
       return (<Spinner />)
     return (
-      <div>
+      <div className="add-b-grid">
         <ImageUpload handleFile={this.handleFile} className="size-img-uploader" />
-        <MyTextField
-          hintText="Book Name"
-          floatingLabelText="Book Name"
-          onChange={this.handleNameChange}
-          value={this.state.name}
-        />
-
-        {/* <TextField
+        <div className="text-fields">
+          <MyTextField
             hintText="Book Name"
             floatingLabelText="Book Name"
             onChange={this.handleNameChange}
             value={this.state.name}
-          /> */}
-        {/* <br /> */}
-        <MyTextField
-          hintText="Publisher"
-          floatingLabelText="Publisher"
-          onChange={this.handlePublisherChange}
-          value={this.state.publisher}
-        />
-        {/* <TextField
+          />
+          <MyTextField
             hintText="Publisher"
             floatingLabelText="Publisher"
             onChange={this.handlePublisherChange}
             value={this.state.publisher}
-          /> */}
-        {/* <br /> */}
-        <div style={{ width: "fit-content" }}>
-          <label>Authors</label>
-          <div style={{ position: "relative" }}>
-            <div style={{ position: "absolute", backgroundColor: "white", top: "7px", left: 0, right: 0, bottom: 0, height: "34px", borderRadius: "10px" }}></div>
-          </div>
-
-          <SelectField
-            // floatingLabelText="Authors"
-            hintText="Select a Authors"
-            value={this.state.value}
-            onChange={this.handleAuthorsSelectedChange}
-            multiple={true}
-            inputStyle={{ padding: "0px 5px" }}
-            floatingLabelStyle={{ paddingLeft: "5px" }}
-            floatingLabelFocusStyle={{ paddingLeft: "5px", color: "black" }}
-            hintStyle={{ left: "5px" }}
-            underlineShow={false}
-          >
-            {
-              Array.isArray(this.props.authors) ? this.props.authors.map(
-                (author, index) =>
-                  <MenuItem key={index} value={author.id} primaryText={author.name} />
-              ) : <MenuItem value="none" primaryText="none" />
-            }
-          </SelectField>
-        </div>
-        <div style={{ marginTop: "-28px", width: "fit-content" }} >
-          <MyTextField
-            multiLine={true}
-            hintText="New author"
-            floatingLabelText="New Author"
-            onChange={this.handlenewAuthorsChange}
-            value={this.state.newAuthors}
           />
-        </div>
-        <div style={{ width: "fit-content" }}>
-          <label>Genre</label>
-          <div style={{ position: "relative" }}>
-            <div style={{ position: "absolute", backgroundColor: "white", top: "7px", left: 0, right: 0, bottom: 0, height: "34px", borderRadius: "10px" }}></div>
-          </div>
-          <SelectField
-            hintText="Select a Genre"
-            value={this.state.genreId}
-            onChange={this.handleGenresSelectedChange}
-            inputStyle={{ padding: "0px 5px" }}
-            floatingLabelStyle={{ paddingLeft: "5px" }}
-            floatingLabelFocusStyle={{ paddingLeft: "5px", color: "black" }}
-            hintStyle={{ left: "5px" }}
-            underlineShow={false}
-          >
-            {
-              Array.isArray(this.props.genres) ? this.props.genres.map(
-                (genre, index) =>
-                  <MenuItem key={index} value={genre.id} primaryText={genre.name} />
-              ) : <MenuItem value="none" primaryText="none" />
-            }
-          </SelectField>
-        </div>
+          <div style={{ width: "fit-content" }}>
+            <label>Authors</label>
+            <div style={{ position: "relative" }}>
+              <div style={{
+                position: "absolute",
+                backgroundColor: "white",
+                top: "7px", left: 0, right: 0,
+                bottom: 0, height: "34px",
+                borderRadius: "10px",
+                boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px"
+              }}></div>
+            </div>
 
-        {/* <TextField
-            multiLine={true}
-            hintText="New author"
-            floatingLabelText="New Author"
-            onChange={this.handlenewAuthorsChange}
-            value={this.state.newAuthors}
-          /> */}
-        <div style={{ width: "fit-content" }}>
-          <label>Date Published</label>
-          <div style={{ position: "relative" }}>
-            <div style={{ position: "absolute", backgroundColor: "white", top: "7px", left: 0, right: 0, bottom: 0, height: "34px", borderRadius: "10px" }}></div>
+            <SelectField
+              hintText="Select a Authors"
+              value={this.state.value}
+              onChange={this.handleAuthorsSelectedChange}
+              multiple={true}
+              inputStyle={{ padding: "0px 5px" }}
+              floatingLabelStyle={{ paddingLeft: "5px" }}
+              floatingLabelFocusStyle={{ paddingLeft: "5px", color: "black" }}
+              hintStyle={{ left: "5px" }}
+              underlineShow={false}
+            >
+              {
+                Array.isArray(this.props.authors) ? this.props.authors.map(
+                  (author, index) =>
+                    <MenuItem key={index} value={author.id} primaryText={author.name} />
+                ) : <MenuItem value="none" primaryText="none" />
+              }
+            </SelectField>
           </div>
-          <DatePicker hintText="Published Date"
-            autoOk={true}
-            maxDate={this.state.maxDate}
-            value={this.state.publishedDate}
-            onChange={this.handleDateChange}
-            inputStyle={{ padding: "0px 5px" }}
-            hintStyle={{ left: "5px" }}
-            underlineShow={false}
-          />
-        </div>
+          <div style={{ marginTop: "-28px", width: "fit-content" }} >
+            <MyTextField
+              multiLine={true}
+              hintText="New author"
+              floatingLabelText="New Author"
+              onChange={this.handlenewAuthorsChange}
+              value={this.state.newAuthors}
+            />
+          </div>
+          <div style={{ width: "fit-content" }}>
+            <label>Genre</label>
+            <div style={{ position: "relative" }}>
+              <div style={{
+                position: "absolute",
+                backgroundColor: "white",
+                top: "7px", left: 0, right: 0, bottom: 0,
+                height: "34px", borderRadius: "10px",
+                boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px"
+              }}></div>
+            </div>
+            <SelectField
+              hintText="Select a Genre"
+              value={this.state.genreId}
+              onChange={this.handleGenresSelectedChange}
+              inputStyle={{ padding: "0px 5px" }}
+              floatingLabelStyle={{ paddingLeft: "5px" }}
+              floatingLabelFocusStyle={{ paddingLeft: "5px", color: "black" }}
+              hintStyle={{ left: "5px" }}
+              underlineShow={false}
+            >
+              {
+                Array.isArray(this.props.genres) ? this.props.genres.map(
+                  (genre, index) =>
+                    <MenuItem key={index} value={genre.id} primaryText={genre.name} />
+                ) : <MenuItem value="none" primaryText="none" />
+              }
+            </SelectField>
+          </div>
+          <div style={{ width: "fit-content" }}>
+            <label>Date Published</label>
+            <div style={{ position: "relative" }}>
+              <div style={{
+                position: "absolute",
+                backgroundColor: "white", top: "7px", left: 0,
+                right: 0, bottom: 0, height: "34px",
+                borderRadius: "10px",
+                boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px"
+              }}></div>
+            </div>
+            <DatePicker hintText="Published Date"
+              autoOk={true}
+              maxDate={this.state.maxDate}
+              value={this.state.publishedDate}
+              onChange={this.handleDateChange}
+              inputStyle={{ padding: "0px 5px" }}
+              hintStyle={{ left: "5px" }}
+              underlineShow={false}
+            />
+          </div>
 
-        <Button className="item-flex" label="Add" onClick={this.handleAddClick} />
+          <Button className="item-flex" label="Add" onClick={this.handleAddClick} />
+        </div>
       </div>
     )
   }

@@ -26,6 +26,30 @@ body {
     margin: auto;
 }
 
+.add-b-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    margin-top: 25px;
+    .size-img-uploader {
+        grid-column: 4/7;
+        grid-row: 1;
+        margin: 25px auto auto;
+    }
+    .text-fields {
+        grid-column: 7/10;
+        grid-row: 1;
+        margin: auto;
+    }
+}
+
+.previewComponent {
+    width: fit-content;
+    form {
+        margin-bottom: 20px;
+    }
+}
+
 .ab-title-center {
     padding-bottom: 8px;
     h1 {
@@ -121,7 +145,13 @@ body {
     .book-card-info {
         // background-color: white;
         p {
-            padding-left: 30px;
+            padding-left: 25px;
+            padding-right: 5px;
+            word-wrap: break-word;
+            span {
+                color: rgba(87, 86, 86, 0.863);
+                font-size: 14px;
+            }
         }
     }
     .book-card-description {
@@ -134,8 +164,7 @@ body {
         padding: 20px;
     }
     .book-comments {
-        grid-area: c;
-        // border: #555 1px solid;
+        grid-area: c; // border: #555 1px solid;
         margin: 10px 0 0 0;
         .b-comment {
             margin: 0 5px 5px 5px;
@@ -169,13 +198,20 @@ body {
 // imageUpload
 .file-input-btn {
     display: block;
+    color: #3a3a3a;
     cursor: pointer;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     width: 100px;
     text-align: center;
     padding: 9px;
     border-radius: 15px;
-    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    border: rgba(0, 0, 0, 0.19) 1px solid;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.02) 0px 6px 10px;
+}
+
+.file-input-btn:hover {
+    background-color: rgba(0, 0, 0, 0.08);
 }
 
 .fileInput {
@@ -189,7 +225,8 @@ body {
     text-align: center;
     height: 250px;
     width: 210px;
-    border: 1px solid;
+    border: rgba(0, 0, 0, 0.19) 1px solid;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.02) 0px 6px 10px;
     overflow: hidden;
 }
 
@@ -590,7 +627,7 @@ body {
         grid-row: 5;
         .view-toolbar {
             margin-top: 0;
-            height: 25px !important;
+            height: 30px !important;
         }
     }
     .user-books {
@@ -611,8 +648,27 @@ body {
             .bookMiniCard-img {
                 .preview-default {
                     width: 150px;
-                    height: 130px;
+                    height: 150px;
                 }
+            }
+        }
+    }
+    .add-b-grid {
+        display: initial;
+        .size-img-uploader {
+            grid-column: 1/6;
+            grid-row: 1;
+            margin: 25px auto auto;
+        }
+        .text-fields {
+            width: 256px;
+        }
+    }
+    .book-card-container {
+        grid-template-areas: "p p p p p i i i i i i i" "p p p p p i i i i i i i" "d d d d d d d d d d d d" "c c c c c c c c c c c c";
+        .book-card-info {
+            p {
+                padding-left: 5px;
             }
         }
     }
@@ -724,10 +780,24 @@ body {
             .bookMiniCard-img {
                 .preview-default {
                     width: 150px;
-                    height: 130px;
+                    height: 150px;
                 }
             }
         }
+    }
+    .add-b-grid {
+        display: initial;
+        .size-img-uploader {
+            grid-column: 1/6;
+            grid-row: 1;
+            margin: 25px auto auto;
+        }
+        .text-fields {
+            width: 256px;
+        }
+    }
+    .book-card-container {
+        grid-template-areas: "p p p p p . i i i i i i" "p p p p p . i i i i i i" "d d d d d d d d d d d d" "c c c c c c c c c c c c";
     }
 }
 
@@ -804,6 +874,16 @@ body {
             width: 170px;
             height: 170px;
         }
+    }
+    .add-b-grid {
+        .size-img-uploader {
+            grid-column: 3/6;
+            grid-row: 1;
+            margin: 25px auto auto;
+        }
+    }
+    .book-card-container {
+        grid-template-areas: ". p p p p . i i i i i ." ". p p p p . i i i i i ." ". d d d d d d d d d d ." ". c c c c c c c c c c .";
     }
 }
 

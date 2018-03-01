@@ -136,7 +136,8 @@ class User extends React.Component {
               {idCurrent === id ?
                 <div className="change-ava">
                   <Dialog
-                    title="Dialog With Actions"
+                    title="Change avatar"
+                    contentStyle={{width:"fit-content"}}
                     actions={actions}
                     modal={false}
                     open={this.state.open}
