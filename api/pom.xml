@@ -124,7 +124,11 @@
             <artifactId>spring-security-oauth2</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>com.tinify</groupId>
+            <artifactId>tinify</artifactId>
+            <version>RELEASE</version>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>org.liquibase</groupId>-->
             <!--<artifactId>liquibase-core</artifactId>-->

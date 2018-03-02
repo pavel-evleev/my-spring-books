@@ -2,10 +2,11 @@ package app.services;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
+import com.tinify.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Created by Pavel on 24.01.2018.
@@ -16,26 +17,41 @@ public class ImageCompressor {
 
     private DbxClientV2 client;
 
-
     public ImageCompressor(DbxClientV2 client) {
         this.client = client;
+        Tinify.setKey("oS1zvr72psQvFSZfsjeiPdnm0GAaNdWg");
     }
 
 
     public void compressAndSaveImage(MultipartFile image, String compressedFile) throws IOException {
 
-        InputStream inputStream = image.getInputStream();
+        byte[] resultBuffer = null;
+        try {
+            // Use the Tinify API client.
+            resultBuffer = Tinify.fromBuffer(image.getBytes()).toBuffer();
+
+        } catch (AccountException e) {
+            System.out.println("The error message is: " + e.getMessage());
+            // Verify your API key and account limit.
+        } catch (ClientException e) {
+            // Check your source image and request options.
+        } catch (ServerException e) {
+            // Temporary issue with the Tinify API.
+        } catch (ConnectionException e) {
+            // A network connection error occurred.
+        } catch (java.lang.Exception e) {
+            // Something else went wrong, unrelated to the Tinify API.
+        }
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(resultBuffer);
 //
 //        File targetFile = new File("D:\\testImage\\target.jpg");
 //
 //        org.apache.commons.io.FileUtils.copyInputStreamToFile(stream,targetFile);
-
         try {
-            client.files().uploadBuilder("/" + compressedFile + ".jpg").uploadAndFinish(inputStream);
+            client.files().uploadBuilder("/" + compressedFile + ".jpg").uploadAndFinish(byteArrayInputStream);
         } catch (DbxException e) {
             e.printStackTrace();
         }
-
 //
 //        try {
 //

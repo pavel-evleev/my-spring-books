@@ -14,7 +14,6 @@ import ImageUploader from './../ImageUpload'
 import Books from './../Books'
 import ToolBar from './../ToolBar'
 import * as api from '../../services/API'
-import ExifOrientationImg from 'react-exif-orientation-img'
 
 class User extends React.Component {
 
@@ -129,7 +128,7 @@ class User extends React.Component {
 
             <div className="user-ava">
               <div className="ava">
-                <ExifOrientationImg src={userView.avatar ? userView.avatar :
+                <img src={userView.avatar ? userView.avatar :
                   require("../../img/photo40427709_329412123.jpg")
                   // "https://myspringbooks.herokuapp.com/v1/img/user.png"
                 } alt="user" />

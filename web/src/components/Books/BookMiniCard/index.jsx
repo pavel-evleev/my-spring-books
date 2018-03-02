@@ -1,7 +1,6 @@
 import React from 'react'
 import Paper from 'material-ui/Paper'
 import ActionButton from './../../GroupIconButton/FavorDeleteButton'
-import ExifOrientationImg from 'react-exif-orientation-img'
 
 
 const MAX_LENGHT_TITLE = 52
@@ -41,7 +40,7 @@ class BookMiniCard extends React.Component {
         className="bookMiniCard" style={{ position: "relative" }}>
         <div className="bookMiniCard-title" >{this.truncateTitle(book.name)}</div>
         <div className="bookMiniCard-img">
-          {book.cover ? <ExifOrientationImg src={book.cover} alt="book" width="140" height="170" className="castomImg" />
+          {book.cover ? <img src={book.cover} alt="book" width="140" height="170" className="castomImg" />
             : <img src={require("../../../img/book.png")} className="preview-default" alt="book" />}
         </div>
         <ActionButton added={added} liked={liked}

@@ -29,7 +29,6 @@
         "node-sass": "^4.5.3",
         "react": "15.6.1",
         "react-dom": "15.6.1",
-        "react-exif-orientation-img": "^0.1.5",
         "react-input-mask": "^1.0.7",
         "react-notify-toast": "^0.3.2",
         "react-redux": "^5.0.6",
