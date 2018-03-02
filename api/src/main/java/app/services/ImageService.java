@@ -6,10 +6,12 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.DeleteResult;
 import com.dropbox.core.v2.files.FileMetadata;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -34,7 +36,14 @@ public class ImageService {
 
     public byte[] getImage(String fileName) {
         byte[] byteFile = null;
+
+//        try {
+//            byteFile= FileUtils.readFileToByteArray(new File("D:\\testImage\\target.jpg"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         try {
+
             DbxDownloader<FileMetadata> download = client.files().download("/" + fileName);
             byteFile = StreamUtils.copyToByteArray(download.getInputStream());
         } catch (DbxException e) {

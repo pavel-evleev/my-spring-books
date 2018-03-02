@@ -10,6 +10,10 @@ body {
     font-family: Roboto, sans-serif;
 }
 
+img {
+    image-orientation: from-image;
+}
+
 .el-center {
     display: flex;
     align-items: center;
@@ -302,7 +306,11 @@ body {
     // width: 150px;
     // height: 185px;
     // background-color: blue;
+    overflow: hidden;
     margin: 15px auto;
+    .castomImg {
+        object-fit: cover;
+    }
     .preview-default {
         width: 170px;
         height: 170px;

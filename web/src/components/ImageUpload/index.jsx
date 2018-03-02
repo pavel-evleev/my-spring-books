@@ -40,7 +40,7 @@ class ImageUpload extends React.Component {
         <form onSubmit={(e) => this._handleSubmit(e)}>
         <label className="file-input-btn" htmlFor="upload-img">Select img...</label>
           <input className="fileInput" id="upload-img"
-            type="file"
+            type="file" accept="image/*"
             onChange={(e) => {
               this._handleImageChange(e)
               this.props.handleFile(e.target.files[0])
