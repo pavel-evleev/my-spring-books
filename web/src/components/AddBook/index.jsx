@@ -137,7 +137,7 @@ class AddBook extends React.Component {
               underlineShow={false}
             >
               {
-                Array.isArray(this.props.authors) ? this.props.authors.map(
+                Array.isArray(this.props.authors) && this.props.authors.length > 0 ? this.props.authors.map(
                   (author, index) =>
                     <MenuItem key={index} value={author.id} primaryText={author.name} />
                 ) : <MenuItem value="none" primaryText="none" />

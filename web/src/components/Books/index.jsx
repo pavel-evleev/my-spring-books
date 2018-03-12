@@ -42,7 +42,6 @@ class Books extends React.Component {
         <div className="book-wrapper">
           {(grid === "grid") ? (
             this.props.books.map((book) => {
-              if (!Array.isArray(userBooksId)) {
                 if (userBooksId.includes(book.id)) {
                   return (<BookCard key={book.id} book={book}
                     added={true}
@@ -52,7 +51,6 @@ class Books extends React.Component {
                     OnClick={this.handleOnClickBook}
                     addToCollection={this.props.addToCollection}
                     removeFromCollection={this.props.removeFromCollection} />)
-                }
               } else {
                 return (<BookCard key={book.id} book={book}
                   added={false}
@@ -64,7 +62,6 @@ class Books extends React.Component {
                   removeFromCollection={this.props.removeFromCollection} />)
               }
             })) : (this.props.books.map((book) => {
-              if (!Array.isArray(userBooksId)) {
                 if (userBooksId.includes(book.id)) {
                   return (<BookListItem key={book.id} book={book}
                     added={true}
@@ -74,7 +71,6 @@ class Books extends React.Component {
                     OnClick={this.handleOnClickBook}
                     addToCollection={this.props.addToCollection}
                     removeFromCollection={this.props.removeFromCollection} />)
-                }
               } else {
                 return (<BookListItem key={book.id} book={book}
                   added={false}

@@ -36,10 +36,11 @@ class Page extends React.Component {
   }
 
   render() {
-    let userBooksId = '';
+    let userBooksId = [];
     if (this.props.authorizedUser && Array.isArray(this.props.authorizedUser.books)) {
       userBooksId = this.props.authorizedUser.books.map(book => book.id)
     }
+    console.log(userBooksId)
     return (
       <div>
         <ToolBar className="view-toolbar"
