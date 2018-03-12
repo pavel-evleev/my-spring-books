@@ -1,6 +1,7 @@
 package app.rest.controller;
 
 
+import app.rest.exception.BookException;
 import app.rest.model.*;
 import app.services.BookService;
 import app.services.CommentService;
@@ -76,54 +77,92 @@ public class BookController extends ApiErrorController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/comment")
-    public CommentsInfo addComment(@RequestBody CreateCommentCommand createCommentCommand) {
-        return commentService.saveComment(createCommentCommand);
+    public ResponseEntity<CommentsInfo> addComment(@RequestBody CreateCommentCommand createCommentCommand) throws BookException {
+        return commentService.saveComment(createCommentCommand)
+                ? ResponseEntity.status(HttpStatus.CREATED).build() :
+                ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("genres")
+    @GetMapping("/genres")
     public ResponseEntity getAllGenre(HttpServletResponse response) {
         response.setHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=" + TimeUnit.DAYS.toSeconds(365));
         response.setHeader(HttpHeaders.PRAGMA, null);
 
         List<GenreInfo> genres = bookService.findAllGenre();
         if (genres != null) {
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(genres);
+            return ResponseEntity.ok(genres);
         }
         return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/{bookId}")
-    public BookInfo findById(@PathVariable Long bookId) {
-        return bookService.findOne(bookId);
+    public ResponseEntity<BookInfo> findOneAndApproved(@PathVariable Long bookId) throws BookException {
+        BookInfo result = bookService.findByIdAndApproved(bookId);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping
-    public List<BookInfo> findAll() {
-        return bookService.findAll();
+    public ResponseEntity<List<BookInfo>> findAllAndApproved() {
+        List<BookInfo> result = bookService.findAllAndApproved();
+        return ResponseEntity.ok(result);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{bookId}")
-    public void delete(@PathVariable Long bookId) {
-        bookService.delete(bookId);
-    }
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping
-    public void deleteAll() {
-        bookService.deleteAll();
-    }
 
     @PostMapping("/toggle_rating")
-    public ResponseEntity toggleLike(@RequestBody LikeBookCommand likeBookCommand) {
+    public ResponseEntity<LikeBookInfo> toggleLike(@RequestBody LikeBookCommand likeBookCommand) {
         LikeBookInfo info = likeBookService.toggleLike(likeBookCommand);
         return ResponseEntity.ok(info);
     }
 
     @GetMapping("/search/{bookLike}")
-    public ResponseEntity searchBook(@PathVariable String bookLike) {
+    public ResponseEntity<List<BookInfo>> searchBook(@PathVariable String bookLike) {
         List<BookInfo> result = bookService.findBookByNameLike(bookLike);
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok(result);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/all")
+    public ResponseEntity<List<BookInfo>> findAll() {
+        List<BookInfo> result = bookService.findAll();
+        return ResponseEntity.ok(result);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/{bookId}")
+    public ResponseEntity<BookInfo> findOne(@PathVariable Long bookId) throws BookException {
+        BookInfo result = bookService.findById(bookId);
+        return ResponseEntity.ok(result);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/admin/{bookId}")
+    public ResponseEntity delete(@PathVariable Long bookId) {
+        bookService.delete(bookId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/admin/all")
+    public ResponseEntity deleteAll() {
+        bookService.deleteAll();
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping(name = "/admin/{bookId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity patchBook(@PathVariable Long bookId,
+                                    @RequestParam(value = "file", required = false) MultipartFile image,
+                                    @RequestParam("name") String name,
+                                    @RequestParam("publisher") String publisher,
+                                    @RequestParam("datePublished") String datePublished,
+                                    @RequestParam("authorsIds") List<Long> authorsIds,
+                                    @RequestParam("genreId") Long genreId,
+                                    @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) {
+
+        
+        return ResponseEntity.ok().build();
+
+    }
+
 
 }

@@ -6,6 +6,7 @@ import app.model.User;
 import app.repository.BookRepository;
 import app.repository.CommentRepository;
 import app.repository.UserRepository;
+import app.rest.exception.BookException;
 import app.rest.model.CommentInfo;
 import app.rest.model.CommentsInfo;
 import app.rest.model.CreateCommentCommand;
@@ -37,9 +38,14 @@ public class CommentService {
     }
 
 
-    public CommentsInfo saveComment(CreateCommentCommand createCommentCommand) {
+    public boolean saveComment(CreateCommentCommand createCommentCommand) throws BookException {
         User authorComment = userRepository.findOne(createCommentCommand.getAuthorCommentId());
-        Book book = bookRepository.findOne(createCommentCommand.getBookId());
+        Optional<Book> bookOptional = bookRepository.findByIdAndApprove(createCommentCommand.getBookId(), true);
+        Book book = null;
+
+        if (bookOptional.isPresent()) {
+            book = bookOptional.get();
+        } else throw new BookException();
 
         Comment newComment = new Comment();
         newComment.setAuthorComment(authorComment);
@@ -47,23 +53,10 @@ public class CommentService {
         newComment.setText(createCommentCommand.getText());
 
         book.addComment(newComment);
-        bookRepository.saveAndFlush(book);
-
-        Optional<List<Comment>> optional = commentRepository.findCommentByBookId(book.getId());
-
-
-        List<Comment> comments;
-        List<CommentInfo> commentInfos;
-        if (optional.isPresent()) {
-            comments = optional.get();
-
-            commentInfos = comments.stream().map(comment ->
-                    new CommentInfo(comment.getText(), comment.getAuthorComment(), comment.getDatePublished()))
-                    .collect(Collectors.toList());
-        } else {
-            commentInfos = new ArrayList<>();
+        if(bookRepository.saveAndFlush(book) !=null){
+            return true;
         }
-        return new CommentsInfo(book.getId(), commentInfos);
+        return false;
     }
 
 }

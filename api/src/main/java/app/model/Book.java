@@ -17,6 +17,9 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "approve")
+    private Boolean approve;
+
     @NotEmpty
     @Column(name = "name_book", nullable = false)
     private String name;
@@ -63,6 +66,7 @@ public class Book {
 
 
     public Book() {
+        this.approve = false;
     }
 
     public Book(String name, String publisher, Date datePublished, Date dateCreated) {
@@ -70,6 +74,7 @@ public class Book {
         this.publisher = publisher;
         this.datePublished = datePublished;
         this.dateCreated = dateCreated;
+        this.approve = false;
     }
 
     public Long getId() {
@@ -162,6 +167,14 @@ public class Book {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public Boolean getApprove() {
+        return approve;
+    }
+
+    public void setApprove(Boolean approve) {
+        this.approve = approve;
     }
 
     @Override

@@ -49,4 +49,11 @@ public class AuthorService {
         AuthorInfo authorInfo = new AuthorInfo(author.getId(), author.getName());
         return authorInfo;
     }
+
+    public List<AuthorInfo> findAllAndApproved() {
+
+        return authorRepository.findAllByApprove(true).stream()
+                .map(AuthorService::toAuthorInfo)
+                .collect(Collectors.toList());
+    }
 }

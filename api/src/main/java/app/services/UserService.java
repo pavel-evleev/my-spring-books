@@ -1,12 +1,13 @@
 package app.services;
 
 import app.model.Book;
+import app.model.Role;
 import app.model.User;
 import app.repository.BookRepository;
 import app.repository.UserRepository;
 import app.rest.model.AddingBooks;
 import app.rest.model.CreateUserCommand;
-import app.rest.model.UserExistedException;
+import app.rest.exception.UserExistedException;
 import app.rest.model.UserInfo;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -58,8 +59,15 @@ public class UserService {
         userInfo.setLikedBooksIds(user.getLikeBooks().stream()
                 .map(rating -> rating.getBook().getId())
                 .collect(Collectors.toList()));
+
         if (user.getAvatar() != null) {
             userInfo.setAvatar(pathImg + user.getAvatar());
+        }
+        if (user.getRoles().size() > 0) {
+            for (Role s : user.getRoles()) {
+                if(s.getRole().equals("ADMIN"))
+                    userInfo.setOmnipotent(true);
+            }
         }
         return userInfo;
     }
@@ -84,7 +92,7 @@ public class UserService {
 
         User newUser = new User(user.getName(), user.getPhone(), encoder.encode(user.getPassword()), user.getEmail());
         try {
-        verifyService.verifyEmail(newUser);
+            verifyService.verifyEmail(newUser);
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }

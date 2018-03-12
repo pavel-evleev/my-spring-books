@@ -6,6 +6,7 @@ import app.model.Genre;
 import app.repository.AuthorRepository;
 import app.repository.BookRepository;
 import app.repository.GenreRepository;
+import app.rest.exception.BookException;
 import app.rest.model.BookInfo;
 import app.rest.model.CommentInfo;
 import app.rest.model.CreateBookCommand;
@@ -50,20 +51,18 @@ public class BookService {
         );
         if (book.getComments() != null) {
             bookInfo.setComments(
-                    book.getComments().stream().map(comment ->
+                    book.getComments().stream().filter(comment -> comment.getApprove()).map(comment ->
                             new CommentInfo(comment.getText(), comment.getAuthorComment(), comment.getDatePublished()))
                             .collect(Collectors.toList())
             );
         }
-
         if (book.getCover() != null && book.getCover().length() > 0) {
             bookInfo.setCover(pathImg + book.getCover());
         }
 
         bookInfo.setGenre(toGenreInfo(book.getGenre()));
-
+        bookInfo.setApprove(book.getApprove());
         int resultRating = book.getLikeBooks().size();
-
         bookInfo.setRating(resultRating);
         return bookInfo;
     }
@@ -73,6 +72,7 @@ public class BookService {
         if (book.getCover() != null && book.getCover().length() > 0) {
             info.setCover(pathImg + book.getCover());
         }
+        info.setApprove(book.getApprove());
         info.setRating(book.getLikeBooks().size());
         return info;
     }
@@ -81,14 +81,19 @@ public class BookService {
         return new GenreInfo(genre.getId(), genre.getName());
     }
 
-    public List<BookInfo> findAll() {
-        return bookRepository.findAll().stream()
+    public List<BookInfo> findAllAndApproved() {
+        return bookRepository.findAllByApprove(true).stream()
                 .map(BookService::toBookInfoShortInformation)
                 .collect(Collectors.toList());
     }
 
-    public BookInfo findOne(Long id) {
-        return toBookInfo(bookRepository.findOne(id));
+    public BookInfo findByIdAndApproved(Long id) throws BookException {
+
+        Optional<Book> optional = bookRepository.findByIdAndApprove(id, true);
+        if (optional.isPresent())
+            return toBookInfo(optional.get());
+
+        throw new BookException("This book not existed or not approve");
     }
 
     public Book save(CreateBookCommand book, String compressImage) {
@@ -142,12 +147,22 @@ public class BookService {
 
         Optional<List<Book>> listOptional = bookRepository.findByNameContaining(bookLike);
         List<BookInfo> listBookInfo = new ArrayList<>();
-        if(listOptional.isPresent()){
+        if (listOptional.isPresent()) {
             List<Book> bookList = listOptional.get();
-            for (Book b: bookList) {
+            for (Book b : bookList) {
                 listBookInfo.add(toBookInfoShortInformation(b));
             }
         }
         return listBookInfo;
+    }
+
+    public BookInfo findById(Long bookId) {
+            return toBookInfo(bookRepository.findById(bookId));
+    }
+
+    public List<BookInfo> findAll() {
+        return bookRepository.findAll().stream()
+                .map(BookService::toBookInfoShortInformation)
+                .collect(Collectors.toList());
     }
 }

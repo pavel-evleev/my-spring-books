@@ -6,6 +6,8 @@ import app.rest.model.BookInfo;
 import app.rest.model.CreateAuthorCommand;
 import app.services.AuthorService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,37 +22,47 @@ public class AuthorController extends ApiErrorController {
         this.authorService = authorService;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public AuthorInfo create(@RequestBody CreateAuthorCommand createAuthorCommand) {
-        return authorService.save(createAuthorCommand);
+    public ResponseEntity<AuthorInfo> create(@RequestBody CreateAuthorCommand createAuthorCommand) {
+        AuthorInfo result = authorService.save(createAuthorCommand);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @GetMapping
-    public List<AuthorInfo> findAll() {
-        return authorService.findAll();
+    @PreAuthorize("hasRole('Admin')")
+    @GetMapping("/admin/all")
+    public ResponseEntity<List<AuthorInfo>> findAll() {
+        List<AuthorInfo> result = authorService.findAll();
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<AuthorInfo>> findAllAndApprove() {
+        List<AuthorInfo> result = authorService.findAllAndApproved();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{authorId}")
-    public AuthorInfo findById(@PathVariable Long authorId) {
-        return authorService.findOne(authorId);
+    public ResponseEntity<AuthorInfo> findById(@PathVariable Long authorId) {
+        AuthorInfo result = authorService.findOne(authorId);
+        return ResponseEntity.ok(result);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{authorId}")
-    public void delete(@PathVariable Long authorId) {
+    public ResponseEntity delete(@PathVariable Long authorId) {
         authorService.delete(authorId);
+        return ResponseEntity.ok().build();
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping
-    public void deleteAll() {
+    public ResponseEntity deleteAll() {
         authorService.deleteAll();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{authorId}/books")
-    public List<BookInfo> findBooks(@PathVariable Long authorId) {
-        return authorService.findOne(authorId).getBooks();
+    public ResponseEntity<List<BookInfo>> findBooks(@PathVariable Long authorId) {
+        List<BookInfo> result = authorService.findOne(authorId).getBooks();
+        return ResponseEntity.ok(result);
     }
 
 

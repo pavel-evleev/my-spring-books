@@ -18,6 +18,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "approve")
+    private Boolean approve;
+
     @NotEmpty
     @Column(name = "text", nullable = false)
     private String text;
@@ -33,6 +36,7 @@ public class Comment {
 
 
     public Comment() {
+        this.approve = false;
     }
 
     public Comment(String text, User authorComment, Date datePublished) {
@@ -67,6 +71,14 @@ public class Comment {
 
     public void setDatePublished(Date datePublished) {
         this.datePublished = datePublished;
+    }
+
+    public Boolean getApprove() {
+        return approve;
+    }
+
+    public void setApprove(Boolean approve) {
+        this.approve = approve;
     }
 
     @Override

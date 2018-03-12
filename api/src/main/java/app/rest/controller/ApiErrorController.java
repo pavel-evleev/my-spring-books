@@ -1,11 +1,11 @@
 package app.rest.controller;
 
+import app.rest.exception.BookException;
 import app.rest.model.ApiError;
-import app.rest.model.UserExistedException;
+import app.rest.exception.UserExistedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.ConstraintViolationException;
@@ -25,5 +25,11 @@ public class ApiErrorController {
     public ResponseEntity<ApiError> handleUserExistedException(UserExistedException e){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(e.getMessage()));
     }
+
+    @ExceptionHandler(BookException.class)
+    public ResponseEntity<ApiError> handleUserExistedException(BookException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError(e.getMessage()));
+    }
+
 
 }

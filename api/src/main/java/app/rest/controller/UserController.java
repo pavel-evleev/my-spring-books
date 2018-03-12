@@ -1,5 +1,6 @@
 package app.rest.controller;
 
+import app.rest.exception.UserExistedException;
 import app.rest.model.*;
 import app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,53 +33,59 @@ public class UserController extends ApiErrorController {
                 ? new ResponseEntity(HttpStatus.CREATED) : new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{userId}")
-    public UserInfo addBooks(@RequestBody AddingBooks books) {
-        return userService.addBooks(books);
+    public ResponseEntity<UserInfo> addBooks(@RequestBody AddingBooks books) {
+        UserInfo result = userService.addBooks(books);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping
-    public List<UserInfo> findAll() {
-        return userService.findAll();
+    public ResponseEntity<List<UserInfo>> findAll() {
+        List<UserInfo> result = userService.findAll();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/findNames/{name}")
-    public List<String> findNameLike(@PathVariable String name) {
-        return userService.findNameLike(name);
+    public ResponseEntity<List<String>> findNameLike(@PathVariable String name) {
+        List<String> result = userService.findNameLike(name);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{userId}")
-    public UserInfo findById(@PathVariable Long userId) {
-        return userService.findOne(userId);
+    public ResponseEntity<UserInfo> findById(@PathVariable Long userId) {
+        UserInfo result = userService.findOne(userId);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("findEmail")
-    public UserInfo findEmail(@RequestBody CreateUserCommand userCommand) {
-        return userService.findEmail(userCommand.getEmail());
+    public ResponseEntity<UserInfo> findEmail(@RequestBody CreateUserCommand userCommand) {
+        UserInfo result = userService.findEmail(userCommand.getEmail());
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{userId}/books")
-    public List<BookInfo> findBooks(@PathVariable Long userId) {
-        return userService.findOne(userId).getBooks();
+    public ResponseEntity<List<BookInfo>> findBooks(@PathVariable Long userId) {
+        List<BookInfo> result = userService.findOne(userId).getBooks();
+        return ResponseEntity.ok(result);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{userId}/books/{bookId}")
-    public UserInfo deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId) {
-        return userService.patch(userId, bookId);
+    public ResponseEntity<UserInfo> deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId) {
+        UserInfo result = userService.patch(userId, bookId);
+        return ResponseEntity.ok(result);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}")
-    public void delete(@PathVariable Long userId) {
+    public ResponseEntity delete(@PathVariable Long userId) {
         userService.delete(userId);
+        return ResponseEntity.ok().build();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping
-    public void deleteAll() {
+    public ResponseEntity deleteAll() {
         userService.deleteAll();
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

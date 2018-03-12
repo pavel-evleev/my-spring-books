@@ -13,6 +13,8 @@ public class BookInfo {
 
     private String cover;
 
+    private Boolean approve;
+
     private Integer rating;
 
     private GenreInfo genre;
@@ -132,5 +134,13 @@ public class BookInfo {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    public Boolean getApprove() {
+        return approve;
+    }
+
+    public void setApprove(Boolean approve) {
+        this.approve = approve;
     }
 }
