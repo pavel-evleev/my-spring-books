@@ -1,4 +1,4 @@
-package app.rest.model;
+package app.rest.exception;
 
 /**
  * Created by Pavel on 18.02.2018.
