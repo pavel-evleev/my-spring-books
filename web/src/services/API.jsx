@@ -165,3 +165,23 @@ export const toggleLikeBook = (likedBook) => {
 export const changeAvatar = (img) => {
   return client.post('/v1/img/change_avatar', img)
 }
+
+
+
+
+
+/*
+ * API endpoint for admin requests.
+ */
+
+export const patchBook = (id, book) => {
+  return client.patch(`/v1/books/admin/${id}`, book)
+}
+
+export const adminGetBooks = () => {
+  return client.get('/v1/books/admin/all')
+}
+
+export const adminGetBook = (id) => {
+  return client.get(`/v1/books/admin/${id}`)
+}

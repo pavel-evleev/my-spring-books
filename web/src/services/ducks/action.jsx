@@ -58,6 +58,8 @@ export const GENRES_FETCH_ERROR = "GENRES_FETCH_ERROR"
 export const AVATAR_CHANGE_SUCCESS = "AVATAR_CHANGE_SUCCESS"
 export const AVATAR_CHANGE_ERROR = "AVATAR_CHANGE_ERROR"
 
+export const ADMIN_MOD_ACTIVATED = "ADMIN_MOD_ACTIVATED"
+
 
 function reAuth(dispatch, params) {
   let refresh_token = new Promise((resolve, reject) => {
@@ -399,7 +401,6 @@ export function toggleLikeBook(likedBook) {
         })
       }
     ).catch(error => {
-      // debugger;
       if (error.response.status === 401) {
         reAuth(dispatch, toggleLikeBook(likedBook))
       } else {
@@ -432,6 +433,57 @@ export function changeAvatar(file, userId) {
       } else {
         dispatch({
           type: AVATAR_CHANGE_ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+/*
+* Admin action
+*/
+export function toggleAdminMod(toggle) {
+  return function (dispatch) {
+    dispatch({
+      type: ADMIN_MOD_ACTIVATED,
+      payload: toggle
+    })
+  }
+}
+
+export function adminGetBooks() {
+  return function (dispatch) {
+    dispatch({ type: BOOKS_FETCH_REQUEST })
+    api.adminGetBooks().then(response => {
+      dispatch({
+        type: BOOKS_FETCH_SUCCESS,
+        payload: response.data
+      })
+    }).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, getBooks)
+      } else {
+        dispatch({
+          type: BOOKS_FETCH_ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+export function adminGetBookById(id) {
+  return function (dispatch) {
+    dispatch({ type: BOOK_FETCH_REQUEST })
+    api.adminGetBook(id).then(response => {
+      dispatch({ type: BOOK_FETCH_SUCCESS, payload: response.data })
+    }).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, getBookById(id))
+      } else {
+        dispatch({
+          type: BOOK_FETCH_ERROR,
           payload: error.toString()
         })
       }

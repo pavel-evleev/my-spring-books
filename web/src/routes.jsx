@@ -17,8 +17,12 @@ import Login from './components/Login'
 import NoMatch from './routes/NoMatch'
 import MyAppBar from './components/MyAppBar'
 import PrivateRoute from './routes/PrivateRoute'
+import AdminPrivateRoute from './routes/AdminPrivateRoute'
 import SearchedBooks from './components/SearchedBooks'
 import Chat from './components/Chat'
+
+import EditBooks from './components/AdminComponents/EditBooks'
+import EditBook from './components/AdminComponents/EditBooks/EditBook'
 
 
 import Magic from './components/MagicProgress'
@@ -66,6 +70,8 @@ export default class Routes extends React.Component {
             <PrivateRoute exact path='/books' component={BooksPage} />
             <PrivateRoute path='/books/:bookId' component={Book} />
             <PrivateRoute path='/search-books/:searchBooks' component={SearchedBooks} />
+            <AdminPrivateRoute exact path='/admin/edit-books' component={EditBooks} />
+            <AdminPrivateRoute path='/admin/edit-books/:bookId' component={EditBook} />
             <Route component={NoMatch} />
           </Switch>
         </div>

@@ -7,6 +7,7 @@ const store = Immutable({
   login: false,
   fetching: false,
   openedBook: null,
+  adminMod: false,
   allAuthors: [],
   allGenres: [],
   likedBooksIds: [],
@@ -18,6 +19,9 @@ const store = Immutable({
 const rootReducer = (state = store, action) => {
 
   switch (action.type) {
+    // Toggle Admin Mod
+    case UserAction.ADMIN_MOD_ACTIVATED:
+      return state.merge({adminMod: action.payload})
     // Load Users
     case UserAction.FETCH_USERS_REQUEST:
       return state.merge({ fetching: true, users: [], error: null })
@@ -43,8 +47,8 @@ const rootReducer = (state = store, action) => {
       return state.merge({ fetching: false, error: action.payload })
     // Send Comment
     case UserAction.SEND_COMMENT_SUCCESS:
-      notify.show('Comment successfully add', 'success', 1000)
-      return state.merge({ openedBook: Object.assign({}, state.openedBook, { comments: action.payload.comments }) })
+      notify.show('Comment successfully add and will shown when admin approve it', 'success', 1000)
+      return state
     case UserAction.ERROR_SEND_COMMENT:
       notify.show(action.payload, 'error', 1000)
       return state.merge({ error: action.payload })
@@ -126,6 +130,13 @@ const rootReducer = (state = store, action) => {
       })
     case UserAction.AVATAR_CHANGE_SUCCESS:
       return state.merge({ authorizedUser: Object.assign({}, state.authorizedUser, { avatar: action.payload }) })
+
+
+
+// Admin case
+
+      
+
 
     default:
       return state
