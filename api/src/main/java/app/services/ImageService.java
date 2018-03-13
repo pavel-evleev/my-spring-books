@@ -6,12 +6,10 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.DeleteResult;
 import com.dropbox.core.v2.files.FileMetadata;
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -29,21 +27,18 @@ public class ImageService {
         this.client = new DbxClientV2(config, ACCESS_TOKEN);
     }
 
-    public void compressAndSaveImage(MultipartFile image, String compressedFile) throws IOException {
+    public void compressAndSaveImage(MultipartFile image, String compressedFile){
         ImageCompressor compressor = new ImageCompressor(client);
-        compressor.compressAndSaveImage(image, compressedFile);
+        try {
+            compressor.compressAndSaveImage(image, compressedFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public byte[] getImage(String fileName) {
         byte[] byteFile = null;
-
-//        try {
-//            byteFile= FileUtils.readFileToByteArray(new File("D:\\testImage\\target.jpg"));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         try {
-
             DbxDownloader<FileMetadata> download = client.files().download("/" + fileName);
             byteFile = StreamUtils.copyToByteArray(download.getInputStream());
         } catch (DbxException e) {
@@ -54,13 +49,14 @@ public class ImageService {
         return byteFile;
     }
 
-    public void remove(String s) {
+    public boolean remove(String s) {
         try {
             DeleteResult result = client.files().deleteV2("/" + s);
             result.toString();
-
+            return true;
         } catch (DbxException e) {
             e.printStackTrace();
         }
+        return false;
     }
 }

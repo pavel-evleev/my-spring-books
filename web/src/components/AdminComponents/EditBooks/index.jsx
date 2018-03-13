@@ -57,7 +57,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
     adminGetBooks: ActionCreators.adminGetBooks,
-    getAllGenres: ActionCreators.loadAllGenres
+    getAllGenres: ActionCreators.loadAllGenres,
   }, dispatch)
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditBooks))

@@ -40,7 +40,6 @@ class Page extends React.Component {
     if (this.props.authorizedUser && Array.isArray(this.props.authorizedUser.books)) {
       userBooksId = this.props.authorizedUser.books.map(book => book.id)
     }
-    console.log(userBooksId)
     return (
       <div>
         <ToolBar className="view-toolbar"

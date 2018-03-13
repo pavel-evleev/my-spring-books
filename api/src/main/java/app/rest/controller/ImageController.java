@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -47,12 +46,12 @@ public class ImageController extends ApiErrorController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/change_avatar")
     public ResponseEntity<String> changeAvatar(@RequestParam(value = "file") MultipartFile image,
-                                               @RequestParam("userId") Long userId) throws IOException {
+                                               @RequestParam("userId") Long userId) {
         String compressImage = UUID.randomUUID().toString();
         Optional<String> avatar = userService.getAvatarIfExist(userId);
 
-        if(avatar.isPresent()){
-           imageService.remove(avatar.get());
+        if (avatar.isPresent()) {
+            imageService.remove(avatar.get());
         }
 
         imageService.compressAndSaveImage(image, compressImage);

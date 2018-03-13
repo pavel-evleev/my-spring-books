@@ -3,7 +3,7 @@ import React from 'react'
 class ImageUpload extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { file: '', imagePreviewUrl: '' };
+    this.state = { file: '', imagePreviewUrl: null };
   }
 
   _handleSubmit(e) {
@@ -26,7 +26,6 @@ class ImageUpload extends React.Component {
     }
     reader.readAsDataURL(file)
   }
-
   render() {
     let { imagePreviewUrl } = this.state;
     let $imagePreview = null;
@@ -38,7 +37,7 @@ class ImageUpload extends React.Component {
     return (
       <div className={"previewComponent " + this.props.className} >
         <form onSubmit={(e) => this._handleSubmit(e)}>
-        <label className="file-input-btn" htmlFor="upload-img">Select img...</label>
+          <label className="file-input-btn" htmlFor="upload-img">Select img...</label>
           <input className="fileInput" id="upload-img"
             type="file" accept="image/*"
             onChange={(e) => {
@@ -51,7 +50,7 @@ class ImageUpload extends React.Component {
         </form>
         {this.props.preview ?
           <div className="imgPreview">
-            {$imagePreview}
+            {imagePreviewUrl ? $imagePreview : (this.props.currentImg ? this.props.currentImg: $imagePreview )}
           </div> : ''}
       </div>
     )
@@ -61,6 +60,7 @@ class ImageUpload extends React.Component {
 
 ImageUpload.defaultProps = {
   preview: true,
+  currentImg: null
 }
 
 export default ImageUpload

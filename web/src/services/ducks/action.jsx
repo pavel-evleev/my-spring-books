@@ -229,6 +229,7 @@ export function creatBook(book) {
       })
   }
 }
+
 export function getBookById(id) {
   return function (dispatch) {
     dispatch({ type: BOOK_FETCH_REQUEST })
@@ -488,5 +489,49 @@ export function adminGetBookById(id) {
         })
       }
     })
+  }
+}
+
+export function adminGetAuthors() {
+  return function (dispatch) {
+    dispatch({ type: AUTHORS_FETCH_REQUEST })
+    api.adminGetAuthors().then(
+      response => {
+        dispatch({
+          type: AUTHORS_FETCH_SUCCESS,
+          payload: response.data
+        })
+      }
+    ).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, loadAllAuthors)
+      } else {
+        dispatch({
+          type: AUTHORS_FETCH_ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+export function patchBook(id, book) {
+  return function (dispatch) {
+    dispatch({ type: BOOK_CREATED_REQUEST })
+    api.patchBook(id, book)
+      .then(() => {
+        dispatch({
+          type: BOOK_CREATED_SUCCESS,
+        })
+      }).catch(error => {
+        if (error.response.status === 401) {
+          reAuth(dispatch, creatBook(book))
+        } else {
+          dispatch({
+            type: BOOK_CREATED_ERROR,
+            payload: error.toString()
+          })
+        }
+      })
   }
 }

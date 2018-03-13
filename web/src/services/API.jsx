@@ -174,8 +174,8 @@ export const changeAvatar = (img) => {
  * API endpoint for admin requests.
  */
 
-export const patchBook = (id, book) => {
-  return client.patch(`/v1/books/admin/${id}`, book)
+export const patchBook = (book) => {
+  return client.post(`/v1/books/admin`, book)
 }
 
 export const adminGetBooks = () => {
@@ -184,4 +184,8 @@ export const adminGetBooks = () => {
 
 export const adminGetBook = (id) => {
   return client.get(`/v1/books/admin/${id}`)
+}
+
+export const adminGetAuthors = () => {
+  return client.get('/v1/authors/admin/all')
 }

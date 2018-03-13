@@ -17,15 +17,18 @@ class BookCard extends React.Component {
   }
 
   groupAuthors = (authors) => {
+    let result = ''
     if (Array.isArray(authors)) {
-      return authors.join(', ')
+      authors.length > 1 ? authors.forEach(a => { result = a.name + ', ' }) : result = authors[0].name
+      return result
     }
-    return authors
+    return authors[0].name
   }
 
 
 
   render() {
+    console.log(this.props.book)
     const { book, edit, added, liked } = this.props;
     return (
       <div className="book-card-container">
@@ -49,7 +52,7 @@ class BookCard extends React.Component {
           </div>
         </Paper>
         <div className="book-card-description">
-        Description:{book.description}
+          Description:{book.description}
         </div>
         <Comments className="book-comments" comments={book.comments} handleSendComment={this.props.handleSendComment} />
       </div>

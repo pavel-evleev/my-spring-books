@@ -28,7 +28,7 @@ public class AuthorController extends ApiErrorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/all")
     public ResponseEntity<List<AuthorInfo>> findAll() {
         List<AuthorInfo> result = authorService.findAll();

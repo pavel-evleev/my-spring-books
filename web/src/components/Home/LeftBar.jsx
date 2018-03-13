@@ -91,7 +91,6 @@ class LeftBar extends React.Component {
 
 
   render() {
-    console.log(this.props)
     if (this.props.login) {
       return (
         <Drawer width={200} open={this.props.open} docked={false} onRequestChange={() => this.handleTouchTap()} >

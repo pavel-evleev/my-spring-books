@@ -52,7 +52,7 @@ public class UserService {
     public static UserInfo toUserInfo(User user) {
         UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getPhone(), user.getEmail());
         userInfo.setBooks(
-                user.getBooks().stream()
+                user.getBooks().stream().filter(book -> book.getApprove())
                         .map(BookService::toBookInfoShortInformation)
                         .collect(Collectors.toList())
         );

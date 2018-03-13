@@ -7,19 +7,18 @@ import app.repository.AuthorRepository;
 import app.repository.BookRepository;
 import app.repository.GenreRepository;
 import app.rest.exception.BookException;
-import app.rest.model.BookInfo;
-import app.rest.model.CommentInfo;
-import app.rest.model.CreateBookCommand;
-import app.rest.model.GenreInfo;
+import app.rest.model.*;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -46,7 +45,7 @@ public class BookService {
         BookInfo bookInfo = new BookInfo(book.getId(), book.getName(), book.getPublisher(), book.getDatePublished().toLocalDate());
         bookInfo.setAuthors(
                 book.getAuthors().stream()
-                        .map(Author::getName)
+                        .map(AuthorInfo::new)
                         .collect(Collectors.toList())
         );
         if (book.getComments() != null) {
@@ -157,7 +156,7 @@ public class BookService {
     }
 
     public BookInfo findById(Long bookId) {
-            return toBookInfo(bookRepository.findById(bookId));
+        return toBookInfo(bookRepository.findById(bookId));
     }
 
     public List<BookInfo> findAll() {
@@ -165,4 +164,51 @@ public class BookService {
                 .map(BookService::toBookInfoShortInformation)
                 .collect(Collectors.toList());
     }
+
+    public boolean patchBook(Long bookId, String name, MultipartFile imgFile, String publisher,
+                             List<Long> authorsIds, Long genreId, List<String> newAuthors, ImageService imageService) {
+        Book book = bookRepository.findOne(bookId);
+        List<Author> authors = new ArrayList<>();
+
+        if (name != null) {
+            book.setName(name);
+        }
+        if (genreId != null) {
+            book.setGenre(genreRepository.findOne(genreId));
+        }
+        if (publisher != null) {
+            book.setPublisher(publisher);
+        }
+        if (authorsIds != null) {
+            authors = authorRepository.findAll(authorsIds);
+        }
+        if (newAuthors != null) {
+            List<Author> authorList = newAuthors.stream().map(Author::new).collect(Collectors.toList());
+            List<Author> result = new ArrayList<>();
+            for (Author a : authorList) {
+                result.add(authorRepository.saveAndFlush(a));
+            }
+            authors.addAll(result);
+        }
+        if (authors != null && authors.size() > 0) {
+            book.setAuthors(authors);
+        }
+        if (imgFile != null) {
+            String currentImg = book.getCover();
+            String newName = UUID.randomUUID().toString();
+            if (currentImg != null) {
+                if (currentImg.length() > 0) {
+                    imageService.remove(currentImg);
+                }
+            }
+            imageService.compressAndSaveImage(imgFile, newName);
+            book.setCover(newName + ".jpg");
+        }
+
+        if (bookRepository.saveAndFlush(book) != null) {
+            return true;
+        }
+        return false;
+    }
+
 }

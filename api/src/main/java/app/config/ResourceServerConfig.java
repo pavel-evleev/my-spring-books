@@ -40,6 +40,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/v1/img/**").permitAll()
                 .antMatchers("/v1/users/**").authenticated()
                 .antMatchers("/v1/books/**").authenticated()
+                .antMatchers("/v1/authors/admin/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/post/**").hasAuthority("ROLE_ADMIN")
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 

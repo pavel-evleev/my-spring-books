@@ -25,7 +25,7 @@ public class BookInfo {
 
     private LocalDate dateCreated;
 
-    private List<String> authors = new ArrayList<>();
+    private List<AuthorInfo> authors = new ArrayList<>();
 
     private List<CommentInfo> comments = new ArrayList<>();
 
@@ -112,11 +112,11 @@ public class BookInfo {
         this.datePublished = datePublished;
     }
 
-    public List<String> getAuthors() {
+    public List<AuthorInfo> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<String> authors) {
+    public void setAuthors(List<AuthorInfo> authors) {
         this.authors = authors;
     }
 
