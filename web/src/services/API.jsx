@@ -189,3 +189,19 @@ export const adminGetBook = (id) => {
 export const adminGetAuthors = () => {
   return client.get('/v1/authors/admin/all')
 }
+
+export const adminGetAuthor = (id) => {
+  return client.get(`/v1/authors/${id}`)
+}
+
+export const patchAuthor = (a) => {
+  return client.post(`/v1/authors/admin/edit`, a)
+}
+
+export const adminGetComments = () => {
+  return client.get('/v1/books/admin/comment/all')
+}
+
+export const adminToggleApproveComment = (c) => {
+  return client.post('/v1/books/admin/comment/approve', c)
+}

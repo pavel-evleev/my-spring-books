@@ -34,7 +34,10 @@ export default class AddComment extends React.Component {
             rowsMax={4}
             textareaStyle={{ color: "white" }}
           />
-          <Button label="Add Comment" style={{ float: "right",backgroundColor:"#FFBF00" }} onClick={() => sendComment(this.state.value)} />
+          <Button label="Add Comment" style={{ float: "right", backgroundColor: "#FFBF00" }} onClick={() => {
+            sendComment(this.state.value)
+            this.setState({ value: "New comment" })
+          }} />
         </Paper>
       </div>
     )

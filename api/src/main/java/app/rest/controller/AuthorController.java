@@ -35,6 +35,15 @@ public class AuthorController extends ApiErrorController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/admin/edit")
+    public ResponseEntity editAuthor(@RequestParam(value = "authorId") Long authorId,
+                                     @RequestParam(value = "newName", required = false) String newName,
+                                     @RequestParam(value = "approve", required = false) Boolean approve) {
+        AuthorInfo result = authorService.patch(authorId,newName,approve);
+        return ResponseEntity.ok(result);
+    }
+
     @GetMapping()
     public ResponseEntity<List<AuthorInfo>> findAllAndApprove() {
         List<AuthorInfo> result = authorService.findAllAndApproved();
@@ -47,12 +56,14 @@ public class AuthorController extends ApiErrorController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{authorId}")
     public ResponseEntity delete(@PathVariable Long authorId) {
         authorService.delete(authorId);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping
     public ResponseEntity deleteAll() {
         authorService.deleteAll();

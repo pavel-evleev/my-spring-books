@@ -166,7 +166,8 @@ public class BookService {
     }
 
     public boolean patchBook(Long bookId, String name, MultipartFile imgFile, String publisher,
-                             List<Long> authorsIds, Long genreId, List<String> newAuthors, ImageService imageService) {
+                             List<Long> authorsIds, Long genreId, List<String> newAuthors,
+                             ImageService imageService, Boolean approve) {
         Book book = bookRepository.findOne(bookId);
         List<Author> authors = new ArrayList<>();
 
@@ -193,6 +194,9 @@ public class BookService {
         if (authors != null && authors.size() > 0) {
             book.setAuthors(authors);
         }
+        if (approve != null) {
+            book.setApprove(approve);
+        }
         if (imgFile != null) {
             String currentImg = book.getCover();
             String newName = UUID.randomUUID().toString();
@@ -204,7 +208,6 @@ public class BookService {
             imageService.compressAndSaveImage(imgFile, newName);
             book.setCover(newName + ".jpg");
         }
-
         if (bookRepository.saveAndFlush(book) != null) {
             return true;
         }

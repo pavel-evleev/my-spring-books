@@ -8,14 +8,13 @@ import app.repository.CommentRepository;
 import app.repository.UserRepository;
 import app.rest.exception.BookException;
 import app.rest.model.CommentInfo;
-import app.rest.model.CommentsInfo;
 import app.rest.model.CreateCommentCommand;
+import app.rest.model.UserInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,6 +36,18 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
+    private static CommentInfo toCommentInfo(Comment c) {
+        UserInfo userInfo = new UserInfo(c.getAuthorComment().getId(), c.getAuthorComment().getEmail());
+        CommentInfo info = new CommentInfo(c, userInfo);
+        return info;
+    }
+
+    private static  CommentInfo toShortCommentInfo(Comment c){
+        CommentInfo i = new CommentInfo();
+        i.setId(c.getId());
+        i.setApprove(c.getApprove());
+        return i;
+    }
 
     public boolean saveComment(CreateCommentCommand createCommentCommand) throws BookException {
         User authorComment = userRepository.findOne(createCommentCommand.getAuthorCommentId());
@@ -53,10 +64,20 @@ public class CommentService {
         newComment.setText(createCommentCommand.getText());
 
         book.addComment(newComment);
-        if(bookRepository.saveAndFlush(book) !=null){
+        if (bookRepository.saveAndFlush(book) != null) {
             return true;
         }
         return false;
     }
 
+    public CommentInfo toggleApprove(Long id) {
+        Comment comment = commentRepository.findOne(id);
+        comment.setApprove(!comment.getApprove());
+        return toShortCommentInfo(commentRepository.saveAndFlush(comment));
+    }
+
+    public List<CommentInfo> findAll() {
+        List<CommentInfo> result = commentRepository.findAll().stream().map(c -> toCommentInfo(c)).collect(Collectors.toList());
+        return result;
+    }
 }

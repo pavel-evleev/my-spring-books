@@ -56,8 +56,16 @@ class LeftBar extends React.Component {
     this.props.history.push(`/admin/edit-books`);
     this.handleTouchTap();
   }
-
   
+  handleAdminEditAuthorsClick = () => {
+    this.props.history.push(`/admin/edit-authors`);
+    this.handleTouchTap();
+  }
+
+  handleAdminApproveCommentsClick = () => {
+    this.props.history.push(`/admin/approve-comments`);
+    this.handleTouchTap();
+  }
 
   handleToggleAdminMod = (event, select) => {
     this.props.toggleAdminMod(select);
@@ -80,11 +88,11 @@ class LeftBar extends React.Component {
     return (
       <div>
         <MenuItem onClick={this.handleAdminEditBooksClick}>Edit books</MenuItem>
-        {/* <MenuItem onClick={''}>Edit users</MenuItem>
-        <MenuItem onClick={''}>Edit authors</MenuItem>
-        <MenuItem onClick={''}>Edit genres</MenuItem>
-        <MenuItem onClick={''}>Approve Books</MenuItem>
-        <MenuItem onClick={''}>Approve comments</MenuItem> */}
+        {/* <MenuItem onClick={''}>Edit users</MenuItem> */}
+        <MenuItem onClick={this.handleAdminEditAuthorsClick}>Edit authors</MenuItem>
+        {/* <MenuItem onClick={''}>Edit genres</MenuItem> */}
+        {/* <MenuItem onClick={''}>Approve Books</MenuItem> */}
+        <MenuItem onClick={this.handleAdminApproveCommentsClick}>Approve comments</MenuItem>
       </div>
     )
   }

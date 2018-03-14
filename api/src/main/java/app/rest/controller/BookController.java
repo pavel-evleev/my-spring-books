@@ -55,10 +55,12 @@ public class BookController extends ApiErrorController {
 
         CreateBookCommand createBookCommand = null;
         if (newAuthors != null) {
-            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE),
+            createBookCommand = new CreateBookCommand(name, publisher,
+                    LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE),
                     LocalDate.parse(dateCreated, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, newAuthors, genreId);
         } else {
-            createBookCommand = new CreateBookCommand(name, publisher, LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE),
+            createBookCommand = new CreateBookCommand(name, publisher,
+                    LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE),
                     LocalDate.parse(dateCreated, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, genreId);
         }
 
@@ -73,11 +75,10 @@ public class BookController extends ApiErrorController {
                 ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.badRequest().build();
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/comment")
-    public ResponseEntity<CommentsInfo> addComment(@RequestBody CreateCommentCommand createCommentCommand) throws
+    public ResponseEntity<CommentsInfo> addComment(@RequestBody CreateCommentCommand newEntity) throws
             BookException {
-        return commentService.saveComment(createCommentCommand)
+        return commentService.saveComment(newEntity)
                 ? ResponseEntity.status(HttpStatus.CREATED).build() :
                 ResponseEntity.badRequest().build();
     }
@@ -127,11 +128,25 @@ public class BookController extends ApiErrorController {
                                     @RequestParam(value = "publisher", required = false) String publisher,
                                     @RequestParam(value = "authorsIds", required = false) List<Long> authorsIds,
                                     @RequestParam(value = "genreId", required = false) Long genreId,
-                                    @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) {
+                                    @RequestParam(value = "newAuthors", required = false) List<String> newAuthors,
+                                    @RequestParam(value = "approve", required = false) Boolean approve) {
 
-        return bookService.patchBook(bookId, name, image, publisher, authorsIds, genreId, newAuthors, imageService)
+        return bookService.patchBook(bookId, name, image, publisher, authorsIds, genreId, newAuthors, imageService, approve)
                 ? ResponseEntity.ok().build() :
                 ResponseEntity.badRequest().build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/admin/comment/approve")
+    public ResponseEntity approveComment(@RequestParam("comId") Long id) {
+        return ResponseEntity.ok(commentService.toggleApprove(id));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/comment/all")
+    public ResponseEntity<List<CommentInfo>> findAllComments() {
+        List<CommentInfo> result = commentService.findAll();
+        return ResponseEntity.ok(result);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

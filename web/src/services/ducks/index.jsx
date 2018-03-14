@@ -7,9 +7,11 @@ const store = Immutable({
   login: false,
   fetching: false,
   openedBook: null,
+  openAuthor: null,
   adminMod: false,
   allAuthors: [],
   allGenres: [],
+  allComments: [],
   likedBooksIds: [],
   allBooks: [],
   users: [],
@@ -19,9 +21,13 @@ const store = Immutable({
 const rootReducer = (state = store, action) => {
 
   switch (action.type) {
+    case UserAction.ERROR:
+      notify.show(action.payload, 'error', 2000)
+      return state.merge({ fetching: false, error: action.payload })
+
     // Toggle Admin Mod
     case UserAction.ADMIN_MOD_ACTIVATED:
-      return state.merge({adminMod: action.payload})
+      return state.merge({ adminMod: action.payload })
     // Load Users
     case UserAction.FETCH_USERS_REQUEST:
       return state.merge({ fetching: true, users: [], error: null })
@@ -42,16 +48,12 @@ const rootReducer = (state = store, action) => {
     case UserAction.SUCCESS_SEARCH_BOOKS:
       notify.show('Search success', 'success', 1000)
       return state.merge({ searchedBooks: action.payload, fetching: false })
-    case UserAction.ERROR_SEARCH_BOOKS:
-      notify.show(action.payload, 'error', 1000)
-      return state.merge({ fetching: false, error: action.payload })
+
     // Send Comment
     case UserAction.SEND_COMMENT_SUCCESS:
-      notify.show('Comment successfully add and will shown when admin approve it', 'success', 1000)
+      notify.show('Comment successfully added and will show when admin approve it', 'success', 2500)
       return state
-    case UserAction.ERROR_SEND_COMMENT:
-      notify.show(action.payload, 'error', 1000)
-      return state.merge({ error: action.payload })
+
     // Load User
     case UserAction.OPENED_USER_IS_LOGINED_USER:
       return state.merge({ openedUser: Object.assign({}, state.authorizedUser) })
@@ -59,9 +61,7 @@ const rootReducer = (state = store, action) => {
       return state.merge({ fetching: true, openedUser: null })
     case UserAction.USER_OPEN_SECCESS:
       return state.merge({ fetching: false, openedUser: action.payload, allBooks: state.allBooks.map(book => book.id === action.payload.books.id ? action.payload.book : book) })
-    case UserAction.USER_OPEN_ERROR:
-      notify.show(action.payload, 'error', 1000)
-      return state.merge({ fetching: false, error: action.payload })
+
     // Cread Book
     case UserAction.BOOK_CREATED_REQUEST:
       return state.merge({ fetching: true })
@@ -69,53 +69,39 @@ const rootReducer = (state = store, action) => {
     case UserAction.BOOK_CREATED_SUCCESS:
       notify.show('Book created', 'success', 1500)
       return state.merge({ fetching: false })
-    case UserAction.BOOK_CREATED_ERROR:
-      notify.show(action.payload, 'error', 1000)
-      return state.merge({ error: action.payload, fetching: false })
+
     // Load Book
     case UserAction.BOOK_FETCH_REQUEST:
       return state.merge({ fetching: true, openedBook: null })
     case UserAction.BOOK_FETCH_SUCCESS:
       notify.show("Book open", 'success', 1500)
       return state.merge({ fetching: false, openedBook: action.payload })
-    case UserAction.BOOK_FETCH_ERROR:
-      notify.show(action.payload, 'error', 1000)
-      return state.merge({ fetching: false, error: action.payload })
+
     // Load Books
     case UserAction.BOOKS_FETCH_REQUEST:
       return state.merge({ fetching: true })
     case UserAction.BOOKS_FETCH_SUCCESS:
       notify.show('Books get', 'success', 1000)
       return state.merge({ allBooks: action.payload, fetching: false })
-    case UserAction.BOOKS_FETCH_ERROR:
-      notify.show(action.payload, 'error', 1000)
-      return state.merge({ error: action.payload })
+
     // Action add to collection books
     case UserAction.BOOK_ADD_TO_COLLECTION_SUCCESS:
       notify.show("Successfully added", 'success', 1500)
       return state.merge({ authorizedUser: action.payload, likedBooksIds: action.payload.likedBooksIds })
-    case UserAction.BOOK_ADD_TO_COLLECTION_ERROR:
-      notify.show(action.payload, 'error', 1500)
-      return state.merge({ error: action.payload })
+
     // Action remove from collection books
     case UserAction.BOOK_REMOVE_FROM_COLLECTION_SUCCESS:
       notify.show("Successfully removed", 'success', 1500)
       return state.merge({ authorizedUser: action.payload, likedBooksIds: action.payload.likedBooksIds })
-    case UserAction.BOOK_REMOVE_FROM_COLLECTION_ERROR:
-      notify.show(action.payload, 'error', 1500)
-      return state.merge({ error: action.payload })
+
     // Load Authors
     case UserAction.AUTHORS_FETCH_SUCCESS:
       return state.merge({ allAuthors: action.payload })
-    case UserAction.AUTHORS_FETCH_ERROR:
-      notify.show(action.payload, 'error', 1500)
-      return state.merge({ error: action.payload })
+
     // Load Genres
     case UserAction.GENRES_FETCH_SUCCESS:
       return state.merge({ allGenres: action.payload })
-    case UserAction.GENRES_FETCH_ERROR:
-      notify.show(action.payload, 'error', 1500)
-      return state.merge({ error: action.payload })
+
     // Action Like Book
     case UserAction.LIKE_BOOK_SUCCESS:
       return state.merge({
@@ -133,11 +119,31 @@ const rootReducer = (state = store, action) => {
 
 
 
-// Admin case
+    // Admin case
 
-      
-
-
+    // Get Author
+    case UserAction.GET_AUTHOR_REQUEST:
+      return state.merge({ fetching: true, openAuthor: null })
+    case UserAction.GET_AUTHOR_SUCCESS:
+      notify.show("Successfully get authors", 'success', 1500)
+      return state.merge({ fetching: false, openAuthor: action.payload })
+    // edit Author
+    case UserAction.AUTHOR_EDIT_REQUEST:
+      return state.merge({ fetching: true })
+    case UserAction.AUTHOR_EDIT_SUCCESS:
+      notify.show("Successfully edit", 'success', 1500)
+      return state.merge({ fetching: false })
+    // Get Comments
+    case UserAction.GET_COMMENTS_REQUEST:
+      return state.merge({ fetching: true })
+    case UserAction.GET_COMMENTS_SUCCESS:
+      notify.show("Successfully get comments", 'success', 1500)
+      return state.merge({ fetching: false, allComments: action.payload })
+    // Toggle approve comment
+    case UserAction.TOGGLE_APPROVE_SUCCESS:
+      return state.merge({
+        allComments: state.allComments.map(c => c.id === action.payload.id ? Object.assign({}, c, { approve: action.payload.approve }) : c)
+      })
     default:
       return state
   }

@@ -23,6 +23,9 @@ import Chat from './components/Chat'
 
 import EditBooks from './components/AdminComponents/EditBooks'
 import EditBook from './components/AdminComponents/EditBooks/EditBook'
+import EditAuthors from './components/AdminComponents/EditAuthors'
+import EditAuthor from './components/AdminComponents/EditAuthors/EditAuthor'
+import ApproveComments from './components/AdminComponents/ApproveEntity/Comments'
 
 
 import Magic from './components/MagicProgress'
@@ -72,6 +75,9 @@ export default class Routes extends React.Component {
             <PrivateRoute path='/search-books/:searchBooks' component={SearchedBooks} />
             <AdminPrivateRoute exact path='/admin/edit-books' component={EditBooks} />
             <AdminPrivateRoute path='/admin/edit-books/:bookId' component={EditBook} />
+            <AdminPrivateRoute exact path='/admin/edit-authors' component={EditAuthors} />
+            <AdminPrivateRoute  path='/admin/edit-authors/:authorId' component={EditAuthor} />
+            <AdminPrivateRoute exact path='/admin/approve-comments' component={ApproveComments} />
             <Route component={NoMatch} />
           </Switch>
         </div>
