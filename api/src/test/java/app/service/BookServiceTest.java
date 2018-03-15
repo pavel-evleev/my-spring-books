@@ -6,15 +6,12 @@ import app.model.Genre;
 import app.repository.AuthorRepository;
 import app.repository.BookRepository;
 import app.repository.GenreRepository;
-import app.rest.model.BookInfo;
+import app.rest.exception.BookException;
 import app.rest.model.CreateBookCommand;
 import app.services.BookService;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.env.Environment;
 
 import java.sql.Date;
@@ -128,7 +125,12 @@ public class BookServiceTest {
         given(bookRepository.save(any(Book.class))).willReturn(book);
         given(authorRepository.findOne(anyLong())).willReturn(new Author());
         //when
-        Book returnedBooks = bookService.save(createBookCommand, null);
+        Book returnedBooks = null;
+        try {
+            returnedBooks = bookService.save(createBookCommand, null);
+        } catch (BookException e) {
+            e.printStackTrace();
+        }
         //then
         assertThat(returnedBooks).isNotNull();
         assertThat(returnedBooks.getName()).isEqualTo(createBookCommand.getName());

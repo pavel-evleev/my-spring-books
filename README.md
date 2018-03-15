@@ -31,6 +31,8 @@ Run locally on `http://localhost:8888`
 
     npm install
     npm start
+    
+Swagger ui  `http://localhost:8080/swagger-ui.html`
 
 ### How to build prod
 

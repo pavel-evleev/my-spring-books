@@ -50,8 +50,8 @@ public class BookService {
         );
         if (book.getComments() != null) {
             bookInfo.setComments(
-                    book.getComments().stream().filter(comment -> comment.getApprove()).map(comment ->
-                            new CommentInfo(comment.getText(), comment.getAuthorComment(), comment.getDatePublished()))
+                    book.getComments().stream().filter(c -> c.getApprove() != null ? c.getApprove() : false).map(c ->
+                            new CommentInfo(c.getText(), c.getAuthorComment(), c.getDatePublished()))
                             .collect(Collectors.toList())
             );
         }
@@ -97,7 +97,7 @@ public class BookService {
         throw new BookException("This book not existed or not approve");
     }
 
-    public Book save(CreateBookCommand book, String compressImage) {
+    public Book save(CreateBookCommand book, String compressImage) throws BookException {
 
         Book newBook = null;
 
@@ -122,6 +122,9 @@ public class BookService {
         if (compressImage != null) {
             newBook.setCover(compressImage + ".jpg");
         }
+
+        if (newBook.getAuthors().size() == 0)
+            throw new BookException("Book can't be create without author");
 
         return bookRepository.save(newBook);
     }

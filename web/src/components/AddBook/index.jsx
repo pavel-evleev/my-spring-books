@@ -83,6 +83,8 @@ class AddBook extends React.Component {
     if (this.state.file) {
       formData.append('file', this.state.file, this.state.file.name)
     }
+    // if (this.state.newAuthors.length === 0 & this.state.arraySelectedAuthors.length === 0)
+    //   return
     this.props.creatBook(formData)
     // setTimeout(() => {
     //   this.props.history.push("/books")

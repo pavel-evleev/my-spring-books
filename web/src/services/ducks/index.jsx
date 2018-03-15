@@ -22,7 +22,7 @@ const rootReducer = (state = store, action) => {
 
   switch (action.type) {
     case UserAction.ERROR:
-      notify.show(action.payload, 'error', 2000)
+      notify.show(action.payload, 'error', 5000)
       return state.merge({ fetching: false, error: action.payload })
 
     // Toggle Admin Mod

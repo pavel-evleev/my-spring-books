@@ -223,7 +223,7 @@ export function creatBook(book) {
         } else {
           dispatch({
             type: ERROR,
-            payload: error.toString()
+            payload: error.response.data.message.toString()
           })
         }
       })

@@ -66,7 +66,7 @@ class Login extends React.Component {
 
   render() {
     if (this.props.fetching) {
-      return (<div><Progress /><div className="spinner-center" style={{ marginTop: "100px" }}>Please wait, when server is start.</div></div>)
+      return (<div><Progress /><div className="spinner-center" style={{ marginTop: "100px" }}>Please wait 🧐</div></div>)
     }
 
     if (this.props.loginedUser) {

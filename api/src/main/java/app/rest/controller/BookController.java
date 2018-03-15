@@ -51,7 +51,7 @@ public class BookController extends ApiErrorController {
                                  @RequestParam("dateCreated") String dateCreated,
                                  @RequestParam("authorsIds") List<Long> authorsIds,
                                  @RequestParam("genreId") Long genreId,
-                                 @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) {
+                                 @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) throws BookException {
 
         CreateBookCommand createBookCommand = null;
         if (newAuthors != null) {

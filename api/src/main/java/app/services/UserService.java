@@ -5,9 +5,9 @@ import app.model.Role;
 import app.model.User;
 import app.repository.BookRepository;
 import app.repository.UserRepository;
+import app.rest.exception.UserExistedException;
 import app.rest.model.AddingBooks;
 import app.rest.model.CreateUserCommand;
-import app.rest.exception.UserExistedException;
 import app.rest.model.UserInfo;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -52,7 +52,7 @@ public class UserService {
     public static UserInfo toUserInfo(User user) {
         UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getPhone(), user.getEmail());
         userInfo.setBooks(
-                user.getBooks().stream().filter(book -> book.getApprove())
+                user.getBooks().stream().filter(b -> b.getApprove() != null ? b.getApprove() : false)
                         .map(BookService::toBookInfoShortInformation)
                         .collect(Collectors.toList())
         );
@@ -65,7 +65,7 @@ public class UserService {
         }
         if (user.getRoles().size() > 0) {
             for (Role s : user.getRoles()) {
-                if(s.getRole().equals("ADMIN"))
+                if (s.getRole().equals("ADMIN"))
                     userInfo.setOmnipotent(true);
             }
         }
