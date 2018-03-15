@@ -20,14 +20,16 @@ public class CommentInfo {
 
     private boolean approve;
 
-    public  CommentInfo(){
+    public CommentInfo() {
 
     }
 
-    public CommentInfo (Comment c, UserInfo u){
+    public CommentInfo(Comment c, UserInfo u) {
         this.id = c.getId();
         this.text = c.getText();
-        this.approve = c.getApprove();
+        if (c.getApprove() != null) {
+            this.approve = c.getApprove();
+        } else this.approve = false;
         this.datePublished = c.getDatePublished();
         this.authorComment = u;
     }

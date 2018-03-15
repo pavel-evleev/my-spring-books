@@ -43,6 +43,7 @@ public class Comment {
         this.text = text;
         this.authorComment = authorComment;
         this.datePublished = datePublished;
+        this.approve = false;
     }
 
     public Long getId() {

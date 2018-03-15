@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as ActionCreators from './../../../../services/ducks/action'
 import Button from './../../../Button'
+import Checkbox from 'material-ui/Checkbox'
 import Progress from './../../../MagicProgress'
 
 class EditAuthor extends React.Component {
@@ -13,6 +14,7 @@ class EditAuthor extends React.Component {
     super(props)
     this.state = {
       nameAuthor: null,
+      checked: null
     }
   }
 
@@ -32,6 +34,15 @@ class EditAuthor extends React.Component {
     } else return this.props.author.name
   }
 
+  defaultValueCheck = () => {
+    if (this.state.checked !== null)
+      return this.state.checked
+    return this.props.author.approve
+  }
+
+  updateCheck = (e, b) => {
+    this.setState({ checked: b });
+  }
 
   handleSubmit = () => {
     const patch = new FormData()
@@ -39,7 +50,11 @@ class EditAuthor extends React.Component {
     if (this.state.nameAuthor !== null) {
       patch.append('newName', this.state.nameAuthor)
     }
-
+    if (this.state.checked !== null) {
+      console.log(this.state.checked)
+      patch.append('approve', this.state.checked)
+    }
+    debugger
     this.props.patchAuthor(patch)
   }
 
@@ -49,10 +64,13 @@ class EditAuthor extends React.Component {
     if (author === null || !author) { return (<Progress />) }
     return (
       <div>
-        
+
         <div>
           <TextField floatingLabelText="Author name" hintText="Author name"
             value={this.defaultValueIfNotExistName()} onChange={this.handleNameChange} />
+        </div>
+        <div>
+          <Checkbox label="approve" checked={this.defaultValueCheck()} onCheck={this.updateCheck} />
         </div>
         <Button className="item-flex" label="Submit" onClick={this.handleSubmit} />
       </div>

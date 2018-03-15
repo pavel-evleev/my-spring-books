@@ -42,10 +42,12 @@ public class CommentService {
         return info;
     }
 
-    private static  CommentInfo toShortCommentInfo(Comment c){
+    private static CommentInfo toShortCommentInfo(Comment c) {
         CommentInfo i = new CommentInfo();
         i.setId(c.getId());
-        i.setApprove(c.getApprove());
+        if (c.getApprove() != null) {
+            i.setApprove(c.getApprove());
+        } else i.setApprove(false);
         return i;
     }
 

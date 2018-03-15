@@ -33,14 +33,14 @@ class ApproveComments extends React.Component {
     return (
       <div>
         {comments.map(c =>
-          <div key={c.id} style={{ backgroundColor: "grey" }} >
+          <Paper key={c.id} >
             <Checkbox label="approve" checked={c.approve} onClick={() => this.handleClickToggleApprove(c.id)} />
             <div className="a-cont">
               <div>{c.authorComment.name ? c.authorComment.name : "Author comment is here"}</div>
               <div>{c.datePublished}</div>
             </div>
             <p>{c.text ? c.text : "Your comment is here......"}</p>
-          </div>
+          </Paper>
         )}
       </div>
     )

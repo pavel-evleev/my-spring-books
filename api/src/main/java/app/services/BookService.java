@@ -71,7 +71,9 @@ public class BookService {
         if (book.getCover() != null && book.getCover().length() > 0) {
             info.setCover(pathImg + book.getCover());
         }
-        info.setApprove(book.getApprove());
+        if (book.getApprove() != null) {
+            info.setApprove(book.getApprove());
+        } else info.setApprove(false);
         info.setRating(book.getLikeBooks().size());
         return info;
     }

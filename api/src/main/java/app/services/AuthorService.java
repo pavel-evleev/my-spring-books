@@ -22,6 +22,10 @@ public class AuthorService {
 
     public static AuthorInfo toAuthorInfo(Author author) {
         AuthorInfo authorInfo = new AuthorInfo(author.getId(), author.getName());
+        if (author.isApprove() != null) {
+            authorInfo.setApprove(author.isApprove());
+        }else authorInfo.setApprove(false);
+
         return authorInfo;
     }
 

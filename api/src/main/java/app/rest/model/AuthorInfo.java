@@ -30,6 +30,8 @@ public class AuthorInfo {
 
     private List<BookInfo> books = null;
 
+    private boolean approve;
+
     public Long getId() {
         return id;
     }
@@ -52,5 +54,13 @@ public class AuthorInfo {
 
     public void setBooks(List<BookInfo> books) {
         this.books = books;
+    }
+
+    public boolean isApprove() {
+        return approve;
+    }
+
+    public void setApprove(boolean approve) {
+        this.approve = approve;
     }
 }

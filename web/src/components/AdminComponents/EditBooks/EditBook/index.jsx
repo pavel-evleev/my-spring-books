@@ -2,6 +2,7 @@ import React from 'react'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
+import Checkbox from 'material-ui/Checkbox'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -18,6 +19,7 @@ class EditBook extends React.Component {
       nameBook: null,
       nameAuthor: null,
       genreBook: null,
+      checked: null,
       authors: null,
       publisher: null,
       file: null
@@ -80,6 +82,16 @@ class EditBook extends React.Component {
     } else return this.props.book.genre.id
   }
 
+  defaultValueCheck = () => {
+    if (this.state.checked !== null)
+      return this.state.checked
+    return this.props.book.approve
+  }
+
+  updateCheck = (e, b) => {
+    this.setState({ checked: b });
+  }
+
   handleFile = (file) => {
     this.setState({ file: file })
   }
@@ -96,6 +108,8 @@ class EditBook extends React.Component {
 
     if (this.state.file !== null)
       patch.append('file', this.state.file)
+    if (this.state.checked !== null)
+      patch.append('approve', this.state.checked)
     if (this.state.nameBook)
       patch.append('name', this.state.nameBook)
     if (this.state.genreBook)
@@ -123,6 +137,9 @@ class EditBook extends React.Component {
           <div>
             <ImageUpload handleFile={this.handleFile} currentImg={this.imagePreview(book.cover)} className="size-img-uploader" />
           </div>
+        </div>
+        <div>
+          <Checkbox label="approve" checked={this.defaultValueCheck()} onCheck={this.updateCheck} />
         </div>
         <div>
           <TextField floatingLabelText="Book name" hintText="Book name"
