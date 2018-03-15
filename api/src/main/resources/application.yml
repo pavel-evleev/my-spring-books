@@ -1,8 +1,6 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost/mybooks
-#    url: jdbc:postgresql://${DB_USER:jhakupcnwoutbb}:${DB_PASSWORD:604ea0e887e54cdeabd7be1c7a50121c9c284f105e4d8334b0329cdabe1c34e8}@${DB_HOST:ec2-184-73-202-79.compute-1.amazonaws.com}:${DB_PORT:5432}/${DB_NAME:d90kf9illpe06p}
-#    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:mybooks}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:123456}
     driver-class-name: org.postgresql.Driver
