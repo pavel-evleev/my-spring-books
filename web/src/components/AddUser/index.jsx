@@ -122,19 +122,6 @@ export default class AddUser extends React.Component {
     return (
       <div style={{ display: this.state.hidden }}>
         <div className="regisration-fields">
-          <MyTextField id="name"
-            hintText="Name"
-            floatingLabelText="User Name"
-            onChange={this.handleUserNameChange}
-            value={this.state.userName}
-          // errorText={this.state.validName}
-          />
-          <MyTextField hintText="Password"
-            floatingLabelText="Password"
-            type="password"
-            onChange={this.handlePasswordChange}
-            value={this.state.userPassword}
-            errorText={this.state.validPassword} />
           <MyTextField hintText="Email"
             floatingLabelText="Email"
             type="Email"
@@ -142,6 +129,19 @@ export default class AddUser extends React.Component {
             value={this.state.userEmail}
             valid={this.state.validEmail}
             onBlur={this.validateEmail} />
+          <MyTextField hintText="Password"
+            floatingLabelText="Password"
+            type="password"
+            onChange={this.handlePasswordChange}
+            value={this.state.userPassword}
+            errorText={this.state.validPassword} />
+          <MyTextField id="name"
+            hintText="Name"
+            floatingLabelText="User Name"
+            onChange={this.handleUserNameChange}
+            value={this.state.userName}
+          // errorText={this.state.validName}
+          />
           <MyTextField
             floatingLabelText="Phone"
             type="text"
