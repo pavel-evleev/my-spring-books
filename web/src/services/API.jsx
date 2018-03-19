@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const serverUrl = "https://myspringbooks.herokuapp.com/";
-// const serverUrl = "http://localhost:8080/";
+// const serverUrl = "https://myspringbooks.herokuapp.com/";
+const serverUrl = "http://localhost:8080/";
 export const getCookie = (name) => {
   var value = "; " + document.cookie;
   var parts = value.split("; " + name + "=");
@@ -165,9 +165,6 @@ export const toggleLikeBook = (likedBook) => {
 export const changeAvatar = (img) => {
   return client.post('/v1/img/change_avatar', img)
 }
-
-
-
 
 
 /*

@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
 @Service
 @Transactional
 public class BookService {

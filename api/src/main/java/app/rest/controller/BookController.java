@@ -3,10 +3,7 @@ package app.rest.controller;
 
 import app.rest.exception.BookException;
 import app.rest.model.*;
-import app.services.BookService;
-import app.services.CommentService;
-import app.services.ImageService;
-import app.services.LikeBookService;
+import app.services.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,15 +28,18 @@ public class BookController extends ApiErrorController {
     private final LikeBookService likeBookService;
     private final CommentService commentService;
     private final ImageService imageService;
+    private final UserService userService;
 
     public BookController(BookService bookService,
                           ImageService imageService,
                           CommentService commentService,
-                          LikeBookService likeBookService) {
+                          LikeBookService likeBookService,
+                          UserService userService) {
         this.bookService = bookService;
         this.imageService = imageService;
         this.likeBookService = likeBookService;
         this.commentService = commentService;
+        this.userService = userService;
     }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -51,33 +51,25 @@ public class BookController extends ApiErrorController {
                                  @RequestParam("dateCreated") String dateCreated,
                                  @RequestParam("authorsIds") List<Long> authorsIds,
                                  @RequestParam("genreId") Long genreId,
+                                 @RequestParam("userId") Long userId,
                                  @RequestParam(value = "newAuthors", required = false) List<String> newAuthors) throws BookException {
 
-        CreateBookCommand createBookCommand = null;
-        if (newAuthors != null) {
-            createBookCommand = new CreateBookCommand(name, publisher,
-                    LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE),
-                    LocalDate.parse(dateCreated, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, newAuthors, genreId);
-        } else {
-            createBookCommand = new CreateBookCommand(name, publisher,
-                    LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE),
-                    LocalDate.parse(dateCreated, DateTimeFormatter.ISO_LOCAL_DATE), authorsIds, genreId);
-        }
+        CreateBookCommand createBookCommand = new CreateBookCommand(name, publisher,
+                LocalDate.parse(datePublished, DateTimeFormatter.ISO_LOCAL_DATE),
+                LocalDate.parse(dateCreated, DateTimeFormatter.ISO_LOCAL_DATE),
+                authorsIds, newAuthors != null ? newAuthors : null, genreId);
 
+        String compressImage = UUID.randomUUID().toString();
         if (image != null) {
-            String compressImage = UUID.randomUUID().toString();
-
             imageService.compressAndSaveImage(image, compressImage);
-            return bookService.save(createBookCommand, compressImage) != null
-                    ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.badRequest().build();
         }
-        return bookService.save(createBookCommand, null) != null
+
+        return userService.addBook(bookService.save(createBookCommand, image != null ? compressImage : null), userId)
                 ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<CommentsInfo> addComment(@RequestBody CreateCommentCommand newEntity) throws
-            BookException {
+    public ResponseEntity<CommentsInfo> addComment(@RequestBody CreateCommentCommand newEntity) throws BookException {
         return commentService.saveComment(newEntity)
                 ? ResponseEntity.status(HttpStatus.CREATED).build() :
                 ResponseEntity.badRequest().build();

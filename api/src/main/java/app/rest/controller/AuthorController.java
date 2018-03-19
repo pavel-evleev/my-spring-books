@@ -37,7 +37,7 @@ public class AuthorController extends ApiErrorController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/admin/edit")
-    public ResponseEntity editAuthor(@RequestParam(value = "authorId") Long authorId,
+    public ResponseEntity<AuthorInfo> editAuthor(@RequestParam(value = "authorId") Long authorId,
                                      @RequestParam(value = "newName", required = false) String newName,
                                      @RequestParam(value = "approve", required = false) Boolean approve) {
         AuthorInfo result = authorService.patch(authorId,newName,approve);

@@ -110,6 +110,16 @@ public class UserService {
         return toUserInfo(userRepository.saveAndFlush(user));
     }
 
+    public boolean addBook(Book book, Long userId) {
+        User user = userRepository.findOne(userId);
+        ArrayList<Long> existBookId = user.getBooks().stream().map(Book::getId).collect(Collectors.toCollection(ArrayList::new));
+        if (existBookId.contains(book.getId())) {
+            return true;
+        }
+        user.getBooks().add(book);
+        return userRepository.saveAndFlush(user) != null ? true : false;
+    }
+
     public UserInfo addBooks(AddingBooks books) {
         User user = userRepository.findOne(books.getUserId());
         ArrayList<Long> existBookId = user.getBooks().stream().map(Book::getId).collect(Collectors.toCollection(ArrayList::new));

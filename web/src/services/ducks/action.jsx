@@ -209,6 +209,28 @@ export function addComment(comment) {
   }
 }
 
+export function checkUpdate(obj){
+  return function (dispatch) {
+    api.fetchEmail(obj)
+    .then(resp => {
+      dispatch({
+        type: SET_CURRENT_USER,
+        payload: resp.data
+      })
+    }).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, checkUpdate(obj))
+      } else {
+        dispatch({
+          type: ERROR,
+          payload: error.response.data.message.toString()
+        })
+      }
+    })
+
+  }
+}
+
 export function creatBook(book) {
   return function (dispatch) {
     dispatch({ type: BOOK_CREATED_REQUEST })

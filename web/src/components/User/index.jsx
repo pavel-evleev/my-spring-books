@@ -35,6 +35,7 @@ class User extends React.Component {
     if (idCurrent !== id) {
       this.props.fetchUser(id);
     } else {
+      this.props.checkUpdate({email: this.props.authorizedUser.email})
       this.setState({ enableChange: true })
       this.props.openedUserIsLoginedUser()
     }
@@ -184,7 +185,8 @@ const mapDispatchToProps = (dispatch) =>
     removeFromCollection: ActionCreators.removeFromCollection,
     addToCollection: ActionCreators.addToCollection,
     toggleLikeBook: ActionCreators.toggleLikeBook,
-    changeAvatar: ActionCreators.changeAvatar
+    changeAvatar: ActionCreators.changeAvatar,
+    checkUpdate: ActionCreators.checkUpdate
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

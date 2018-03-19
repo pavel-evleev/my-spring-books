@@ -71,6 +71,7 @@ class AddBook extends React.Component {
 
   handleAddClick = () => {
     const formData = new FormData()
+    formData.append('userId', this.props.authorizedUserId)
     formData.append('name', this.state.name)
     formData.append('publisher', this.state.publisher)
     formData.append('datePublished', moment(this.state.publishedDate).format("YYYY-MM-DD"))

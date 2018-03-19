@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom'
 import * as ActionCreators from './../../../services/ducks/action'
 
 import IconButton from 'material-ui/IconButton'
+import Checkbox from 'material-ui/Checkbox'
 import Paper from 'material-ui/Paper'
 import FlatButton from 'material-ui/FlatButton'
 
@@ -30,6 +31,13 @@ class EditBooks extends React.Component {
     this.props.history.push(`/admin/edit-books/${id}`);
   }
 
+  handleClickApproveBook = (b) => {
+    const patch = new FormData()
+    patch.append('bookId', b.id)
+    patch.append('approve', !b.approve)
+    this.props.patchBook(patch)
+  }
+
   render() {
     const { books } = this.props
     return (
@@ -37,8 +45,8 @@ class EditBooks extends React.Component {
         <List>
           {
             books.map(b => <ListItem key={b.id}
-              leftAvatar={<Avatar src={b.cover ? b.cover : require("./../../../img/book.png")} />}
-              primaryText={b.name} onClick={() => this.handleClickEditBook(b.id)} />)
+              rightAvatar={<Avatar src={b.cover ? b.cover : require("./../../../img/book.png")}  onClick={() => this.handleClickEditBook(b.id)} />}
+              primaryText={b.name} leftCheckbox={<Checkbox defaultChecked={b.approve} onCheck={() => this.handleClickApproveBook(b)} />} />)
           }
         </List>
       </div>
@@ -58,6 +66,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
     adminGetBooks: ActionCreators.adminGetBooks,
     getAllGenres: ActionCreators.loadAllGenres,
+    patchBook: ActionCreators.patchBook
   }, dispatch)
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditBooks))

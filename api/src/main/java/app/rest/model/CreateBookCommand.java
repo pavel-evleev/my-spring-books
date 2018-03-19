@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Pavel on 26.08.2017.
- */
+
 public class CreateBookCommand {
 
     private String name;
@@ -33,21 +31,10 @@ public class CreateBookCommand {
         this.publisher = publisher;
         this.datePublished = datePublished;
         this.authorsIds = authorsIds;
-        this.newAuthors = newAuthors;
+        this.newAuthors = newAuthors != null ? newAuthors : new ArrayList<>();
         this.genreId = genreId;
         this.dateCreated = dateCreated;
     }
-
-    public CreateBookCommand(String name, String publisher, LocalDate datePublished,
-                             LocalDate dateCreated, List<Long> authorsIds, Long genreId) {
-        this.name = name;
-        this.publisher = publisher;
-        this.datePublished = datePublished;
-        this.authorsIds = authorsIds;
-        this.genreId = genreId;
-        this.dateCreated = dateCreated;
-    }
-
 
     public Long getGenreId() {
         return genreId;

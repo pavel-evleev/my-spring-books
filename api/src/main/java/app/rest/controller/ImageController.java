@@ -50,6 +50,8 @@ public class ImageController extends ApiErrorController {
         String compressImage = UUID.randomUUID().toString();
         Optional<String> avatar = userService.getAvatarIfExist(userId);
 
+        // it is necessary for the rational use of memory on dropbox
+        //if existed we need delete the avatar image
         if (avatar.isPresent()) {
             imageService.remove(avatar.get());
         }
