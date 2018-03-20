@@ -90,7 +90,6 @@ public class BookService {
     }
 
     public BookInfo findByIdAndApproved(Long id) throws BookException {
-
         Optional<Book> optional = bookRepository.findByIdAndApprove(id, true);
         if (optional.isPresent())
             return toBookInfo(optional.get());
@@ -99,7 +98,6 @@ public class BookService {
     }
 
     public Book save(CreateBookCommand book, String compressImage) throws BookException {
-
         Book newBook = null;
 
         // Get existing authors
