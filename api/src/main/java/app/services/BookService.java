@@ -8,6 +8,7 @@ import app.repository.BookRepository;
 import app.repository.GenreRepository;
 import app.rest.exception.BookException;
 import app.rest.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class BookService {
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
 
+    @Autowired
     public BookService(BookRepository bookRepository,
                        AuthorRepository authorRepository,
                        GenreRepository genreRepository,
@@ -88,7 +90,6 @@ public class BookService {
     }
 
     public BookInfo findByIdAndApproved(Long id) throws BookException {
-
         Optional<Book> optional = bookRepository.findByIdAndApprove(id, true);
         if (optional.isPresent())
             return toBookInfo(optional.get());
@@ -97,7 +98,6 @@ public class BookService {
     }
 
     public Book save(CreateBookCommand book, String compressImage) throws BookException {
-
         Book newBook = null;
 
         // Get existing authors

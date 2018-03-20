@@ -2,6 +2,7 @@ package app.rest.controller;
 
 import app.services.ImageService;
 import app.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ public class ImageController extends ApiErrorController {
     private final UserService userService;
     private final String pathImg;
 
+    @Autowired
     public ImageController(ImageService imageService, UserService userService, Environment env) {
         this.imageService = imageService;
         this.userService = userService;
