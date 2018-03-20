@@ -12,6 +12,7 @@ classes/
 */target/
 webapp/
 */logs/
+/doc/
 
 #
 # Front-end
@@ -56,3 +57,4 @@ yarn.lock
 # Ignore permission file
 *.pem
 api/src/main/resources/application-email.yml
+*.jpg

@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default class ImageUpload extends React.Component {
+class ImageUpload extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { file: '', imagePreviewUrl: '' };
+    this.state = { file: '', imagePreviewUrl: null };
   }
 
   _handleSubmit(e) {
@@ -26,7 +26,6 @@ export default class ImageUpload extends React.Component {
     }
     reader.readAsDataURL(file)
   }
-
   render() {
     let { imagePreviewUrl } = this.state;
     let $imagePreview = null;
@@ -36,22 +35,32 @@ export default class ImageUpload extends React.Component {
       $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
     }
     return (
-      <div className="previewComponent">
+      <div className={"previewComponent " + this.props.className} >
         <form onSubmit={(e) => this._handleSubmit(e)}>
-          <input className="fileInput"
-            type="file"
+          <label className="file-input-btn" htmlFor="upload-img">Select img...</label>
+          <input className="fileInput" id="upload-img"
+            type="file" accept="image/*"
             onChange={(e) => {
               this._handleImageChange(e)
               this.props.handleFile(e.target.files[0])
             }} />
-          <button className="submitButton"
+          {/* <button className="submitButton"
             type="submit"
-            onClick={(e) => this._handleSubmit(e)}>Upload Image</button>
+            onClick={(e) => this._handleSubmit(e)}>Upload Image</button> */}
         </form>
-        <div className="imgPreview">
-          {$imagePreview}
-        </div>
+        {this.props.preview ?
+          <div className="imgPreview">
+            {imagePreviewUrl ? $imagePreview : (this.props.currentImg ? this.props.currentImg: $imagePreview )}
+          </div> : ''}
       </div>
     )
   }
 }
+
+
+ImageUpload.defaultProps = {
+  preview: true,
+  currentImg: null
+}
+
+export default ImageUpload

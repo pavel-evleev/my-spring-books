@@ -1,6 +1,6 @@
 import React from 'react'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import MyTextField from './../TextField'
+import Button from './../Button'
 import InputMask from 'react-input-mask'
 import * as api from '../../services/API'
 import { notify } from 'react-notify-toast'
@@ -23,8 +23,9 @@ export default class AddUser extends React.Component {
       validName: '',
       validPassword: '',
       validPhone: '',
-      validEmail: '',
-      disabledButton: true
+      validEmail: null,
+      disabledButton: true,
+      verifyEmail: false
     }
   }
 
@@ -32,34 +33,26 @@ export default class AddUser extends React.Component {
     api.CreateUser(
       {
         name: this.state.userName,
-        phone: this.state.phone,
+        phone: this.state.phone.trim(),
         email: this.state.userEmail,
         password: this.state.userPassword
       }
     ).then((response) => {
-      notify.show('User successfully add', 'success', 1000)
-      setTimeout(() => { this.props.history.push(`/user/${response.data.id}`) }, 1001)
+      notify.show('User successfully add', 'success', 2000)
+      this.setState({ verifyEmail: true })
     }).catch((error) => {
-      notify.show(error, 'error')
+      if (error.response) {
+        if (error.response.status === 409)
+          notify.show(error.response.data.message.toString(), 'error', 2500)
+      }
+      notify.show(error.message.toString(), 'error')
     });
   }
 
   handleUserNameChange = (event) => {
     const userNameEvent = event.target.value;
-    if (userNameEvent.length == 1) {
-      api.test(userNameEvent).then((response) => {
-        this.setState({ users: response.data });
-      });
-    }
-    let error = '';
     this.setState({ userName: userNameEvent, validName: '' });
-    this.state.users.forEach((user) => {
-      if (!userNameEvent.localeCompare(user)) {
-        this.setState({ validName: nameExisted });
-        error = nameExisted;
-      }
-    });
-    this.disabledButton(userNameEvent, undefined, undefined, error);
+    this.disabledButton(userNameEvent, undefined, undefined);
   }
 
   handlePasswordChange = (event) => {
@@ -75,17 +68,20 @@ export default class AddUser extends React.Component {
 
   handleEmailChange = (event) => {
     const email = event.target.value;
+    // this.validateEmail()
     this.setState({ userEmail: email });
   }
 
 
   validateEmail = () => {
     const email = this.state.userEmail
-    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
-    if (email.match(mailformat) != null) {
-      this.setState({ validEmail: '' });
+    var mailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (mailformat.test(email)) {
+      this.setState({ validEmail: true });
+      return true
     } else {
-      this.setState({ validEmail: 'Invalid' })
+      this.setState({ validEmail: false })
+      return false
     }
   }
 
@@ -120,40 +116,44 @@ export default class AddUser extends React.Component {
   }
 
   render() {
+    if (this.state.verifyEmail) {
+      return (<div>Check your email, we will send you an email to make sure that the mail exists. <span onClick={() => this.props.history.push(`/`)} >main page</span></div>)
+    }
     return (
-      <div style={{ margin: "0 25%", display: this.state.hidden }}>
-        <TextField id="name"
-          hintText="Name"
-          floatingLabelText="User Name"
-          onChange={this.handleUserNameChange}
-          value={this.state.userName}
-          errorText={this.state.validName}
-        />
-        <br />
-        <TextField hintText="Password"
-          floatingLabelText="Password"
-          type="password"
-          onChange={this.handlePasswordChange}
-          value={this.state.userPassword}
-          errorText={this.state.validPassword} />
-        <br />
-        <TextField hintText="Email"
-          floatingLabelText="Email"
-          type="Email"
-          onChange={this.handleEmailChange}
-          value={this.state.userEmail}
-          errorText={this.state.validEmail}
-          onBlur={this.validateEmail} />
-        <br />
-        <TextField
-          floatingLabelText="Phone"
-          type="text"
-          value={this.state.phone}
-          errorText={this.state.validPhone}>
-          <InputMask mask="+375 99 999 99 99" value={this.state.phone} maskChar="" onChange={this.handlePhoneChange} onBlur={this.handleBlurPhone} />
-        </TextField>
-        <br />
-        <RaisedButton label="Add User" disabled={this.state.disabledButton} onClick={this.handleSubmit} />
+      <div style={{ display: this.state.hidden }}>
+        <div className="regisration-fields">
+          <MyTextField hintText="Email"
+            floatingLabelText="Email"
+            type="Email"
+            onChange={this.handleEmailChange}
+            value={this.state.userEmail}
+            valid={this.state.validEmail}
+            onBlur={this.validateEmail} />
+          <MyTextField hintText="Password"
+            floatingLabelText="Password"
+            type="password"
+            onChange={this.handlePasswordChange}
+            value={this.state.userPassword}
+            errorText={this.state.validPassword} />
+          <MyTextField id="name"
+            hintText="Name"
+            floatingLabelText="User Name"
+            onChange={this.handleUserNameChange}
+            value={this.state.userName}
+          // errorText={this.state.validName}
+          />
+          <MyTextField
+            floatingLabelText="Phone"
+            type="text"
+            value={this.state.phone}
+            errorText={this.state.validPhone}
+            innerElement={<InputMask mask="+375 99 999 99 99" value={this.state.phone} maskChar="" onChange={this.handlePhoneChange} onBlur={this.handleBlurPhone} />}
+          />
+          <Button label="Add User" disabled={this.state.disabledButton} onClick={this.handleSubmit} />
+        </div>
+        <div>Your email is only needed to contact you if something goes wrong.
+            We will not send you a mailing list if you did not subscribe to it.
+            you can always unsubscribe from the mailing list. </div>
       </div>
     )
   }

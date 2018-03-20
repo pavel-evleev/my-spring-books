@@ -7,10 +7,11 @@ import React from 'react'
 export default class Home extends React.Component {
   render() {
     return (
-      <div style={{ margin: "0 25%" }}>
-        <h1>Welcome to my app </h1>
-        
-      </div >
+        <div className="el-center grdient-effect">
+          <div className="radius">
+            <h1 >Welcome to my app </h1>
+        </div>
+      </div>
     )
   }
 }

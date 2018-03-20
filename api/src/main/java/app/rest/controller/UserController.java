@@ -1,15 +1,12 @@
 package app.rest.controller;
 
-import app.rest.model.AddingBooks;
-import app.rest.model.BookInfo;
-import app.rest.model.CreateUserCommand;
-import app.rest.model.UserInfo;
+import app.rest.exception.UserExistedException;
+import app.rest.model.*;
 import app.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,72 +20,72 @@ public class UserController extends ApiErrorController {
 
     private final UserService userService;
 
+    @Autowired
+    Environment environment;
+
     public UserController(UserService service) {
         this.userService = service;
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody CreateUserCommand createUserCommand) {
-        return userService.save(createUserCommand)
+    public ResponseEntity create(@RequestBody CreateUserCommand createUserCommand) throws UserExistedException {
+        return userService.save(createUserCommand) != null
                 ? new ResponseEntity(HttpStatus.CREATED) : new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{userId}")
-    public UserInfo addBooks(@RequestBody AddingBooks books) {
-        return userService.addBooks(books);
+    public ResponseEntity<UserInfo> addBooks(@RequestBody AddingBooks books) {
+        UserInfo result = userService.addBooks(books);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping
-    public List<UserInfo> findAll() {
-        return userService.findAll();
+    public ResponseEntity<List<UserInfo>> findAll() {
+        List<UserInfo> result = userService.findAll();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/findNames/{name}")
-    public List<String> findNameLike(@PathVariable String name) {
-        return userService.findNameLike(name);
+    public ResponseEntity<List<String>> findNameLike(@PathVariable String name) {
+        List<String> result = userService.findNameLike(name);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{userId}")
-    public UserInfo findById(@PathVariable Long userId) {
-        return userService.findOne(userId);
+    public ResponseEntity<UserInfo> findById(@PathVariable Long userId) {
+        UserInfo result = userService.findOne(userId);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("findEmail")
-    public UserInfo findEmail(@RequestBody CreateUserCommand userCommand) {
-        return userService.findEmail(userCommand.getEmail());
+    public ResponseEntity<UserInfo> findEmail(@RequestBody CreateUserCommand userCommand) {
+        UserInfo result = userService.findEmail(userCommand.getEmail());
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{userId}/books")
-    public List<BookInfo> findBooks(@PathVariable Long userId) {
-        return userService.findOne(userId).getBooks();
+    public ResponseEntity<List<BookInfo>> findBooks(@PathVariable Long userId) {
+        List<BookInfo> result = userService.findOne(userId).getBooks();
+        return ResponseEntity.ok(result);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{userId}/books/{bookId}")
-    public UserInfo deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId) {
-        return userService.patch(userId, bookId);
+    public ResponseEntity<UserInfo> deleteBookFromUser(@PathVariable Long userId, @PathVariable Long bookId) {
+        UserInfo result = userService.patch(userId, bookId);
+        return ResponseEntity.ok(result);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}")
-    public void delete(@PathVariable Long userId) {
+    public ResponseEntity delete(@PathVariable Long userId) {
         userService.delete(userId);
+        return ResponseEntity.ok().build();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping
-    public void deleteAll() {
+    public ResponseEntity deleteAll() {
         userService.deleteAll();
-    }
-
-
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -99,12 +96,11 @@ public class UserController extends ApiErrorController {
     public void confirmEmail(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) {
         try {
             if (userService.confirmEmail(uuid))
-                response.sendRedirect("//localhost:8888");
+                response.sendRedirect(environment.getProperty("verify.redirect.url"));
             else
-                response.sendRedirect("//localhost:8888/login");
+                response.sendRedirect(environment.getProperty("verify.redirect.url") + "/registration");
         } catch (IOException e) {
             e.printStackTrace();
-
         }
     }
 }

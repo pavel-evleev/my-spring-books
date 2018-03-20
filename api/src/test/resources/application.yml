@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+    username: ${DB_USER:sa}
+    password: ${DB_PASSWORD:sa}
+    driver-class-name: org.h2.Driver
+    platform: H2
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: create
+    properties.hibernate.dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+
+image:
+  url: "http://localhost:8080/v1/img/"
+verify:
+  email:
+    url: "http://localhost:8080/v1/users/verify/"
+security:
+  ignored: /**

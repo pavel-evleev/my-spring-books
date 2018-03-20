@@ -3,17 +3,19 @@ package app.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "authors")
-public class Author  {
+public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "approve")
+    private Boolean approve;
 
     @Column(name = "name", nullable = false)
     @NotEmpty
@@ -23,10 +25,12 @@ public class Author  {
     private List<Book> books = new ArrayList<>();
 
     public Author() {
+        this.approve = false;
     }
 
     public Author(String name) {
         this.name = name;
+        this.approve = false;
     }
 
     public Long getId() {
@@ -51,6 +55,14 @@ public class Author  {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public Boolean isApprove() {
+        return approve;
+    }
+
+    public void setApprove(Boolean approve) {
+        this.approve = approve;
     }
 
     @Override

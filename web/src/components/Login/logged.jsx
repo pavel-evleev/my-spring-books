@@ -6,6 +6,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
+import {fullWhite} from 'material-ui/styles/colors'
 import * as LoggedAction from '../../services/ducks/action'
 import * as api from './../../services/API'
 
@@ -17,7 +18,6 @@ class Logged extends Component {
 
 
   loggoutHandle = () => {
-    debuggers
     const user = { id: this.props.user.id, name: this.props.user.name }
     this.props.loggoutUser(user)
     this.props.history.push('/')
@@ -27,7 +27,7 @@ class Logged extends Component {
     return (
       <IconMenu
         iconButtonElement={
-          <IconButton><MoreVertIcon /></IconButton>
+          <IconButton><MoreVertIcon color={fullWhite}/></IconButton>
         }
         targetOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}

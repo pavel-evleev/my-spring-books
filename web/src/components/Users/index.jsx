@@ -1,5 +1,6 @@
 import React from 'react'
 import CircularProgress from './../MagicProgress'
+import Avatar from 'material-ui/Avatar'
 import { List, ListItem } from 'material-ui/List'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -32,13 +33,17 @@ class Users extends React.Component {
     }
 
     return (
-      <div style={{ margin: "0 25%" }}>
+      <div style={{ maxWidth: "500px", margin: "auto" }}>
         <h2>Users</h2>
-        <List>
+        <List >
           {this.props.users.map(
             (user, index) =>
-              <ListItem key={index} primaryText={user.name}
+              <ListItem style={{ backgroundColor: "white", margin: "5px 0", borderRadius: "10px", boxShadow: "rgba(0, 0, 0, 0.16) 6px -3px 20px, rgba(0, 0, 0, 0.23) 0px 3px 10px" }} key={index} primaryText={user.name}
                 onClick={() => this.props.history.push(`/users/${user.id}`)}
+                leftAvatar={<Avatar src={user.avatar ? user.avatar :
+                  // require("../../img/photo40427709_329412123.jpg")
+                  "https://myspringbooks.herokuapp.com/v1/img/user.png"
+                } />}
               />
           )
           }

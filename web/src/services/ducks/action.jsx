@@ -4,10 +4,11 @@ import CryptoJS from 'crypto-js'
 
 const keyEncrypt = 'myReadedBooks25ItStep'
 
+export const ERROR= "ERROR"
+
 
 export const FETCH_SEARCH_REQUEST = "FETCH_SEARCH_REQUEST"
 export const SUCCESS_SEARCH_BOOKS = "SUCCESS_SEARCH_BOOKS"
-export const ERROR_SEARCH_BOOKS = "ERROR_SEARCH_BOOKS"
 
 export const SUCCESS_LOGIN = 'SUCCESS_LOGIN'
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'
@@ -18,42 +19,47 @@ export const FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST"
 export const FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE"
 
 export const SEND_COMMENT_SUCCESS = 'SEND_COMMENT_SUCCESS'
-export const ERROR_SEND_COMMENT = 'ERROR_SEND_COMMENT'
 
 export const USER_OPEN_REQUEST = 'USER_OPEN_REQUEST'
 export const USER_OPEN_SECCESS = 'USER_OPEN_SECCESS'
-export const USER_OPEN_ERROR = 'USER_OPEN_ERROR'
 export const OPENED_USER_IS_LOGINED_USER = 'OPENED_USER_IS_LOGINED_USER'
 
 export const BOOK_CREATED_REQUEST = 'BOOK_CREATED_REQUEST'
 export const BOOK_CREATED_SUCCESS = 'BOOK_CREATED_SUCCESS'
-export const BOOK_CREATED_ERROR = 'BOOK_CREATED_ERROR'
 
 export const BOOK_ADD_TO_COLLECTION_SUCCESS = 'BOOK_ADD_TO_COLLECTION_SUCCESS'
-export const BOOK_ADD_TO_COLLECTION_ERROR = "BOOK_ADD_TO_COLLECTION_ERROR"
 
 export const BOOK_REMOVE_FROM_COLLECTION_SUCCESS = 'BOOK_REMOVE_FROM_COLLECTION_SUCCESS'
-export const BOOK_REMOVE_FROM_COLLECTION_ERROR = 'BOOK_REMOVE_FROM_COLLECTION_ERROR'
 
 export const BOOKS_FETCH_REQUEST = "BOOKS_FETCH_REQUEST"
 export const BOOKS_FETCH_SUCCESS = 'BOOKS_FETCH_SUCCESS'
-export const BOOKS_FETCH_ERROR = 'BOOKS_FETCH_ERROR'
 
 export const BOOK_FETCH_REQUEST = 'BOOK_FETCH_REQUEST'
 export const BOOK_FETCH_SUCCESS = 'BOOK_FETCH_SUCCESS'
-export const BOOK_FETCH_ERROR = 'BOOK_FETCH_ERROR'
 
+export const GET_COMMENTS_REQUEST = "GET_COMMENTS_REQUEST"
+export const GET_COMMENTS_SUCCESS = 'GET_COMMENTS_SUCCESS'
+
+export const GET_AUTHOR_REQUEST = "GET_AUTHOR_REQUEST"
+export const GET_AUTHOR_SUCCESS = 'GET_AUTHOR_SUCCESS'
+
+export const AUTHOR_EDIT_REQUEST = "AUTHOR_EDIT_REQUEST"
+export const AUTHOR_EDIT_SUCCESS = 'AUTHOR_EDIT_SUCCESS'
 
 export const AUTHORS_FETCH_REQUEST = "AUTHORS_FETCH_REQUEST"
 export const AUTHORS_FETCH_SUCCESS = "AUTHORS_FETCH_SUCCESS"
-export const AUTHORS_FETCH_ERROR = "AUTHORS_FETCH_ERROR"
 
 export const LIKE_BOOK_SUCCESS = "LIKE_BOOK_SUCCESS"
-export const LIKE_BOOK_ERROR = "LIKE_BOOK_ERROR"
 
 export const GENRES_FETCH_REQUEST = "GENRES_FETCH_REQUEST"
 export const GENRES_FETCH_SUCCESS = "GENRES_FETCH_SUCCESS"
-export const GENRES_FETCH_ERROR = "GENRES_FETCH_ERROR"
+
+export const AVATAR_CHANGE_SUCCESS = "AVATAR_CHANGE_SUCCESS"
+
+export const ADMIN_MOD_ACTIVATED = "ADMIN_MOD_ACTIVATED"
+
+export const TOGGLE_APPROVE_SUCCESS = 'TOGGLE_APPROVE_SUCCESS'
+
 
 function reAuth(dispatch, params) {
   let refresh_token = new Promise((resolve, reject) => {
@@ -85,7 +91,7 @@ export function searchBooksRequest(searchQuery) {
           reAuth(dispatch, searchBooksRequest(searchQuery))
         } else {
           dispatch({
-            type: ERROR_SEARCH_BOOKS,
+            type: ERROR,
             payload: error.toString()
           })
         }
@@ -138,13 +144,13 @@ export function requestLogin(email, password) {
 
     api.LoginOuath(email, password)
       .then((response) => {
-        localStorage.setItem('email', CryptoJS.AES.encrypt(email, keyEncrypt).toString())
+        localStorage.setItem('a', CryptoJS.AES.encrypt(email, keyEncrypt).toString())
         api.set_cookie("key", response.data.access_token, response.data.expires_in, response.data.refresh_token)
         api.fetchEmail({ email: email })
-          .then(response => {
+          .then(resp => {
             dispatch({
               type: SET_CURRENT_USER,
-              payload: response.data
+              payload: resp.data
             })
           }).catch(error =>
             dispatch({
@@ -175,7 +181,7 @@ export function fetchUser(id) {
         reAuth(dispatch, fetchUser(id))
       } else {
         dispatch({
-          type: USER_OPEN_ERROR,
+          type: ERROR,
           payload: error.toString()
         })
       }
@@ -195,11 +201,33 @@ export function addComment(comment) {
         reAuth(dispatch, addComment(comment))
       } else {
         dispatch({
-          type: ERROR_SEND_COMMENT,
+          type: ERROR,
           payload: error.toString()
         })
       }
     })
+  }
+}
+
+export function checkUpdate(obj){
+  return function (dispatch) {
+    api.fetchEmail(obj)
+    .then(resp => {
+      dispatch({
+        type: SET_CURRENT_USER,
+        payload: resp.data
+      })
+    }).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, checkUpdate(obj))
+      } else {
+        dispatch({
+          type: ERROR,
+          payload: error.response.data.message.toString()
+        })
+      }
+    })
+
   }
 }
 
@@ -216,13 +244,14 @@ export function creatBook(book) {
           reAuth(dispatch, creatBook(book))
         } else {
           dispatch({
-            type: BOOK_CREATED_ERROR,
-            payload: error.toString()
+            type: ERROR,
+            payload: error.response.data.message.toString()
           })
         }
       })
   }
 }
+
 export function getBookById(id) {
   return function (dispatch) {
     dispatch({ type: BOOK_FETCH_REQUEST })
@@ -233,7 +262,7 @@ export function getBookById(id) {
         reAuth(dispatch, getBookById(id))
       } else {
         dispatch({
-          type: BOOK_FETCH_ERROR,
+          type: ERROR,
           payload: error.toString()
         })
       }
@@ -254,7 +283,7 @@ export function getBooks() {
         reAuth(dispatch, getBooks)
       } else {
         dispatch({
-          type: BOOKS_FETCH_ERROR,
+          type: ERROR,
           payload: error.toString()
         })
       }
@@ -283,7 +312,7 @@ export function addToCollection(loginedUser, bookId) {
           reAuth(dispatch, addToCollection(loginedUser, bookId))
         } else {
           dispatch({
-            type: BOOK_ADD_TO_COLLECTION_ERROR,
+            type: ERROR,
             payload: error.toString()
           })
         }
@@ -305,7 +334,7 @@ export function removeFromCollection(userId, bookId) {
           reAuth(dispatch, removeFromCollection(userId, bookId))
         } else {
           dispatch({
-            type: BOOK_REMOVE_FROM_COLLECTION_ERROR,
+            type: ERROR,
             payload: error.toString()
           })
         }
@@ -315,7 +344,7 @@ export function removeFromCollection(userId, bookId) {
 
 export function loginFromRefreshToken() {
   return function (dispatch) {
-    let byte = localStorage.getItem("email")
+    let byte = localStorage.getItem("a")
     let refresh_token = api.getCookie("refresh_token")
     if (byte && refresh_token) {
       let email = CryptoJS.AES.decrypt(byte, keyEncrypt).toString(CryptoJS.enc.Utf8)
@@ -353,7 +382,7 @@ export function loadAllAuthors() {
         reAuth(dispatch, loadAllAuthors)
       } else {
         dispatch({
-          type: AUTHORS_FETCH_ERROR,
+          type: ERROR,
           payload: error.toString()
         })
       }
@@ -377,7 +406,7 @@ export function loadAllGenres() {
         reAuth(dispatch, loadAllGenres)
       } else {
         dispatch({
-          type: GENRES_FETCH_ERROR,
+          type: ERROR,
           payload: error.toString()
         })
       }
@@ -395,12 +424,222 @@ export function toggleLikeBook(likedBook) {
         })
       }
     ).catch(error => {
-      // debugger;
       if (error.response.status === 401) {
         reAuth(dispatch, toggleLikeBook(likedBook))
       } else {
         dispatch({
-          type: LIKE_BOOK_ERROR,
+          type: ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+
+
+export function changeAvatar(file, userId) {
+  return function (dispatch) {
+    const imgUpload = new FormData()
+    imgUpload.append('file', file, file.name)
+    imgUpload.append('userId', userId)
+    api.changeAvatar(imgUpload).then(
+      response => {
+        dispatch({
+          type: AVATAR_CHANGE_SUCCESS,
+          payload: response.data
+        })
+      }
+    ).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, changeAvatar(file))
+      } else {
+        dispatch({
+          type: ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+/*
+* Admin action
+*/
+export function toggleAdminMod(toggle) {
+  return function (dispatch) {
+    dispatch({
+      type: ADMIN_MOD_ACTIVATED,
+      payload: toggle
+    })
+  }
+}
+
+export function adminGetBooks() {
+  return function (dispatch) {
+    dispatch({ type: BOOKS_FETCH_REQUEST })
+    api.adminGetBooks().then(response => {
+      dispatch({
+        type: BOOKS_FETCH_SUCCESS,
+        payload: response.data
+      })
+    }).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, adminGetBooks)
+      } else {
+        dispatch({
+          type: ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+export function adminGetBookById(id) {
+  return function (dispatch) {
+    dispatch({ type: BOOK_FETCH_REQUEST })
+    api.adminGetBook(id).then(response => {
+      dispatch({ type: BOOK_FETCH_SUCCESS, payload: response.data })
+    }).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, adminGetBookById(id))
+      } else {
+        dispatch({
+          type: ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+export function adminGetAuthors() {
+  return function (dispatch) {
+    dispatch({ type: AUTHORS_FETCH_REQUEST })
+    api.adminGetAuthors().then(
+      response => {
+        dispatch({
+          type: AUTHORS_FETCH_SUCCESS,
+          payload: response.data
+        })
+      }
+    ).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, adminGetAuthors)
+      } else {
+        dispatch({
+          type: ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+export function patchBook(book) {
+  return function (dispatch) {
+    dispatch({ type: BOOK_CREATED_REQUEST })
+    api.patchBook(book)
+      .then(() => {
+        dispatch({
+          type: BOOK_CREATED_SUCCESS,
+        })
+      }).catch(error => {
+        if (error.response.status === 401) {
+          reAuth(dispatch, patchBook(book))
+        } else {
+          dispatch({
+            type: ERROR,
+            payload: error.toString()
+          })
+        }
+      })
+  }
+}
+
+export function getAuthor(id) {
+  return function (dispatch) {
+    dispatch({ type: GET_AUTHOR_REQUEST })
+    api.adminGetAuthor(id)
+      .then((response) => {
+        dispatch({
+          type: GET_AUTHOR_SUCCESS,
+          payload: response.data
+        })
+      }).catch(error => {
+        if (error.response.status === 401) {
+          reAuth(dispatch, getAuthor(id))
+        } else {
+          dispatch({
+            type: ERROR,
+            payload: error.toString()
+          })
+        }
+      })
+  }
+}
+
+export function patchAuthor(a) {
+  return function (dispatch) {
+    dispatch({ type: AUTHOR_EDIT_REQUEST })
+    api.patchAuthor(a)
+      .then(() => {
+        dispatch({
+          type: AUTHOR_EDIT_SUCCESS,
+        })
+      }).catch(error => {
+        if (error.response.status === 401) {
+          reAuth(dispatch, patchAuthor(a))
+        } else {
+          dispatch({
+            type: ERROR,
+            payload: error.toString()
+          })
+        }
+      })
+  }
+}
+
+
+export function adminGetComments() {
+  return function (dispatch) {
+    dispatch({ type: GET_COMMENTS_REQUEST })
+    api.adminGetComments().then(
+      response => {
+        dispatch({
+          type: GET_COMMENTS_SUCCESS,
+          payload: response.data
+        })
+      }
+    ).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, adminGetComments)
+      } else {
+        dispatch({
+          type: ERROR,
+          payload: error.toString()
+        })
+      }
+    })
+  }
+}
+
+export function adminToggleApproveComment(id) {
+  return function (dispatch) {
+    api.adminToggleApproveComment(id).then(
+      response => {
+        dispatch({
+          type: TOGGLE_APPROVE_SUCCESS,
+          payload: response.data
+        })
+      }
+    ).catch(error => {
+      if (error.response.status === 401) {
+        reAuth(dispatch, adminToggleApproveComment(id))
+      } else {
+        dispatch({
+          type: ERROR,
           payload: error.toString()
         })
       }

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class CustomUserDetails implements UserDetails, Serializable {
 
     }
 
-    private Collection<? extends GrantedAuthority> translate(Set<Role> roles) {
+    private Collection<? extends GrantedAuthority> translate(List<Role> roles) {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_"+role.getRole().toUpperCase()))
                 .collect(Collectors.toList());

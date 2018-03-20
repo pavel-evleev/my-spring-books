@@ -13,6 +13,8 @@ public class BookInfo {
 
     private String cover;
 
+    private Boolean approve;
+
     private Integer rating;
 
     private GenreInfo genre;
@@ -23,7 +25,7 @@ public class BookInfo {
 
     private LocalDate dateCreated;
 
-    private List<String> authors = new ArrayList<>();
+    private List<AuthorInfo> authors = new ArrayList<>();
 
     private List<CommentInfo> comments = new ArrayList<>();
 
@@ -110,11 +112,11 @@ public class BookInfo {
         this.datePublished = datePublished;
     }
 
-    public List<String> getAuthors() {
+    public List<AuthorInfo> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<String> authors) {
+    public void setAuthors(List<AuthorInfo> authors) {
         this.authors = authors;
     }
 
@@ -132,5 +134,13 @@ public class BookInfo {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    public Boolean getApprove() {
+        return approve;
+    }
+
+    public void setApprove(Boolean approve) {
+        this.approve = approve;
     }
 }

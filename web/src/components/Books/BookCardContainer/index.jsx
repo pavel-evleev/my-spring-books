@@ -48,7 +48,7 @@ class BookCardContainer extends React.Component {
   }
   render() {
     const { book } = this.props;
-    if (!book)
+    if (book === null || !book)
       return (<Spinner />)
     return (<BookCard book={book}
       added={this.isAdded()} liked={this.isLiked()}

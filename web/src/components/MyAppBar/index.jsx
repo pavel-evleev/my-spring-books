@@ -15,7 +15,8 @@ class MyAppbar extends React.Component {
   render() {
     return (
       <AppBar
-        title="MySpringBooks"
+        title="My Library"
+        className="grdient-effect ab-title-center"
         onLeftIconButtonTouchTap={this.props.onLeftIconButtonTouchTap}
         iconElementRight={this.props.logged ? <LoggedButton /> : <RightButtons />}
       />

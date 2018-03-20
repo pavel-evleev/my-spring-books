@@ -20,30 +20,36 @@ class SearchedBooks extends React.Component {
   }
   componentDidMount() {
     const searchQuery = this.props.match.params.searchBooks
-    // this.props.searchBooksRequest(searchQuery)
+    this.props.searchBooksRequest(searchQuery)
   }
 
   render() {
     const { fetching, error, searchedBooks } = this.props
+
+    let userBooksId = '';
+    if (this.props.booksInUserCollection && Array.isArray(this.props.booksInUserCollection)) {
+      userBooksId = this.props.booksInUserCollection.map(book => book.id)
+    }
     if (fetching) {
       return (<CircularProgress />)
     }
     if (error) {
       return (<div>{error}</div>)
     }
+    // debugger;
 
     return (
-      <div>
+      <div style={{marginTop:"25px"}}>
         <ToolBar
           changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }}
-          searchComponent={<Search />} />
+          searchComponent={<Search onClick={this.props.searchBooksRequest} />} />
         <div className="user-books">
           {
-            (searchedBooks)
-              ? (<Books books={searchedBooks} view={this.state.view} />)
+            (searchedBooks.length > 0)
+              ? (<Books likedBookIds={this.props.likedBooksIds} userBooksId={userBooksId} books={searchedBooks} view={this.state.view} />)
               : (<div>
                 <div>Sorry, we have not this book. Would you want add this book?</div>
-                <FloatingActionButton mini={true} onClick={()=>this.props.history.push("/users/add-book")}>
+                <FloatingActionButton mini={true} onClick={() => this.props.history.push("/users/add-book")}>
                   <ContentAdd />
                 </FloatingActionButton>
               </div>)
@@ -59,8 +65,10 @@ class SearchedBooks extends React.Component {
 const mapStateToProps = (state) => {
   return {
     searchedBooks: state.searchedBooks,
+    booksInUserCollection: state.authorizedUser.books,
     error: state.error,
-    fetching: state.fetching
+    fetching: state.fetching,
+    likedBooksIds: state.likedBooksIds
   }
 }
 

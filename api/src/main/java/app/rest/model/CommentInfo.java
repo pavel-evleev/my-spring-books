@@ -1,5 +1,6 @@
 package app.rest.model;
 
+import app.model.Comment;
 import app.model.User;
 
 import java.sql.Date;
@@ -9,11 +10,29 @@ import java.sql.Date;
  */
 public class CommentInfo {
 
+    private Long id;
+
     private String text;
 
     private UserInfo authorComment;
 
     private Date datePublished;
+
+    private boolean approve;
+
+    public CommentInfo() {
+
+    }
+
+    public CommentInfo(Comment c, UserInfo u) {
+        this.id = c.getId();
+        this.text = c.getText();
+        if (c.getApprove() != null) {
+            this.approve = c.getApprove();
+        } else this.approve = false;
+        this.datePublished = c.getDatePublished();
+        this.authorComment = u;
+    }
 
     public CommentInfo(String text, User authorComment, Date datePublished) {
         this.text = text;
@@ -43,5 +62,21 @@ public class CommentInfo {
 
     public void setDatePublished(Date datePublished) {
         this.datePublished = datePublished;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isApprove() {
+        return approve;
+    }
+
+    public void setApprove(boolean approve) {
+        this.approve = approve;
     }
 }

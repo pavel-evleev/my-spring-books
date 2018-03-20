@@ -12,6 +12,7 @@
 
     <modules>
         <module>api</module>
+        <module>emailsender</module>
     </modules>
 
     <build>

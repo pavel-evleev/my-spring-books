@@ -6,6 +6,15 @@ import java.util.List;
 
 public class UserInfo {
 
+    private Long id;
+    private String name;
+    private String phone;
+    private String email;
+    private List<BookInfo> books = new ArrayList<>();
+    private List<Long> likedBooksIds = new ArrayList<>();
+    private String avatar;
+    private boolean omnipotent = false;
+
     public UserInfo() {
     }
 
@@ -20,18 +29,6 @@ public class UserInfo {
         this.phone = phone;
         this.email = email;
     }
-
-    private Long id;
-
-    private String name;
-
-    private String phone;
-
-    private String email;
-
-    private List<BookInfo> books = new ArrayList<>();
-
-    private List<Long> likedBooksIds = new ArrayList<>();
 
     public List<Long> getLikedBooksIds() {
         return likedBooksIds;
@@ -79,5 +76,21 @@ public class UserInfo {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public boolean isOmnipotent() {
+        return omnipotent;
+    }
+
+    public void setOmnipotent(boolean omnipotent) {
+        this.omnipotent = omnipotent;
     }
 }

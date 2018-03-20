@@ -1,0 +1,78 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+   <changeSet id="001" author="pavel">
+       <insert tableName="oauth_client_details">
+           <column name="client_id" value="my-trusted-client"/>
+           <column name="client_secret" value="secret"/>
+           <column name="scope" value="read,write,trust"/>
+           <column name="authorized_grant_types" value="client_credentials,password,refresh_token"/>
+           <column name="access_token_validity" valueNumeric="3600"/>
+           <column name="additional_information" value="{}"/>
+           <column name="refresh_token_validity" valueNumeric="2592000"/>
+           <column name="authorities" value="ROLE_CLIENT,ROLE_TRUSTED_CLIENT"/>
+       </insert>
+   </changeSet>
+    <changeSet id="002" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Бизнес-книги"/>
+        </insert>
+    </changeSet>
+    <changeSet id="003" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Классическая литература"/>
+        </insert>
+    </changeSet>
+    <changeSet id="004" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Детская литература"/>
+        </insert>
+    </changeSet>
+    <changeSet id="005" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Детектив"/>
+        </insert>
+    </changeSet>
+    <changeSet id="006" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Фэнтези"/>
+        </insert>
+    </changeSet>
+    <changeSet id="007" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Фантастика"/>
+        </insert>
+    </changeSet>
+    <changeSet id="010" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Приключения"/>
+        </insert>
+    </changeSet>
+    <changeSet id="011" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Ужас, мистика"/>
+        </insert>
+    </changeSet>
+    <changeSet id="012" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Роман"/>
+        </insert>
+    </changeSet>
+    <changeSet id="013" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Психология"/>
+        </insert>
+    </changeSet>
+    <changeSet id="014" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Наука"/>
+        </insert>
+    </changeSet>
+    <changeSet id="015" author="pavel">
+        <insert tableName="genre">
+            <column name="name_book" value="Компьютерная литература"/>
+        </insert>
+    </changeSet>
+
+
+
+</databaseChangeLog>

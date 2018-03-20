@@ -6,7 +6,11 @@ import * as ActionCreators from './../../services/ducks/action'
 
 import IconButton from 'material-ui/IconButton'
 import Mail from 'material-ui/svg-icons/communication/email'
+import Ava from 'material-ui/svg-icons/image/add-a-photo'
 import Paper from 'material-ui/Paper'
+import FlatButton from 'material-ui/FlatButton'
+import Dialog from 'material-ui/Dialog'
+import ImageUploader from './../ImageUpload'
 import Books from './../Books'
 import ToolBar from './../ToolBar'
 import * as api from '../../services/API'
@@ -19,6 +23,8 @@ class User extends React.Component {
       view: "grid",
       enableChange: false,
       allBooks: [],
+      open: false,
+      file: null
     }
   }
 
@@ -29,9 +35,32 @@ class User extends React.Component {
     if (idCurrent !== id) {
       this.props.fetchUser(id);
     } else {
+      this.props.checkUpdate({email: this.props.authorizedUser.email})
       this.setState({ enableChange: true })
       this.props.openedUserIsLoginedUser()
     }
+  }
+
+  handleOpen = () => {
+    this.setState({ open: true })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
+  }
+
+  handleSendImg = () => {
+    if (this.state.file) {
+      this.props.changeAvatar(this.state.file, this.props.authorizedUser.id)
+      this.setState({ open: false })
+      notify.show("Image send", "success", 1500)
+    } else {
+      notify.show("Image didn't select", "error", 1500)
+    }
+  }
+
+  handleFile = (file) => {
+    this.setState({ file: file })
   }
 
   removeFromCollection = (bookId) => {
@@ -42,7 +71,7 @@ class User extends React.Component {
     this.props.addToCollection(this.props.authorizedUser.id, bookId)
   }
 
-  viewDelete = ()=>{
+  viewDelete = () => {
     return parseInt(this.props.match.params.userId) === this.props.authorizedUser.id
   }
 
@@ -54,7 +83,19 @@ class User extends React.Component {
   }
   render() {
     const { user, enableChange } = this.state;
-
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={this.handleClose}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onClick={this.handleSendImg}
+      />,
+    ]
     const idCurrent = this.props.authorizedUser.id;
     const id = parseInt(this.props.match.params.userId);
     let userView = ''
@@ -75,21 +116,44 @@ class User extends React.Component {
 
     return (
       <div className="page">
-        <ToolBar changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }} className="view-books" />
+        <div className="view-books">
+          <ToolBar className="view-toolbar" changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }} />
+        </div>
         <Paper className="user">
-          <div className="user-ava">
-            <div>
-              <img src={require("./../../img/user.png")} alt="user" />
-            </div>
-          </div>
-          <div>
-            <div className="user-info">{userView.name}</div>
-            <IconButton touch={true}
+          <div className="user-container">
+            <div className="user-name grdient-effect">{userView.name}</div>
+            {/* <IconButton touch={true}
               onClick={() => { alert("click") }}>
               <Mail />
-            </IconButton>
+            </IconButton> */}
+
+            <div className="user-ava">
+              <div className="ava">
+                <img src={userView.avatar ? userView.avatar :
+                  require("../../img/photo40427709_329412123.jpg")
+                  // "https://myspringbooks.herokuapp.com/v1/img/user.png"
+                } alt="user" />
+              </div>
+              {idCurrent === id ?
+                <div className="change-ava">
+                  <Dialog
+                    title="Change avatar"
+                    contentStyle={{width:"fit-content"}}
+                    actions={actions}
+                    modal={false}
+                    open={this.state.open}
+                    onRequestClose={this.handleClose}>
+                    <ImageUploader className={"imgUploaderAva"} preview={true} handleFile={this.handleFile} />
+                  </Dialog>
+                  <IconButton
+                    onClick={this.handleOpen}>
+                    <Ava />
+                  </IconButton></div> : ''}
+
+            </div>
+
+            <div className="user-info">Collection books:{userView.books.length}</div>
           </div>
-          <div>Collection books:{userView.books.length}</div>
         </Paper>
         <div className="user-books">
           <Books books={userView.books}
@@ -120,7 +184,9 @@ const mapDispatchToProps = (dispatch) =>
     openedUserIsLoginedUser: ActionCreators.openedIsLogined,
     removeFromCollection: ActionCreators.removeFromCollection,
     addToCollection: ActionCreators.addToCollection,
-    toggleLikeBook: ActionCreators.toggleLikeBook
+    toggleLikeBook: ActionCreators.toggleLikeBook,
+    changeAvatar: ActionCreators.changeAvatar,
+    checkUpdate: ActionCreators.checkUpdate
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

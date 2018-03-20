@@ -1,10 +1,9 @@
 package app.services;
 
-import app.rest.model.AuthorInfo;
-import app.rest.model.BookInfo;
-import app.rest.model.CreateAuthorCommand;
 import app.model.Author;
 import app.repository.AuthorRepository;
+import app.rest.model.AuthorInfo;
+import app.rest.model.CreateAuthorCommand;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +20,14 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
+    public static AuthorInfo toAuthorInfo(Author author) {
+        AuthorInfo authorInfo = new AuthorInfo(author.getId(), author.getName());
+        if (author.isApprove() != null) {
+            authorInfo.setApprove(author.isApprove());
+        }else authorInfo.setApprove(false);
+
+        return authorInfo;
+    }
 
     public AuthorInfo findOne(Long id) {
         return toAuthorInfo(authorRepository.findOne(id));
@@ -28,13 +35,22 @@ public class AuthorService {
 
     public List<AuthorInfo> findAll() {
         return authorRepository.findAll().stream()
-            .map(AuthorService::toAuthorInfo)
-            .collect(Collectors.toList());
+                .map(AuthorService::toAuthorInfo)
+                .collect(Collectors.toList());
     }
 
     public AuthorInfo save(CreateAuthorCommand createAuthorCommand) {
         Author author = new Author(createAuthorCommand.getName());
         return toAuthorInfo(authorRepository.save(author));
+    }
+
+    public AuthorInfo patch(Long id, String newName, Boolean approve) {
+        Author author = authorRepository.findOne(id);
+        if (newName != null)
+            author.setName(newName);
+        if (approve != null)
+            author.setApprove(approve);
+        return toAuthorInfo(authorRepository.saveAndFlush(author));
     }
 
     public void delete(Long id) {
@@ -45,8 +61,10 @@ public class AuthorService {
         authorRepository.deleteAll();
     }
 
-    public static AuthorInfo toAuthorInfo(Author author) {
-        AuthorInfo authorInfo = new AuthorInfo(author.getId(), author.getName());
-        return authorInfo;
+    public List<AuthorInfo> findAllAndApproved() {
+
+        return authorRepository.findAllByApprove(true).stream()
+                .map(AuthorService::toAuthorInfo)
+                .collect(Collectors.toList());
     }
 }

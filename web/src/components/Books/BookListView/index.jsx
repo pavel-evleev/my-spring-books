@@ -28,7 +28,7 @@ export default class Books extends React.Component {
   render() {
     const { book } = this.props
     return (
-      <Paper style={{ width: "100%", display: "flex", margin: "5px 0", padding: "10px 0" }}
+      <Paper className="list-item-radius" style={{ width: "100%", display: "flex", margin: "5px 0", padding: "10px 0" }}
         onClick={() => this.props.OnClick(this.props.book.id)}>
 
         <div className="sm-img">

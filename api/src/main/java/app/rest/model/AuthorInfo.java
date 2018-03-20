@@ -1,5 +1,7 @@
 package app.rest.model;
 
+import app.model.Author;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,15 @@ import java.util.List;
  * Created by Pavel on 08.09.2017.
  */
 public class AuthorInfo {
+
+    public AuthorInfo(){
+
+    }
+
+    public AuthorInfo(Author author){
+        this.id = author.getId();
+        this.name = author.getName();
+    }
 
     public AuthorInfo(Long id, String name) {
       this.id = id;
@@ -17,7 +28,9 @@ public class AuthorInfo {
 
     private String name;
 
-    private List<BookInfo> books = new ArrayList<>();
+    private List<BookInfo> books = null;
+
+    private boolean approve;
 
     public Long getId() {
         return id;
@@ -41,5 +54,13 @@ public class AuthorInfo {
 
     public void setBooks(List<BookInfo> books) {
         this.books = books;
+    }
+
+    public boolean isApprove() {
+        return approve;
+    }
+
+    public void setApprove(boolean approve) {
+        this.approve = approve;
     }
 }

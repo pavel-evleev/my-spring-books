@@ -6,15 +6,15 @@ import app.model.User;
 import app.repository.BookRepository;
 import app.repository.CommentRepository;
 import app.repository.UserRepository;
+import app.rest.exception.BookException;
 import app.rest.model.CommentInfo;
-import app.rest.model.CommentsInfo;
 import app.rest.model.CreateCommentCommand;
+import app.rest.model.UserInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,10 +36,29 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
+    private static CommentInfo toCommentInfo(Comment c) {
+        UserInfo userInfo = new UserInfo(c.getAuthorComment().getId(), c.getAuthorComment().getEmail());
+        CommentInfo info = new CommentInfo(c, userInfo);
+        return info;
+    }
 
-    public CommentsInfo saveComment(CreateCommentCommand createCommentCommand) {
+    private static CommentInfo toShortCommentInfo(Comment c) {
+        CommentInfo i = new CommentInfo();
+        i.setId(c.getId());
+        if (c.getApprove() != null) {
+            i.setApprove(c.getApprove());
+        } else i.setApprove(false);
+        return i;
+    }
+
+    public boolean saveComment(CreateCommentCommand createCommentCommand) throws BookException {
         User authorComment = userRepository.findOne(createCommentCommand.getAuthorCommentId());
-        Book book = bookRepository.findOne(createCommentCommand.getBookId());
+        Optional<Book> bookOptional = bookRepository.findByIdAndApprove(createCommentCommand.getBookId(), true);
+        Book book = null;
+
+        if (bookOptional.isPresent()) {
+            book = bookOptional.get();
+        } else throw new BookException();
 
         Comment newComment = new Comment();
         newComment.setAuthorComment(authorComment);
@@ -47,23 +66,20 @@ public class CommentService {
         newComment.setText(createCommentCommand.getText());
 
         book.addComment(newComment);
-        bookRepository.saveAndFlush(book);
-
-        Optional<List<Comment>> optional = commentRepository.findCommentByBookId(book.getId());
-
-
-        List<Comment> comments;
-        List<CommentInfo> commentInfos;
-        if (optional.isPresent()) {
-            comments = optional.get();
-
-            commentInfos = comments.stream().map(comment ->
-                    new CommentInfo(comment.getText(), comment.getAuthorComment(), comment.getDatePublished()))
-                    .collect(Collectors.toList());
-        } else {
-            commentInfos = new ArrayList<>();
+        if (bookRepository.saveAndFlush(book) != null) {
+            return true;
         }
-        return new CommentsInfo(book.getId(), commentInfos);
+        return false;
     }
 
+    public CommentInfo toggleApprove(Long id) {
+        Comment comment = commentRepository.findOne(id);
+        comment.setApprove(!comment.getApprove());
+        return toShortCommentInfo(commentRepository.saveAndFlush(comment));
+    }
+
+    public List<CommentInfo> findAll() {
+        List<CommentInfo> result = commentRepository.findAll().stream().map(c -> toCommentInfo(c)).collect(Collectors.toList());
+        return result;
+    }
 }

@@ -21,7 +21,6 @@ class Books extends React.Component {
   }
 
   handleOnClickBook = (id) => {
-    
     this.props.history.push(`/books/${id}`);
   }
 
@@ -40,19 +39,18 @@ class Books extends React.Component {
       return (<div>Dont have books...</div>)
     }
     return (
-      <div>
         <div className="book-wrapper">
           {(grid === "grid") ? (
             this.props.books.map((book) => {
-              if (userBooksId.includes(book.id)) {
-                return (<BookCard key={book.id} book={book}
-                  added={true}
-                  liked={Array.isArray(likedBookIds) ? likedBookIds.includes(book.id) : false}
-                  buttonAction={this.props.enableChange}
-                  toggleLikeBook={this.props.toggleLikeBook}
-                  OnClick={this.handleOnClickBook}
-                  addToCollection={this.props.addToCollection}
-                  removeFromCollection={this.props.removeFromCollection} />)
+                if (userBooksId.includes(book.id)) {
+                  return (<BookCard key={book.id} book={book}
+                    added={true}
+                    liked={Array.isArray(likedBookIds) ? likedBookIds.includes(book.id) : false}
+                    buttonAction={this.props.enableChange}
+                    toggleLikeBook={this.props.toggleLikeBook}
+                    OnClick={this.handleOnClickBook}
+                    addToCollection={this.props.addToCollection}
+                    removeFromCollection={this.props.removeFromCollection} />)
               } else {
                 return (<BookCard key={book.id} book={book}
                   added={false}
@@ -64,15 +62,15 @@ class Books extends React.Component {
                   removeFromCollection={this.props.removeFromCollection} />)
               }
             })) : (this.props.books.map((book) => {
-              if (userBooksId.includes(book.id)) {
-                return (<BookListItem key={book.id} book={book}
-                  added={true}
-                  liked={Array.isArray(likedBookIds) ? likedBookIds.includes(book.id) : false}
-                  buttonAction={this.props.enableChange}
-                  toggleLikeBook={this.props.toggleLikeBook}
-                  OnClick={this.handleOnClickBook}
-                  addToCollection={this.props.addToCollection}
-                  removeFromCollection={this.props.removeFromCollection} />)
+                if (userBooksId.includes(book.id)) {
+                  return (<BookListItem key={book.id} book={book}
+                    added={true}
+                    liked={Array.isArray(likedBookIds) ? likedBookIds.includes(book.id) : false}
+                    buttonAction={this.props.enableChange}
+                    toggleLikeBook={this.props.toggleLikeBook}
+                    OnClick={this.handleOnClickBook}
+                    addToCollection={this.props.addToCollection}
+                    removeFromCollection={this.props.removeFromCollection} />)
               } else {
                 return (<BookListItem key={book.id} book={book}
                   added={false}
@@ -86,7 +84,6 @@ class Books extends React.Component {
             }))
           }
         </div>
-      </div>
     )
   }
 }

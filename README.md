@@ -1,4 +1,4 @@
-# Spring
+# MySpringBooks
     This project just for experience and fun.
 
 The application is in progress.
@@ -16,7 +16,7 @@ The application is in progress.
 
 ## DB
 
-* MySQL
+* PostgreSQL
 
 ## Frontend
 
@@ -31,6 +31,8 @@ Run locally on `http://localhost:8888`
 
     npm install
     npm start
+    
+Swagger ui  `http://localhost:8080/swagger-ui.html`
 
 ### How to build prod
 

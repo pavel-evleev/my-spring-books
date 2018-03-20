@@ -1,5 +1,7 @@
-import axios from 'axios'
+import axios from 'axios';
 
+// const serverUrl = "https://myspringbooks.herokuapp.com/";
+const serverUrl = "http://localhost:8080/";
 export const getCookie = (name) => {
   var value = "; " + document.cookie;
   var parts = value.split("; " + name + "=");
@@ -29,13 +31,13 @@ export const validateStatus = (status) => {
 }
 
 export const client = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: serverUrl,
   headers: DEFAULT_HTTP_HEADERS,
   validateStatus: validateStatus
 })
 
 export const clientForLogin = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: serverUrl,
   headers: { "Content-type": "application/x-www-form-urlencoded; charset=utf-8" },
   validateStatus: validateStatus
 })
@@ -158,4 +160,45 @@ export const searchBooks = (searchQuery) => {
 
 export const toggleLikeBook = (likedBook) => {
   return client.post("/v1/books/toggle_rating", likedBook)
+}
+
+export const changeAvatar = (img) => {
+  return client.post('/v1/img/change_avatar', img)
+}
+
+
+/*
+ * API endpoint for admin requests.
+ */
+
+export const patchBook = (book) => {
+  return client.post(`/v1/books/admin`, book)
+}
+
+export const adminGetBooks = () => {
+  return client.get('/v1/books/admin/all')
+}
+
+export const adminGetBook = (id) => {
+  return client.get(`/v1/books/admin/${id}`)
+}
+
+export const adminGetAuthors = () => {
+  return client.get('/v1/authors/admin/all')
+}
+
+export const adminGetAuthor = (id) => {
+  return client.get(`/v1/authors/${id}`)
+}
+
+export const patchAuthor = (a) => {
+  return client.post(`/v1/authors/admin/edit`, a)
+}
+
+export const adminGetComments = () => {
+  return client.get('/v1/books/admin/comment/all')
+}
+
+export const adminToggleApproveComment = (c) => {
+  return client.post('/v1/books/admin/comment/approve', c)
 }

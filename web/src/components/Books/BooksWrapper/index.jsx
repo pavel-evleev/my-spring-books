@@ -36,14 +36,17 @@ class Page extends React.Component {
   }
 
   render() {
-    let userBooksId = '';
+    let userBooksId = [];
     if (this.props.authorizedUser && Array.isArray(this.props.authorizedUser.books)) {
       userBooksId = this.props.authorizedUser.books.map(book => book.id)
     }
     return (
       <div>
-        <ToolBar
-          changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }}
+        <ToolBar className="view-toolbar"
+          changeViewOnClick={() => {
+            (this.state.view === "grid")
+            ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" }))
+          }}
           searchComponent={<Search />} />
         <div className="user-books">
           {this.props.fetching ? <Progress /> : <Books books={this.props.books} userBooksId={userBooksId} view={this.state.view}
