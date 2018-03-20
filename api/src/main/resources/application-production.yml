@@ -12,12 +12,9 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
-
 logging.level.org.hibernate.SQL: debug
 logging.level.org.springframework.web: DEBUG
 logging.level.org.hibernate: ERROR
-image:
-  url: "https://myspringbooks.herokuapp.com/v1/img/"
 verify:
   userId: ${USER_ID}
   secret: ${USER_SECRET}
@@ -25,5 +22,7 @@ verify:
     url: "https://myspringbooks.herokuapp.com/v1/users/verify/"
   redirect:
     url: "https://pavelevleev.github.io/"
+image:
+  url: "https://myspringbooks.herokuapp.com/v1/img/"
 #liquibase:
 #  change-log: classpath:db/changelog/db.changelog-master.xml
