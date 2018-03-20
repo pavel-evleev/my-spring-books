@@ -9,6 +9,7 @@ import app.rest.exception.UserExistedException;
 import app.rest.model.AddingBooks;
 import app.rest.model.CreateUserCommand;
 import app.rest.model.UserInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class UserService {
     private final EmailVerifyService verifyService;
     private final BCryptPasswordEncoder encoder;
 
+    @Autowired
     public UserService(UserRepository userRepository,
                        BookRepository bookRepository,
                        EmailVerifyService verifyService,
@@ -39,7 +41,7 @@ public class UserService {
         this.bookRepository = bookRepository;
         this.verifyService = verifyService;
         this.encoder = encoder;
-        this.pathImg = env.getProperty("spring.image.url");
+        this.pathImg = env.getProperty("image.url");
     }
 
     public static UserInfo toUserInfoShortInfo(User user) {

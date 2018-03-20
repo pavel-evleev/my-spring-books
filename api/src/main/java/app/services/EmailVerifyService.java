@@ -35,8 +35,8 @@ public class EmailVerifyService {
 
 
     public EmailVerifyService(Environment environment) {
-        this.secret = environment.getProperty("spring.verify.secret");
-        this.userId = environment.getProperty("spring.verify.userId");
+        this.secret = environment.getProperty("verify.secret");
+        this.userId = environment.getProperty("verify.userId");
     }
 
     public void verifyEmail(User user) {

@@ -8,6 +8,7 @@ import app.repository.BookRepository;
 import app.repository.GenreRepository;
 import app.rest.exception.BookException;
 import app.rest.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class BookService {
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
 
+    @Autowired
     public BookService(BookRepository bookRepository,
                        AuthorRepository authorRepository,
                        GenreRepository genreRepository,
@@ -37,7 +39,7 @@ public class BookService {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
-        this.pathImg = env.getProperty("spring.image.url");
+        this.pathImg = env.getProperty("image.url");
     }
 
     public static BookInfo toBookInfo(Book book) {
