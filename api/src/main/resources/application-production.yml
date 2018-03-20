@@ -24,5 +24,7 @@ verify:
     url: "https://pavelevleev.github.io/"
 image:
   url: "https://peaceful-waters-96928.herokuapp.com/v1/img/"
+
+
 #liquibase:
 #  change-log: classpath:db/changelog/db.changelog-master.xml
