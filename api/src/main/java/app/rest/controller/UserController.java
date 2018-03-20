@@ -96,9 +96,9 @@ public class UserController extends ApiErrorController {
     public void confirmEmail(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) {
         try {
             if (userService.confirmEmail(uuid))
-                response.sendRedirect(environment.getProperty("verify.redirect.url"));
+                response.sendRedirect(environment.getProperty("spring.verify.redirect.url"));
             else
-                response.sendRedirect(environment.getProperty("verify.redirect.url") + "/registration");
+                response.sendRedirect(environment.getProperty("spring.verify.redirect.url") + "/registration");
         } catch (IOException e) {
             e.printStackTrace();
         }

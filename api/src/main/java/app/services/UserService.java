@@ -39,7 +39,7 @@ public class UserService {
         this.bookRepository = bookRepository;
         this.verifyService = verifyService;
         this.encoder = encoder;
-        this.pathImg = env.getProperty("image.url");
+        this.pathImg = env.getProperty("spring.image.url");
     }
 
     public static UserInfo toUserInfoShortInfo(User user) {

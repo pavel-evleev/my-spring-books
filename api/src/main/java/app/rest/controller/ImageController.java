@@ -26,7 +26,7 @@ public class ImageController extends ApiErrorController {
     public ImageController(ImageService imageService, UserService userService, Environment env) {
         this.imageService = imageService;
         this.userService = userService;
-        this.pathImg = env.getProperty("image.url");
+        this.pathImg = env.getProperty("spring.image.url");
     }
 
     @GetMapping(value = "/{image:.+}")

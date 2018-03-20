@@ -37,7 +37,7 @@ public class BookService {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genreRepository = genreRepository;
-        this.pathImg = env.getProperty("image.url");
+        this.pathImg = env.getProperty("spring.image.url");
     }
 
     public static BookInfo toBookInfo(Book book) {
