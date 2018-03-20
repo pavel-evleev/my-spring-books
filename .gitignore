@@ -58,3 +58,4 @@ yarn.lock
 *.pem
 api/src/main/resources/application-email.yml
 *.jpg
+api/src/main/resources/application-dev.yml

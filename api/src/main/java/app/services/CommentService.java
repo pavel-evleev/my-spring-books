@@ -74,7 +74,11 @@ public class CommentService {
 
     public CommentInfo toggleApprove(Long id) {
         Comment comment = commentRepository.findOne(id);
-        comment.setApprove(!comment.getApprove());
+        //can be null, because we update db and this value = null
+        if (comment.getApprove() == null)
+            comment.setApprove(true);
+        else
+            comment.setApprove(!comment.getApprove());
         return toShortCommentInfo(commentRepository.saveAndFlush(comment));
     }
 

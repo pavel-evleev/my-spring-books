@@ -67,7 +67,7 @@ public class BookService {
         return bookInfo;
     }
 
-    public static BookInfo toBookInfoShortInformation(Book book) {
+    public static BookInfo toBookInfoShortInformation(Book book, boolean addGenre) {
         BookInfo info = new BookInfo(book.getId(), book.getName(), book.getDateCreated().toLocalDate());
         if (book.getCover() != null && book.getCover().length() > 0) {
             info.setCover(pathImg + book.getCover());
@@ -76,6 +76,9 @@ public class BookService {
             info.setApprove(book.getApprove());
         } else info.setApprove(false);
         info.setRating(book.getLikeBooks().size());
+        if (addGenre) {
+            info.setGenre(toGenreInfo(book.getGenre()));
+        }
         return info;
     }
 
@@ -85,7 +88,7 @@ public class BookService {
 
     public List<BookInfo> findAllAndApproved() {
         return bookRepository.findAllByApprove(true).stream()
-                .map(BookService::toBookInfoShortInformation)
+                .map(b -> toBookInfoShortInformation(b, false))
                 .collect(Collectors.toList());
     }
 
@@ -153,7 +156,7 @@ public class BookService {
         if (listOptional.isPresent()) {
             List<Book> bookList = listOptional.get();
             for (Book b : bookList) {
-                listBookInfo.add(toBookInfoShortInformation(b));
+                listBookInfo.add(toBookInfoShortInformation(b, false));
             }
         }
         return listBookInfo;
@@ -165,7 +168,7 @@ public class BookService {
 
     public List<BookInfo> findAll() {
         return bookRepository.findAll().stream()
-                .map(BookService::toBookInfoShortInformation)
+                .map(b -> toBookInfoShortInformation(b, false))
                 .collect(Collectors.toList());
     }
 

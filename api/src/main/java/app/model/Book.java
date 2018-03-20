@@ -51,7 +51,7 @@ public class Book {
     private List<LikeBook> likeBooks = new ArrayList<>();
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "genre_id", nullable = false)
     private Genre genre;
 

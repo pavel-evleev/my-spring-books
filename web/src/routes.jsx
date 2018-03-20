@@ -30,8 +30,6 @@ import ApproveComments from './components/AdminComponents/ApproveEntity/Comments
 
 import Magic from './components/MagicProgress'
 
-import Page from './components/OurPage'
-
 /**
 	* Hash url router.
 	* Connect components with browser url links.

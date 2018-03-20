@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as ActionCreators from './../../services/ducks/action'
 
+import Statistic from './../Statistic'
 import IconButton from 'material-ui/IconButton'
 import Mail from 'material-ui/svg-icons/communication/email'
 import Ava from 'material-ui/svg-icons/image/add-a-photo'
@@ -35,7 +36,7 @@ class User extends React.Component {
     if (idCurrent !== id) {
       this.props.fetchUser(id);
     } else {
-      this.props.checkUpdate({email: this.props.authorizedUser.email})
+      this.props.checkUpdate({ email: this.props.authorizedUser.email })
       this.setState({ enableChange: true })
       this.props.openedUserIsLoginedUser()
     }
@@ -130,7 +131,7 @@ class User extends React.Component {
             <div className="user-ava">
               <div className="ava">
                 <img src={userView.avatar ? userView.avatar :
-                  require("../../img/photo40427709_329412123.jpg")
+                  require("../../img/user.png")
                   // "https://myspringbooks.herokuapp.com/v1/img/user.png"
                 } alt="user" />
               </div>
@@ -138,7 +139,7 @@ class User extends React.Component {
                 <div className="change-ava">
                   <Dialog
                     title="Change avatar"
-                    contentStyle={{width:"fit-content"}}
+                    contentStyle={{ width: "fit-content" }}
                     actions={actions}
                     modal={false}
                     open={this.state.open}
@@ -153,6 +154,7 @@ class User extends React.Component {
             </div>
 
             <div className="user-info">Collection books:{userView.books.length}</div>
+            <Statistic books={this.props.openedUser.books}/>
           </div>
         </Paper>
         <div className="user-books">

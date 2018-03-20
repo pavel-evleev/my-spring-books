@@ -55,7 +55,7 @@ public class UserService {
         UserInfo userInfo = new UserInfo(user.getId(), user.getName(), user.getPhone(), user.getEmail());
         userInfo.setBooks(
                 user.getBooks().stream().filter(b -> b.getApprove() != null ? b.getApprove() : false)
-                        .map(BookService::toBookInfoShortInformation)
+                        .map(b->BookService.toBookInfoShortInformation(b,true))
                         .collect(Collectors.toList())
         );
         userInfo.setLikedBooksIds(user.getLikeBooks().stream()
