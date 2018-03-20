@@ -119,7 +119,11 @@ public class UserRepositoryTest {
     private void assertionTemplate(Optional<User> optional) {
         assertThat(optional.isPresent()).isTrue();
         User returnedUser = optional.get();
-        assertThat(returnedUser.hashCode() == userWithAvatar.hashCode()).isTrue();
-        assertThat(returnedUser.equals(userWithAvatar)).isTrue();
+        boolean b = returnedUser.equals(userWithAvatar);
+        System.out.println(b);
+        assertThat(returnedUser.getEmail()).isEqualTo(userWithAvatar.getEmail());
+        assertThat(returnedUser.getAvatar()).isEqualTo(userWithAvatar.getAvatar());
+        assertThat(returnedUser.getPassword()).isEqualTo(userWithAvatar.getPassword());
+        assertThat(returnedUser.getUuid()).isEqualTo(userWithAvatar.getUuid());
     }
 }
