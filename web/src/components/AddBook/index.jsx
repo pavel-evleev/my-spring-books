@@ -1,6 +1,7 @@
 import React from 'react'
 import ChipInput from 'material-ui-chip-input'
 import TextField from 'material-ui/TextField'
+import Paper from 'material-ui/Paper'
 import MyTextField from './../TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import DatePicker from 'material-ui/DatePicker'
@@ -28,13 +29,11 @@ class AddBook extends React.Component {
       maxDate: maxDate,
       hidden: '',
       name: '',
-      arraySelectedAuthors: [],
       selectedAuthors: null,
       publisher: '',
       publishedDate: null,
       value: '',
       genreId: '',
-      newAuthors: '',
       file: ''
     };
   }
@@ -53,17 +52,13 @@ class AddBook extends React.Component {
     this.setState({ name: event.target.value });
   }
 
-  handlenewAuthorsChange = (event) => {
-    this.setState({ newAuthors: event.target.value });
+  handlenewAuthorsChange = (authors) => {
+    console.log(authors)
+    this.setState({ selectedAuthors: authors });
   }
 
   handlePublisherChange = (event) => {
     this.setState({ publisher: event.target.value });
-  }
-
-  handleAuthorsSelectedChange = (event, index, value) => {
-    this.setState({ arraySelectedAuthors: value });
-    this.setState({ value });
   }
 
   handleGenresSelectedChange = (event, index, value) => {
@@ -71,26 +66,26 @@ class AddBook extends React.Component {
   }
 
   handleAddClick = () => {
+    const authorsIds = this.state.selectedAuthors.filter((a) => typeof a.id === 'number').map(a => a.id)
+    const newAuthors = this.state.selectedAuthors.filter((a) => typeof a.id === 'string').map(a => a.value)
     const formData = new FormData()
     formData.append('userId', this.props.authorizedUserId)
     formData.append('name', this.state.name)
     formData.append('publisher', this.state.publisher)
     formData.append('datePublished', moment(this.state.publishedDate).format("YYYY-MM-DD"))
     formData.append('dateCreated', moment(Date.now()).format("YYYY-MM-DD"))
-    formData.append('authorsIds', this.state.arraySelectedAuthors)
+    formData.append('authorsIds', authorsIds)
     formData.append('genreId', this.state.genreId)
-    if (this.state.newAuthors.length > 0) {
-      formData.append('newAuthors', this.state.newAuthors.split('\n'))
+    if (newAuthors.length > 0) {
+      formData.append('newAuthors', newAuthors)
     }
     if (this.state.file) {
       formData.append('file', this.state.file, this.state.file.name)
     }
-    // if (this.state.newAuthors.length === 0 & this.state.arraySelectedAuthors.length === 0)
-    //   return
+    // console.log(authorsIds)
+    // console.log(newAuthors)
+   
     this.props.creatBook(formData)
-    // setTimeout(() => {
-    //   this.props.history.push("/books")
-    // }, 1001);
   }
 
   handleFile = (file) => {
@@ -119,54 +114,6 @@ class AddBook extends React.Component {
             value={this.state.publisher}
           />
           <div style={{ width: "fit-content" }}>
-            <label>Authors</label>
-            <div style={{ position: "relative" }}>
-              <div style={{
-                position: "absolute",
-                backgroundColor: "white",
-                top: "7px", left: 0, right: 0,
-                bottom: 0, height: "34px",
-                borderRadius: "10px",
-                boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px"
-              }}></div>
-            </div>
-
-            <ChipInput
-              dataSource={dataSource}
-              dataSourceConfig={dataSourceConfig}
-              // onBeforeRequestAdd={(...args)=>{console.log(args); return true}}
-              // onRequestAdd={(chip) => { handleAddChip(chip); console.log(chip) }}
-              onChange={(...args) => console.log(args)}
-            />
-            <SelectField
-              hintText="Select a Authors"
-              value={this.state.value}
-              onChange={this.handleAuthorsSelectedChange}
-              multiple={true}
-              inputStyle={{ padding: "0px 5px" }}
-              floatingLabelStyle={{ paddingLeft: "5px" }}
-              floatingLabelFocusStyle={{ paddingLeft: "5px", color: "black" }}
-              hintStyle={{ left: "5px" }}
-              underlineShow={false}
-            >
-              {
-                Array.isArray(this.props.authors) && this.props.authors.length > 0 ? this.props.authors.map(
-                  (author, index) =>
-                    <MenuItem key={index} value={author.id} primaryText={author.name} />
-                ) : <MenuItem value="none" primaryText="none" />
-              }
-            </SelectField>
-          </div>
-          <div style={{ marginTop: "-28px", width: "fit-content" }} >
-            <MyTextField
-              multiLine={true}
-              hintText="New author"
-              floatingLabelText="New Author"
-              onChange={this.handlenewAuthorsChange}
-              value={this.state.newAuthors}
-            />
-          </div>
-          <div style={{ width: "fit-content" }}>
             <label>Genre</label>
             <div style={{ position: "relative" }}>
               <div style={{
@@ -194,6 +141,18 @@ class AddBook extends React.Component {
                 ) : <MenuItem value="none" primaryText="none" />
               }
             </SelectField>
+            <label>Authors</label>
+            <Paper style={{ borderRadius: "10px", marginBottom:"20px" }} zDepth={2} >
+            <ChipInput
+              style={{ padding: "0 5px", borderRadius: "5px", width: "250px" }}
+              underlineStyle={{ width: "250px" }}
+              hintText="Authors"
+              inputStyle={{ marginBottom: "0px", width: "250px", height: "53px" }}
+              dataSource={dataSource}
+              dataSourceConfig={dataSourceConfig}
+              onChange={this.handlenewAuthorsChange}
+            />
+          </Paper>
           </div>
           <div style={{ width: "fit-content" }}>
             <label>Date Published</label>

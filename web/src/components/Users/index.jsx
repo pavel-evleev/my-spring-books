@@ -41,8 +41,8 @@ class Users extends React.Component {
               <ListItem style={{ backgroundColor: "white", margin: "5px 0", borderRadius: "10px", boxShadow: "rgba(0, 0, 0, 0.16) 6px -3px 20px, rgba(0, 0, 0, 0.23) 0px 3px 10px" }} key={index} primaryText={user.name}
                 onClick={() => this.props.history.push(`/users/${user.id}`)}
                 leftAvatar={<Avatar src={user.avatar ? user.avatar :
-                  require("../../img/user.png")
-                  // "https://myspringbooks.herokuapp.com/v1/img/user.png"
+                  // require("../../img/user.png")
+                  "https://peaceful-waters-9692ы8.herokuapp.com/v1/img/user.png"
                 } />}
               />
           )

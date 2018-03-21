@@ -48,6 +48,9 @@ public class UserService {
         UserInfo info = new UserInfo();
         info.setId(user.getId());
         info.setName(user.getName());
+        if (user.getAvatar() != null) {
+            info.setAvatar(pathImg + user.getAvatar());
+        }
         return info;
     }
 

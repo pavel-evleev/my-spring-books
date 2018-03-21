@@ -130,12 +130,11 @@ class User extends React.Component {
               onClick={() => { alert("click") }}>
               <Mail />
             </IconButton> */}
-
             <div className="user-ava">
               <div className="ava">
                 <img src={userView.avatar ? userView.avatar :
-                  require("../../img/user.png")
-                  // "https://myspringbooks.herokuapp.com/v1/img/user.png"
+                  // require("../../img/user.png")
+                  "https://peaceful-waters-96928.herokuapp.com/v1/img/user.png"
                 } alt="user" />
               </div>
               {idCurrent === id ?
@@ -153,11 +152,9 @@ class User extends React.Component {
                     onClick={this.handleOpen}>
                     <Ava />
                   </IconButton></div> : ''}
-
             </div>
-
             <div className="user-info">Collection books:{userView.books.length}</div>
-            <Statistic books={userView.books}/>
+            <Statistic className="view-statistics" books={userView.books}/>
           </div>
         </Paper>
         <div className="user-books">

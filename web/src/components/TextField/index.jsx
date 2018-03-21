@@ -46,6 +46,7 @@ MyTextField.defaultProps = {
   onBlur: null,
   type: null,
   id: null,
-  multiLine: false
+  multiLine: false,
+  floatingLabelText: null
 }
 export default MyTextField;
