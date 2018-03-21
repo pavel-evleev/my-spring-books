@@ -1,4 +1,5 @@
 import React from 'react'
+import ChipInput from 'material-ui-chip-input'
 import TextField from 'material-ui/TextField'
 import MyTextField from './../TextField'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -97,6 +98,8 @@ class AddBook extends React.Component {
   }
 
   render() {
+    const dataSource = this.props.authors.map(a => ({ id: a.id, value: a.name }))
+    const dataSourceConfig = { text: 'value', value: 'id' }
     if (this.props.fetching)
       return (<Spinner />)
     return (
@@ -128,6 +131,13 @@ class AddBook extends React.Component {
               }}></div>
             </div>
 
+            <ChipInput
+              dataSource={dataSource}
+              dataSourceConfig={dataSourceConfig}
+              // onBeforeRequestAdd={(...args)=>{console.log(args); return true}}
+              // onRequestAdd={(chip) => { handleAddChip(chip); console.log(chip) }}
+              onChange={(...args) => console.log(args)}
+            />
             <SelectField
               hintText="Select a Authors"
               value={this.state.value}
