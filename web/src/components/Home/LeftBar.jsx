@@ -48,6 +48,7 @@ class LeftBar extends React.Component {
   }
 
   handleMyPageClick = () => {
+    this.props.checkUpdate({ email: this.props.authUser.email })
     this.props.history.push(`/users/${this.props.loginedUser}`);
     this.handleTouchTap();
   }
@@ -136,12 +137,13 @@ const mapStateToProps = (state) => {
     login: state.login,
     loginedUser: state.authorizedUser ? state.authorizedUser.id : '',
     isAdmin: state.authorizedUser ? state.authorizedUser.omnipotent : false,
+    authUser: state.authorizedUser,
     adminMod: state.adminMod
   }
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ toggleAdminMod: ActionCreators.toggleAdminMod }, dispatch)
+  bindActionCreators({ toggleAdminMod: ActionCreators.toggleAdminMod, checkUpdate: ActionCreators.checkUpdate }, dispatch)
 
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LeftBar))

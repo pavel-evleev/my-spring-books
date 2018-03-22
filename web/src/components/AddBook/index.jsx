@@ -84,7 +84,7 @@ class AddBook extends React.Component {
     }
     // console.log(authorsIds)
     // console.log(newAuthors)
-   
+
     this.props.creatBook(formData)
   }
 
@@ -141,18 +141,27 @@ class AddBook extends React.Component {
                 ) : <MenuItem value="none" primaryText="none" />
               }
             </SelectField>
-            <label>Authors</label>
-            <Paper style={{ borderRadius: "10px", marginBottom:"20px" }} zDepth={2} >
-            <ChipInput
-              style={{ padding: "0 5px", borderRadius: "5px", width: "250px" }}
-              underlineStyle={{ width: "250px" }}
-              hintText="Authors"
-              inputStyle={{ marginBottom: "0px", width: "250px", height: "53px" }}
-              dataSource={dataSource}
-              dataSourceConfig={dataSourceConfig}
-              onChange={this.handlenewAuthorsChange}
-            />
-          </Paper>
+            <div style={{marginBottom:"10px"}}>
+              <label style={{ display: "block" }}>Authors</label>
+              <ChipInput
+                style={{ width: "256px" }}
+                underlineStyle={{ width: "256px" }}
+                hintText="Authors"
+                textFieldStyle={{ width: "246px", height:"40px" }}
+                inputStyle={{
+                  marginTop: "10px",
+                  marginBottom: "0px",
+                  padding: "0 5px",
+                  width: "246px", height: "44px",
+                  boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px",
+                  backgroundColor: "white",
+                  borderRadius: "10px"
+                }}
+                dataSource={dataSource}
+                dataSourceConfig={dataSourceConfig}
+                onChange={this.handlenewAuthorsChange}
+              />
+            </div>
           </div>
           <div style={{ width: "fit-content" }}>
             <label>Date Published</label>

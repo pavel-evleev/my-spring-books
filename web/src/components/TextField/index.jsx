@@ -23,10 +23,10 @@ class MyTextField extends React.Component {
             (this.props.valid ? this.state.success : this.state.error) : ''}
         </div>
         <TextField
-          inputStyle={{ padding: "0px 5px" }}
-          floatingLabelStyle={{ paddingLeft: "5px" }}
-          floatingLabelFocusStyle={{ paddingLeft: "5px", color: "black" }}
-          hintStyle={{ left: "5px" }}
+          inputStyle={{ padding: "0px 10px" }}
+          floatingLabelStyle={{ paddingLeft: "10px" }}
+          floatingLabelFocusStyle={{ paddingLeft: "10px", color: "black" }}
+          hintStyle={{ left: "10px" }}
           id={this.props.id}
           type={this.props.type}
           hintText={this.props.hintText}
