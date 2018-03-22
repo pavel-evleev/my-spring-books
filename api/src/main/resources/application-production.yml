@@ -6,12 +6,12 @@ spring:
     show-sql: true
     hibernate.ddl-auto: update
     properties.hibernate.dialect: org.hibernate.dialect.PostgreSQL82Dialect
-  profiles:
-    include: 'email'
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
+  mail:
+    username: ${EMAIL}
 logging.level.org.hibernate.SQL: debug
 logging.level.org.springframework.web: DEBUG
 logging.level.org.hibernate: ERROR
