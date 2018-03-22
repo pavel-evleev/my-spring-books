@@ -19,10 +19,9 @@ class BookCard extends React.Component {
   groupAuthors = (authors) => {
     let result = ''
     if (Array.isArray(authors)) {
-      authors.length > 1 ? authors.forEach(a => { result = a.name + ', ' }) : result = authors[0].name
-      return result
+      result = authors.map((a, i) => i === 0 ? a.name : ', ' + a.name)
     }
-    return authors[0].name
+    return result
   }
 
 
