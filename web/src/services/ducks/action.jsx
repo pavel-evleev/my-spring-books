@@ -76,11 +76,11 @@ function reAuth(dispatch, params) {
 }
 
 
-export function searchBooksRequest(searchQuery) {
+export function searchBooksRequest(book) {
   return function (dispatch) {
     dispatch({ type: FETCH_SEARCH_REQUEST })
 
-    api.searchBooks(searchQuery)
+    api.searchBooks(book)
       .then(response => {
         dispatch({
           type: SUCCESS_SEARCH_BOOKS,
@@ -88,7 +88,7 @@ export function searchBooksRequest(searchQuery) {
         })
       }).catch(error => {
         if (error.response.status === 401) {
-          reAuth(dispatch, searchBooksRequest(searchQuery))
+          reAuth(dispatch, searchBooksRequest(book))
         } else {
           dispatch({
             type: ERROR,

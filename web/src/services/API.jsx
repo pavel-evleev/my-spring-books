@@ -153,8 +153,8 @@ export const removeCredentials = () => {
   client.defaults.auth = null
 }
 
-export const searchBooks = (searchQuery) => {
-  return client.get('/v1/books/search/' + searchQuery)
+export const searchBooks = (searchBook) => {
+  return client.post('/v1/books/search', searchBook)
 }
 
 

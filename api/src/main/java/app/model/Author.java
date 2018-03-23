@@ -28,6 +28,10 @@ public class Author {
         this.approve = false;
     }
 
+    public Author(Long id) {
+        this.id = id;
+    }
+
     public Author(String name) {
         this.name = name;
         this.approve = false;

@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 
 // ------------------------------------
 const store = createStore(rootReducer, applyMiddleware(ping, thunk))
-window.store = store
+// window.store = store
 // ------------------------------------
 
 

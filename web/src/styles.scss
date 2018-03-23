@@ -10,6 +10,27 @@ body {
     font-family: Roboto, sans-serif;
 }
 
+.filter {
+    display: flex;
+    align-items: flex-end;
+    right: 0px;
+}
+
+.shadow {
+    color: rgba(0, 0, 0, 0.87);
+    background-color: rgb(255, 255, 255);
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+    border-radius: 2px;
+}
+
+.shadow>div {
+    margin: 0 5px;
+}
+
 img {
     image-orientation: from-image;
 }
@@ -27,7 +48,7 @@ img {
 
 .regisration-fields {
     max-width: 256px;
-    margin: auto;
+    margin: 20px auto;
 }
 
 .add-b-grid {
@@ -565,6 +586,10 @@ body {
     .route-container {
         width: 310px;
     }
+    .filter {
+        display: block;
+        right: -12px;
+    }
     .page {
         grid-template-columns: repeat(12, 1fr);
         grid-template-rows: repeat(18, 30px);
@@ -721,6 +746,9 @@ body {
     /* Styles */
     .route-container {
         width: 470px;
+    }
+    .filter {
+        display: block;
     }
     .page {
         width: 470px;
