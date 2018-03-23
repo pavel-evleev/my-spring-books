@@ -1,4 +1,5 @@
 import React from 'react'
+import { notify } from 'react-notify-toast'
 
 class ImageUpload extends React.Component {
   constructor(props) {
@@ -17,14 +18,20 @@ class ImageUpload extends React.Component {
 
     let reader = new FileReader();
     let file = e.target.files[0];
-
-    reader.onloadend = () => {
-      this.setState({
-        file: file,
-        imagePreviewUrl: reader.result
-      });
+    if (file.size >= 5242880) {
+      notify.show("Size of image more then 5 mb", 'error', 5000)
+      return
+    } else {
+      this.props.handleFile(file)
+      reader.onloadend = () => {
+        console.log(file.size > 5242880)
+        this.setState({
+          file: file,
+          imagePreviewUrl: reader.result
+        });
+      }
+      reader.readAsDataURL(file)
     }
-    reader.readAsDataURL(file)
   }
   render() {
     let { imagePreviewUrl } = this.state;
@@ -32,7 +39,7 @@ class ImageUpload extends React.Component {
     if (imagePreviewUrl) {
       $imagePreview = (<img src={imagePreviewUrl} />);
     } else {
-      $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
+      $imagePreview = (<div className="previewText">Please select an Image for Preview, but size don't more then 5 mb</div>);
     }
     return (
       <div className={"previewComponent " + this.props.className} >
@@ -41,8 +48,9 @@ class ImageUpload extends React.Component {
           <input className="fileInput" id="upload-img"
             type="file" accept="image/*"
             onChange={(e) => {
+
               this._handleImageChange(e)
-              this.props.handleFile(e.target.files[0])
+
             }} />
           {/* <button className="submitButton"
             type="submit"
@@ -50,7 +58,7 @@ class ImageUpload extends React.Component {
         </form>
         {this.props.preview ?
           <div className="imgPreview">
-            {imagePreviewUrl ? $imagePreview : (this.props.currentImg ? this.props.currentImg: $imagePreview )}
+            {imagePreviewUrl ? $imagePreview : (this.props.currentImg ? this.props.currentImg : $imagePreview)}
           </div> : ''}
       </div>
     )

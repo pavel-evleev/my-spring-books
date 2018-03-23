@@ -2,6 +2,7 @@ import React from 'react'
 import MyTextField from './../TextField'
 import Button from './../Button'
 import InputMask from 'react-input-mask'
+import Loading from './../MagicProgress'
 import * as api from '../../services/API'
 import { notify } from 'react-notify-toast'
 
@@ -25,11 +26,13 @@ export default class AddUser extends React.Component {
       validPhone: '',
       validEmail: null,
       disabledButton: true,
+      showLoad: false,
       verifyEmail: false
     }
   }
 
   handleSubmit = () => {
+    this.setState({ showLoad: true, hidden: "none" })
     api.CreateUser(
       {
         name: this.state.userName,
@@ -39,13 +42,15 @@ export default class AddUser extends React.Component {
       }
     ).then((response) => {
       notify.show('User successfully add', 'success', 2000)
-      this.setState({ verifyEmail: true })
+      this.setState({ verifyEmail: true, showLoad: false, userEmail: '', userName: '', userPassword: '', phone: '', validEmail: null })
+      setTimeout(() => this.setState({ hidden: "block", verifyEmail: false }), 3500)
     }).catch((error) => {
       if (error.response) {
         if (error.response.status === 409)
-          notify.show(error.response.data.message.toString(), 'error', 2500)
+          notify.show(error.response.data.message.toString(), 'error', 5000)
       }
-      notify.show(error.message.toString(), 'error')
+      notify.show(error.message.toString(), 'error', 5000)
+      this.setState({ showLoad: false, hidden: "block", verifyEmail: false, validEmail: null })
     });
   }
 
@@ -119,9 +124,12 @@ export default class AddUser extends React.Component {
     if (this.state.verifyEmail) {
       return (<div>Check your email, we will send you an email to make sure that the mail exists. <span onClick={() => this.props.history.push(`/`)} >main page</span></div>)
     }
+    if (this.state.showLoad) {
+      return <Loading />
+    }
     return (
-      <div style={{ display: this.state.hidden }}>
-        <div className="regisration-fields">
+      <div>
+        <div style={{ display: this.state.hidden }} className="regisration-fields">
           <MyTextField hintText="Email"
             floatingLabelText="Email"
             type="Email"
@@ -151,7 +159,7 @@ export default class AddUser extends React.Component {
           />
           <Button label="Add User" disabled={this.state.disabledButton} onClick={this.handleSubmit} />
         </div>
-        <div style={{marginTop:"20px"}}>Your email is only needed to contact you if something goes wrong.
+        <div style={{ marginTop: "20px" }}>Your email is only needed to contact you if something goes wrong.
             We will not send you a mailing list if you did not subscribe to it.
             you can always unsubscribe from the mailing list. </div>
       </div>
