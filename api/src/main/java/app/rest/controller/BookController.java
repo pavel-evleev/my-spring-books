@@ -106,9 +106,9 @@ public class BookController extends ApiErrorController {
         return ResponseEntity.ok(info);
     }
 
-    @GetMapping("/search/{bookLike}")
-    public ResponseEntity<List<BookInfo>> searchBook(@PathVariable String bookLike) {
-        List<BookInfo> result = bookService.findBookByNameLike(bookLike);
+    @PostMapping(value = "/search")
+    public ResponseEntity<List<BookInfo>> searchBook(@RequestBody BookInfo book) {
+        List<BookInfo> result = bookService.findBookLike(book);
         return ResponseEntity.ok(result);
     }
 

@@ -47,7 +47,7 @@ class Page extends React.Component {
             (this.state.view === "grid")
             ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" }))
           }}
-          searchComponent={<Search />} />
+          searchComponent={<Search  />} />
         <div className="user-books">
           {this.props.fetching ? <Progress /> : <Books books={this.props.books} userBooksId={userBooksId} view={this.state.view}
             addToCollection={this.addToCollection} removeFromCollection={this.removeFromCollection} toggleLikeBook={this.handleToggleBookLike} likedBookIds={this.props.likedBooksIds} />}

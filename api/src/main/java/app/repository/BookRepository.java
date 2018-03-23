@@ -1,5 +1,6 @@
 package app.repository;
 
+import app.model.Author;
 import app.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -18,4 +19,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Optional<List<Book>> findByNameContaining(String bookLike);
 
     Optional<List<Book>> findByNameContainingAndApprove(String bookLike, Boolean b);
+
+    Optional<List<Book>> findByGenreId(Long id);
+
+    Optional<List<Book>> findByAuthors(List<Author> authors);
+
 }

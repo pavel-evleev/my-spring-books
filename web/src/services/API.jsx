@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const serverUrl = "https://peaceful-waters-96928.herokuapp.com/"
-// const serverUrl = "http://localhost:8080/";
+// const serverUrl = "https://peaceful-waters-96928.herokuapp.com/"
+const serverUrl = "http://localhost:8080/";
 export const getCookie = (name) => {
   var value = "; " + document.cookie;
   var parts = value.split("; " + name + "=");
@@ -153,8 +153,8 @@ export const removeCredentials = () => {
   client.defaults.auth = null
 }
 
-export const searchBooks = (searchQuery) => {
-  return client.get('/v1/books/search/' + searchQuery)
+export const searchBooks = (searchBook) => {
+  return client.post('/v1/books/search', searchBook)
 }
 
 

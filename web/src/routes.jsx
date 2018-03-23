@@ -27,13 +27,8 @@ import EditAuthors from './components/AdminComponents/EditAuthors'
 import EditAuthor from './components/AdminComponents/EditAuthors/EditAuthor'
 import ApproveComments from './components/AdminComponents/ApproveEntity/Comments'
 
-
 import Magic from './components/MagicProgress'
 
-/**
-	* Hash url router.
-	* Connect components with browser url links.
-	*/
 export default class Routes extends React.Component {
 
   constructor(props) {
@@ -67,10 +62,9 @@ export default class Routes extends React.Component {
             <PrivateRoute path='/users/add-author' component={AddAuthor} />
             <PrivateRoute path='/users/:userId/books/:bookId' component={Book} />
             <PrivateRoute path='/users/:userId' component={User} />
-            {/* <PrivateRoute path='/authors' component={Authors} /> */}
             <PrivateRoute exact path='/books' component={BooksPage} />
             <PrivateRoute path='/books/:bookId' component={Book} />
-            <PrivateRoute path='/search-books/:searchBooks' component={SearchedBooks} />
+            <PrivateRoute path='/search-books' component={SearchedBooks} />
             <AdminPrivateRoute exact path='/admin/edit-books' component={EditBooks} />
             <AdminPrivateRoute path='/admin/edit-books/:bookId' component={EditBook} />
             <AdminPrivateRoute exact path='/admin/edit-authors' component={EditAuthors} />

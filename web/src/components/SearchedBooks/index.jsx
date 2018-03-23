@@ -19,9 +19,10 @@ class SearchedBooks extends React.Component {
     }
   }
   componentDidMount() {
-    const searchQuery = this.props.match.params.searchBooks
-    this.props.searchBooksRequest(searchQuery)
+  
   }
+
+
 
   render() {
     const { fetching, error, searchedBooks } = this.props
@@ -36,13 +37,12 @@ class SearchedBooks extends React.Component {
     if (error) {
       return (<div>{error}</div>)
     }
-    // debugger;
 
     return (
-      <div style={{marginTop:"25px"}}>
+      <div style={{ marginTop: "25px" }}>
         <ToolBar
           changeViewOnClick={() => { (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" })) }}
-          searchComponent={<Search onClick={this.props.searchBooksRequest} />} />
+          searchComponent={<Search searchPage={true} />} />
         <div className="user-books">
           {
             (searchedBooks.length > 0)
@@ -68,11 +68,17 @@ const mapStateToProps = (state) => {
     booksInUserCollection: state.authorizedUser.books,
     error: state.error,
     fetching: state.fetching,
-    likedBooksIds: state.likedBooksIds
+    likedBooksIds: state.likedBooksIds,
+    Authors: state.allAuthors,
+    Genres: state.allGenres,
   }
 }
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ searchBooksRequest: ActionCreators.searchBooksRequest }, dispatch)
+  bindActionCreators({
+    searchBooksRequest: ActionCreators.searchBooksRequest,
+    allAuthors: ActionCreators.loadAllAuthors,
+    allGenres: ActionCreators.loadAllGenres
+  }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchedBooks)

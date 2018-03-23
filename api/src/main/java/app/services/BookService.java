@@ -151,7 +151,7 @@ public class BookService {
 
     public List<BookInfo> findBookByNameLike(String bookLike) {
 
-        Optional<List<Book>> listOptional = bookRepository.findByNameContaining(bookLike);
+        Optional<List<Book>> listOptional = bookRepository.findByNameContainingAndApprove(bookLike, true);
         List<BookInfo> listBookInfo = new ArrayList<>();
         if (listOptional.isPresent()) {
             List<Book> bookList = listOptional.get();
@@ -219,6 +219,33 @@ public class BookService {
             return true;
         }
         return false;
+    }
+
+    public List<BookInfo> findBookLike(BookInfo book) {
+        List<Book> books = new ArrayList<>();
+        CharSequence nameLike = book.getName();
+        if (book.getAuthors() != null) {
+            Optional<List<Book>> optional = bookRepository.findByAuthors(book.getAuthors().stream()
+                    .map(a -> new Author(a.getId())).collect(Collectors.toList()));
+            if (optional.isPresent()) {
+                books = optional.get();
+            }
+            if (book.getGenre() != null) {
+                books = books.stream().filter(b -> b.getGenre().getId() == book.getGenre().getId()).collect(Collectors.toList());
+            }
+        } else if (book.getGenre() != null) {
+            Optional<List<Book>> optional = bookRepository.findByGenreId(book.getGenre().getId());
+            if (optional.isPresent()) {
+                books = optional.get();
+            }
+        } else {
+            Optional<List<Book>> optional = bookRepository.findByNameContainingAndApprove(book.getName(), true);
+            if (optional.isPresent()) {
+                books = optional.get();
+            }
+        }
+        books = books.stream().filter(b -> b.getName().contains(nameLike)).collect(Collectors.toList());
+        return books.stream().map(b -> toBookInfoShortInformation(b, false)).collect(Collectors.toList());
     }
 
 }
