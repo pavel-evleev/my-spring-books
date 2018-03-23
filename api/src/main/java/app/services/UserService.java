@@ -101,7 +101,7 @@ public class UserService {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
-        return userRepository.save(newUser);
+        return userRepository.saveAndFlush(newUser);
     }
 
     public void delete(Long id) {
