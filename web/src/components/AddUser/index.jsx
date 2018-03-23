@@ -151,7 +151,7 @@ export default class AddUser extends React.Component {
           />
           <Button label="Add User" disabled={this.state.disabledButton} onClick={this.handleSubmit} />
         </div>
-        <div>Your email is only needed to contact you if something goes wrong.
+        <div style={{marginTop:"20px"}}>Your email is only needed to contact you if something goes wrong.
             We will not send you a mailing list if you did not subscribe to it.
             you can always unsubscribe from the mailing list. </div>
       </div>
