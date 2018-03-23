@@ -8,7 +8,7 @@ export default class AddComment extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: 'Property Value',
+      value: '',
     }
   }
 
@@ -25,7 +25,7 @@ export default class AddComment extends React.Component {
         <Paper style={{ borderRadius: "10px", padding: "10px", margin: "0 5px 0 5px", background: "linear-gradient(90deg, #6b6bcc 10%, #00c2e7 100%)" }}>
           <TextField
             fullWidth={true}
-            hintText="MultiLine with rows: 2 and rowsMax: 4"
+            hintText="New Comment"
             hintStyle={{ color: "rgba(255, 255, 255, 0.3)" }}
             underlineStyle={{ borderBottom: "2px solid #FFBF00" }}
             value={this.state.value}
@@ -35,8 +35,10 @@ export default class AddComment extends React.Component {
             textareaStyle={{ color: "white" }}
           />
           <Button label="Add Comment" style={{ float: "right", backgroundColor: "#FFBF00" }} onClick={() => {
-            sendComment(this.state.value)
-            this.setState({ value: "New comment" })
+            if (this.state.value.length > 2) {
+              sendComment(this.state.value)
+            }
+            this.setState({ value: '' })
           }} />
         </Paper>
       </div>

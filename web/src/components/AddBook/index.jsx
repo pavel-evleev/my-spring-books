@@ -1,7 +1,7 @@
 import React from 'react'
 import ChipInput from 'material-ui-chip-input'
 import TextField from 'material-ui/TextField'
-import Paper from 'material-ui/Paper'
+
 import MyTextField from './../TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import DatePicker from 'material-ui/DatePicker'
@@ -44,7 +44,6 @@ class AddBook extends React.Component {
 
 
   dateToISO8601 = (date) => {
-    console.log(date)
     let d = new Date(date),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),

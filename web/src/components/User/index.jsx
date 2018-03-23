@@ -33,17 +33,13 @@ class User extends React.Component {
     const idCurrent = this.props.authorizedUser.id;
     const id = parseInt(this.props.match.params.userId);
     // Load user info
-    // debugger
     if (idCurrent !== id) {
       this.props.fetchUser(id);
     } else {
-     
       this.setState({ enableChange: true })
       this.props.openedUserIsLoginedUser()
     }
   }
-
-
 
   handleOpen = () => {
     this.setState({ open: true })
@@ -108,7 +104,6 @@ class User extends React.Component {
     } else {
       userView = this.props.authorizedUser
     }
-    console.log(userView)
     let userBooksId = '';
     if (this.props.authorizedUser && Array.isArray(this.props.authorizedUser.books)) {
       userBooksId = this.props.authorizedUser.books.map(book => book.id)

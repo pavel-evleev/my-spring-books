@@ -33,7 +33,6 @@ class ViewAuthor extends React.Component {
 
   render() {
     const { author } = this.props;
-    console.log(author)
     return (
       <div style={{display:"flex", justifyContent:"space-between"}}>
         <div onClick={()=>this.props.onClick()}>

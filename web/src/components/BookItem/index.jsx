@@ -24,10 +24,7 @@ class BookCard extends React.Component {
     return result
   }
 
-
-
   render() {
-    console.log(this.props.book)
     const { book, edit, added, liked } = this.props;
     return (
       <div className="book-card-container">
@@ -51,7 +48,7 @@ class BookCard extends React.Component {
           </div>
         </Paper>
         <div className="book-card-description">
-          Description:{book.description}
+          Description: {book.description?book.description:"don`t have description, possible will add soon."}
         </div>
         <Comments className="book-comments" comments={book.comments} handleSendComment={this.props.handleSendComment} />
       </div>

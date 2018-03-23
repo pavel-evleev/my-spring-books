@@ -58,16 +58,13 @@ export default class Statistic extends React.Component {
     }
 
     let arr = Array.from(map)
-    console.log(arr)
     const toState = arr.map(i => ({ title: i[0], value: Math.round((i[1] / books.length) * 100), color: getRandomColor() }))
-    console.log(toState)
     return toState;
   }
 
   printStatistics = (map, length) => {
     let result = Array.from(map)
     const toState = result.filter(i => i[1] > 0).map(i => [i[0], Math.round((i[1] / length) * 100)])
-    console.log(toState)
     return toState.map((i, index) =>
       <div key={index}>
         <span style={{ display: "block" }}>{`${i[0]}`}</span>

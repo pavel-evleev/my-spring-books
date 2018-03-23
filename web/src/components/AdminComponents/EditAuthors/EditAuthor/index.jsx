@@ -51,10 +51,8 @@ class EditAuthor extends React.Component {
       patch.append('newName', this.state.nameAuthor)
     }
     if (this.state.checked !== null) {
-      console.log(this.state.checked)
       patch.append('approve', this.state.checked)
     }
-    debugger
     this.props.patchAuthor(patch)
   }
 

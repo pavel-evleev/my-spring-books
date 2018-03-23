@@ -6,37 +6,38 @@ import Grid from 'material-ui/svg-icons/navigation/apps'
 
 export default class ToolbarExamplesSimple extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			view: "grid"
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      view: "grid"
+    };
+  }
 
-	handleChange = (event, index, value) => this.setState({ value });
+  handleChange = (event, index, value) => this.setState({ value });
 
-	render() {
-		let button = null
-		if (this.state.view === "grid") {
-			button = <List />
-		} else {
-			button = <Grid />
-		}
-		return (
-			<Toolbar style={{borderRadius:"15px"}} className={this.props.className}>
-				<ToolbarGroup firstChild={true}>
-					<IconButton touch={true}
-						onClick={() => {
-							(this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" }))
-							this.props.changeViewOnClick()
-						}}>
-						{button}
-					</IconButton>
-				</ToolbarGroup>
-				<ToolbarGroup>
-					{this.props.searchComponent}
-				</ToolbarGroup>
-			</Toolbar>
-		);
-	}
+  render() {
+    let button = null
+    if (this.state.view === "grid") {
+      button = <List />
+    } else {
+      button = <Grid />
+    }
+    return (
+      <Toolbar style={{ borderRadius: "15px" }} className={this.props.className}>
+        <ToolbarGroup firstChild={true}>
+          <IconButton touch={true}
+            onClick={() => {
+              (this.state.view === "grid") ? (this.setState({ view: "list" })) : (this.setState({ view: "grid" }))
+              this.props.changeViewOnClick()
+            }}>
+            {button}
+          </IconButton>
+        </ToolbarGroup>
+        <ToolbarGroup>
+          {this.props.searchComponent}
+        </ToolbarGroup>
+      
+      </Toolbar>
+    );
+  }
 }
