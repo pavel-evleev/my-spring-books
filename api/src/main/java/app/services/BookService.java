@@ -166,6 +166,10 @@ public class BookService {
         return toBookInfo(bookRepository.findById(bookId));
     }
 
+    public String getCoverByBookId(Long bookId){
+        return bookRepository.findOne(bookId).getCover();
+    }
+
     public List<BookInfo> findAll() {
         return bookRepository.findAll().stream()
                 .map(b -> toBookInfoShortInformation(b, false))

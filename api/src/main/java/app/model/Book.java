@@ -64,7 +64,6 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "comment_id"))
     private List<Comment> comments = new ArrayList<>();
 
-
     public Book() {
         this.approve = false;
     }
@@ -75,6 +74,13 @@ public class Book {
         this.datePublished = datePublished;
         this.dateCreated = dateCreated;
         this.approve = false;
+    }
+
+    @PreRemove
+    private void removeGroupsFromUsers() {
+        for (User u : users) {
+            u.getBooks().remove(this);
+        }
     }
 
     public Long getId() {
@@ -137,12 +143,12 @@ public class Book {
         return comments;
     }
 
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
-    }
-
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
     }
 
     public Genre getGenre() {

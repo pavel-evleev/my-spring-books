@@ -158,6 +158,10 @@ public class BookController extends ApiErrorController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/{bookId}")
     public ResponseEntity delete(@PathVariable Long bookId) {
+        String cover = bookService.getCoverByBookId(bookId);
+        if (cover != null && cover.length() > 0) {
+            imageService.remove(cover);
+        }
         bookService.delete(bookId);
         return ResponseEntity.ok().build();
     }
