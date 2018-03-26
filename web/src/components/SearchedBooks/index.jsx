@@ -18,10 +18,21 @@ class SearchedBooks extends React.Component {
       view: "grid"
     }
   }
-  componentDidMount() {
-  
+
+  removeFromCollection = (bookId) => {
+    this.props.removeFromCollection(this.props.authorizedUser.id, bookId)
   }
 
+  addToCollection = (bookId) => {
+    this.props.addToCollection(this.props.authorizedUser.id, bookId)
+  }
+
+  handleToggleBookLike = (bookId) => {
+    this.props.toggleLikeBook({
+      "userId": this.props.authorizedUser.id,
+      "bookId": bookId
+    })
+  }
 
 
   render() {
@@ -46,7 +57,9 @@ class SearchedBooks extends React.Component {
         <div className="user-books">
           {
             (searchedBooks.length > 0)
-              ? (<Books likedBookIds={this.props.likedBooksIds} userBooksId={userBooksId} books={searchedBooks} view={this.state.view} />)
+              ? (<Books likedBookIds={this.props.likedBooksIds} userBooksId={userBooksId} books={searchedBooks} view={this.state.view}  removeFromCollection={this.removeFromCollection}
+                addToCollection={this.addToCollection}
+                toggleLikeBook={this.handleToggleBookLike} />)
               : (<div>
                 <div>Sorry, we have not this book. Would you want add this book?</div>
                 <FloatingActionButton mini={true} onClick={() => this.props.history.push("/users/add-book")}>
@@ -66,6 +79,7 @@ const mapStateToProps = (state) => {
   return {
     searchedBooks: state.searchedBooks,
     booksInUserCollection: state.authorizedUser.books,
+    authorizedUser: state.authorizedUser,
     error: state.error,
     fetching: state.fetching,
     likedBooksIds: state.likedBooksIds,
@@ -78,7 +92,10 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
     searchBooksRequest: ActionCreators.searchBooksRequest,
     allAuthors: ActionCreators.loadAllAuthors,
-    allGenres: ActionCreators.loadAllGenres
+    allGenres: ActionCreators.loadAllGenres,
+    removeFromCollection: ActionCreators.removeFromCollection,
+    addToCollection: ActionCreators.addToCollection,
+    toggleLikeBook: ActionCreators.toggleLikeBook,
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchedBooks)

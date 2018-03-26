@@ -71,15 +71,17 @@ class User extends React.Component {
     this.props.addToCollection(this.props.authorizedUser.id, bookId)
   }
 
-  viewDelete = () => {
-    return parseInt(this.props.match.params.userId) === this.props.authorizedUser.id
-  }
+  
 
   handleToggleBookLike = (bookId) => {
     this.props.toggleLikeBook({
       "userId": this.props.authorizedUser.id,
       "bookId": bookId
     })
+  }
+
+  viewDelete = () => {
+    return parseInt(this.props.match.params.userId) === this.props.authorizedUser.id
   }
   render() {
     const { user, enableChange } = this.state;

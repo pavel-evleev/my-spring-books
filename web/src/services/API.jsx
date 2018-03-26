@@ -54,6 +54,29 @@ export const refreshTokenRequest = (refresh_token) => {
   return clientForLogin.post('oauth/token', params)
 }
 
+client.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+
+  const originalRequest = error.config;
+
+  if (error.response.status === 401 && !originalRequest._retry) {
+    console.log("Silent token renew");
+    originalRequest._retry = true;
+    const refreshToken = getCookie("refresh_token");
+    return refreshTokenRequest(refreshToken).then(({ data }) => {
+      set_cookie("key", data.access_token, data.expires_in, data.refresh_token);
+      originalRequest.headers['Authorization'] = 'Bearer ' + data.access_token;
+      return client(originalRequest);
+    });
+  }
+  return Promise.reject(error);
+});
+
+
+
+
+
 /*
  * API endpoint to fetch all user books.
  */
