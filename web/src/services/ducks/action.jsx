@@ -61,21 +61,6 @@ export const ADMIN_MOD_ACTIVATED = "ADMIN_MOD_ACTIVATED"
 export const TOGGLE_APPROVE_SUCCESS = 'TOGGLE_APPROVE_SUCCESS'
 
 
-function reAuth(dispatch, params) {
-  let refresh_token = new Promise((resolve, reject) => {
-    let token = api.getCookie("refresh_token");
-    resolve(token);
-  });
-  refresh_token.then(result => {
-    api.refreshTokenRequest(result)
-      .then(response => {
-        api.set_cookie("key", response.data.access_token, response.data.expires_in, response.data.refresh_token)
-        dispatch(params())
-      }).catch(error => console.log(error));
-  })
-}
-
-
 export function searchBooksRequest(book) {
   return function (dispatch) {
     dispatch({ type: FETCH_SEARCH_REQUEST })
@@ -87,9 +72,7 @@ export function searchBooksRequest(book) {
           payload: response.data
         })
       }).catch(error => {
-        if (error.response.status === 401) {
-          reAuth(dispatch, searchBooksRequest(book))
-        } else {
+        if (error.response.status !== 401) {
           dispatch({
             type: ERROR,
             payload: error.toString()
@@ -111,11 +94,9 @@ export function loadingUsers() {
           payload: response.data
         })
       ).catch(error => {
-        if (error.response.status === 401) {
-          reAuth(dispatch, loadingUsers)
-        } else {
+        if (error.response.status !== 401) {
           dispatch({
-            type: FETCH_USERS_FAILURE,
+            type: ERROR,
             payload: error.toString()
           })
         }
@@ -177,9 +158,7 @@ export function fetchUser(id) {
         payload: response.data
       })
     }).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, fetchUser(id))
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -197,9 +176,7 @@ export function addComment(comment) {
         payload: response.data
       })
     }).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, addComment(comment))
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -218,12 +195,10 @@ export function checkUpdate(obj){
         payload: resp.data
       })
     }).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, checkUpdate(obj))
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
-          payload: error.response.data.message.toString()
+          payload: error.toString()
         })
       }
     })
@@ -240,12 +215,10 @@ export function creatBook(book) {
           type: BOOK_CREATED_SUCCESS,
         })
       }).catch(error => {
-        if (error.response.status === 401) {
-          reAuth(dispatch, creatBook(book))
-        } else {
+        if (error.response.status !== 401) {
           dispatch({
             type: ERROR,
-            payload: error.response.data.message.toString()
+            payload: error.toString()
           })
         }
       })
@@ -258,9 +231,7 @@ export function getBookById(id) {
     api.fetchBook(id).then(response => {
       dispatch({ type: BOOK_FETCH_SUCCESS, payload: response.data })
     }).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, getBookById(id))
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -279,9 +250,7 @@ export function getBooks() {
         payload: response.data
       })
     }).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, getBooks)
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -308,9 +277,7 @@ export function addToCollection(loginedUser, bookId) {
           payload: response.data
         })
       }).catch(error => {
-        if (error.response.status === 401) {
-          reAuth(dispatch, addToCollection(loginedUser, bookId))
-        } else {
+        if (error.response.status !== 401) {
           dispatch({
             type: ERROR,
             payload: error.toString()
@@ -330,9 +297,7 @@ export function removeFromCollection(userId, bookId) {
           payload: response.data
         })
       }).catch(error => {
-        if (error.response.status === 401) {
-          reAuth(dispatch, removeFromCollection(userId, bookId))
-        } else {
+        if (error.response.status !== 401) {
           dispatch({
             type: ERROR,
             payload: error.toString()
@@ -345,10 +310,8 @@ export function removeFromCollection(userId, bookId) {
 export function loginFromRefreshToken() {
   return function (dispatch) {
     let byte = localStorage.getItem("a")
-    let refresh_token = api.getCookie("refresh_token")
-    if (byte && refresh_token) {
+    if (byte) {
       let email = CryptoJS.AES.decrypt(byte, keyEncrypt).toString(CryptoJS.enc.Utf8)
-      reAuth(dispatch, () => {
         api.fetchEmail({ email: email })
           .then((response) => {
             dispatch({
@@ -361,7 +324,6 @@ export function loginFromRefreshToken() {
               payload: error.toString()
             })
           )
-      })
     }
   }
 }
@@ -378,9 +340,7 @@ export function loadAllAuthors() {
         })
       }
     ).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, loadAllAuthors)
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -402,9 +362,7 @@ export function loadAllGenres() {
         })
       }
     ).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, loadAllGenres)
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -424,9 +382,7 @@ export function toggleLikeBook(likedBook) {
         })
       }
     ).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, toggleLikeBook(likedBook))
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -451,9 +407,7 @@ export function changeAvatar(file, userId) {
         })
       }
     ).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, changeAvatar(file))
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -484,9 +438,7 @@ export function adminGetBooks() {
         payload: response.data
       })
     }).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, adminGetBooks)
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -502,9 +454,7 @@ export function adminGetBookById(id) {
     api.adminGetBook(id).then(response => {
       dispatch({ type: BOOK_FETCH_SUCCESS, payload: response.data })
     }).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, adminGetBookById(id))
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -525,9 +475,7 @@ export function adminGetAuthors() {
         })
       }
     ).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, adminGetAuthors)
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -546,9 +494,7 @@ export function patchBook(book) {
           type: BOOK_CREATED_SUCCESS,
         })
       }).catch(error => {
-        if (error.response.status === 401) {
-          reAuth(dispatch, patchBook(book))
-        } else {
+        if (error.response.status !== 401) {
           dispatch({
             type: ERROR,
             payload: error.toString()
@@ -568,9 +514,7 @@ export function getAuthor(id) {
           payload: response.data
         })
       }).catch(error => {
-        if (error.response.status === 401) {
-          reAuth(dispatch, getAuthor(id))
-        } else {
+        if (error.response.status !== 401) {
           dispatch({
             type: ERROR,
             payload: error.toString()
@@ -589,9 +533,7 @@ export function patchAuthor(a) {
           type: AUTHOR_EDIT_SUCCESS,
         })
       }).catch(error => {
-        if (error.response.status === 401) {
-          reAuth(dispatch, patchAuthor(a))
-        } else {
+        if (error.response.status !== 401) {
           dispatch({
             type: ERROR,
             payload: error.toString()
@@ -613,9 +555,7 @@ export function adminGetComments() {
         })
       }
     ).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, adminGetComments)
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()
@@ -635,9 +575,7 @@ export function adminToggleApproveComment(id) {
         })
       }
     ).catch(error => {
-      if (error.response.status === 401) {
-        reAuth(dispatch, adminToggleApproveComment(id))
-      } else {
+      if (error.response.status !== 401) {
         dispatch({
           type: ERROR,
           payload: error.toString()

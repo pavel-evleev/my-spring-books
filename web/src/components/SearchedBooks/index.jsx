@@ -18,9 +18,7 @@ class SearchedBooks extends React.Component {
       view: "grid"
     }
   }
-  componentDidMount() {
-  
-  }
+
   removeFromCollection = (bookId) => {
     this.props.removeFromCollection(this.props.authorizedUser.id, bookId)
   }
@@ -28,6 +26,10 @@ class SearchedBooks extends React.Component {
   addToCollection = (bookId) => {
     this.props.addToCollection(this.props.authorizedUser.id, bookId)
   }
+  removeFromCollection = (bookId) => {
+    this.props.removeFromCollection(this.props.authorizedUser.id, bookId)
+  }
+
   handleToggleBookLike = (bookId) => {
     this.props.toggleLikeBook({
       "userId": this.props.authorizedUser.id,
@@ -59,8 +61,7 @@ class SearchedBooks extends React.Component {
           {
             (searchedBooks.length > 0)
               ? (<Books likedBookIds={this.props.likedBooksIds} userBooksId={userBooksId} books={searchedBooks} view={this.state.view} removeFromCollection={this.removeFromCollection}
-                addToCollection={this.addToCollection}
-                toggleLikeBook={this.handleToggleBookLike}/>)
+                addToCollection={this.addToCollection} toggleLikeBook={this.handleToggleBookLike} />)
               : (<div>
                 <div>Sorry, we have not this book. Would you want add this book?</div>
                 <FloatingActionButton mini={true} onClick={() => this.props.history.push("/users/add-book")}>
@@ -96,7 +97,7 @@ const mapDispatchToProps = (dispatch) =>
     allGenres: ActionCreators.loadAllGenres,
     removeFromCollection: ActionCreators.removeFromCollection,
     addToCollection: ActionCreators.addToCollection,
-    toggleLikeBook: ActionCreators.toggleLikeBook
+    toggleLikeBook: ActionCreators.toggleLikeBook,
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchedBooks)

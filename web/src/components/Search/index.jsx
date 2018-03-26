@@ -86,7 +86,7 @@ class Search extends React.Component {
         <div className="shadow filter" style={{
           marginTop: "0px", marginBottom: "0px", padding: "0px 10px", overflow: "hidden",
           maxHeight: `${this.state.height}`, transition: "max-height 800ms ease-in-out 0ms",
-          position: "absolute", zIndex: 1
+          position: "absolute", zIndex: 2
         }}>
           <TextField name="search" value={this.state.searchText}
             onChange={(event) => this.setState({ searchText: event.target.value })} hintText="Part of name Book" floatingLabelText="Search Book" />
