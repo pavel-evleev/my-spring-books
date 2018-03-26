@@ -2,6 +2,7 @@ package app.rest.controller;
 
 import app.rest.exception.UserExistedException;
 import app.rest.model.*;
+import app.services.EmailNotifierService;
 import app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -19,18 +20,27 @@ import java.util.List;
 public class UserController extends ApiErrorController {
 
     private final UserService userService;
+    private final EmailNotifierService notifierService;
 
     @Autowired
     Environment environment;
 
-    public UserController(UserService service) {
+    public UserController(UserService service, EmailNotifierService notifierService) {
         this.userService = service;
+        this.notifierService = notifierService;
     }
 
     @PostMapping
     public ResponseEntity create(@RequestBody CreateUserCommand createUserCommand) throws UserExistedException {
-        return userService.save(createUserCommand) != null
+
+        ResponseEntity responseEntity = userService.save(createUserCommand) != null
                 ? new ResponseEntity(HttpStatus.CREATED) : new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+        if(responseEntity.getStatusCode()==HttpStatus.CREATED){
+            notifierService.notifyAdmin("user");
+        }
+
+        return responseEntity;
     }
 
     @PostMapping("/{userId}")

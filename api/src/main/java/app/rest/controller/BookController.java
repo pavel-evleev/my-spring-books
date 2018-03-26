@@ -4,6 +4,7 @@ package app.rest.controller;
 import app.rest.exception.BookException;
 import app.rest.model.*;
 import app.services.*;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,17 +30,20 @@ public class BookController extends ApiErrorController {
     private final CommentService commentService;
     private final ImageService imageService;
     private final UserService userService;
+    private final EmailNotifierService notifierService;
 
     public BookController(BookService bookService,
                           ImageService imageService,
                           CommentService commentService,
                           LikeBookService likeBookService,
+                          EmailNotifierService notifierService,
                           UserService userService) {
         this.bookService = bookService;
         this.imageService = imageService;
         this.likeBookService = likeBookService;
         this.commentService = commentService;
         this.userService = userService;
+        this.notifierService = notifierService;
     }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -64,8 +68,14 @@ public class BookController extends ApiErrorController {
             imageService.compressAndSaveImage(image, compressImage);
         }
 
-        return userService.addBook(bookService.save(createBookCommand, image != null ? compressImage : null), userId)
+        ResponseEntity responseEntity = userService.addBook(bookService.save(createBookCommand, image != null ? compressImage : null), userId)
                 ? ResponseEntity.status(HttpStatus.CREATED).build() : ResponseEntity.badRequest().build();
+
+        if (responseEntity.getStatusCode() == HttpStatus.CREATED) {
+                notifierService.notifyAdmin("book");
+        }
+
+        return responseEntity;
     }
 
     @PostMapping("/comment")

@@ -24,6 +24,9 @@ verify:
     url: "https://pavelevleev.github.io/"
 image:
   url: "https://peaceful-waters-96928.herokuapp.com/v1/img/"
+notify:
+  domain: ${NOTIFY_DOMAIN_NAME}
+  apiKey: ${NOTIFY_API_KEY}
 
 
 #liquibase:
