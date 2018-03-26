@@ -98,8 +98,9 @@ public class UserController extends ApiErrorController {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public void loginPage() {
+    @RequestMapping(value = "/heroku/awake", method = RequestMethod.GET)
+    public ResponseEntity loginPage() {
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping("/verify/{uuid}")

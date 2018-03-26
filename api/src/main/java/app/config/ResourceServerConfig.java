@@ -36,6 +36,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/v1/users/verify/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/v1/users").permitAll()
+                .antMatchers(HttpMethod.GET,"/v1/users/heroku/awake").permitAll()
                 .antMatchers(HttpMethod.POST, "/v1/img/**").access("hasRole('ADMIN') or hasRole('USER')")
                 .antMatchers(HttpMethod.GET, "/v1/img/**").permitAll()
                 .antMatchers("/v1/users/**").authenticated()
