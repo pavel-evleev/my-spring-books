@@ -33,25 +33,30 @@ export default class AddUser extends React.Component {
 
   handleSubmit = () => {
     this.setState({ showLoad: true, hidden: "none" })
-    api.CreateUser(
-      {
-        name: this.state.userName,
-        phone: this.state.phone.trim(),
-        email: this.state.userEmail,
-        password: this.state.userPassword
+    api.herokuAwake().then(response => {
+      if (response.status === 200) {
+        api.CreateUser(
+          {
+            name: this.state.userName,
+            phone: this.state.phone.trim(),
+            email: this.state.userEmail,
+            password: this.state.userPassword
+          }
+        ).then((response) => {
+          notify.show('User successfully add', 'success', 2000)
+          this.setState({ verifyEmail: true, showLoad: false, userEmail: '', userName: '', userPassword: '', phone: '', validEmail: null })
+          setTimeout(() => this.setState({ hidden: "block", verifyEmail: false }), 3500)
+        }).catch((error) => {
+          if (error.response) {
+            if (error.response.status === 409)
+              notify.show(error.response.data.message.toString(), 'error', 5000)
+          }
+          notify.show(error.message.toString(), 'error', 5000)
+          this.setState({ showLoad: false, hidden: "block", verifyEmail: false, validEmail: null })
+        });
       }
-    ).then((response) => {
-      notify.show('User successfully add', 'success', 2000)
-      this.setState({ verifyEmail: true, showLoad: false, userEmail: '', userName: '', userPassword: '', phone: '', validEmail: null })
-      setTimeout(() => this.setState({ hidden: "block", verifyEmail: false }), 3500)
-    }).catch((error) => {
-      if (error.response) {
-        if (error.response.status === 409)
-          notify.show(error.response.data.message.toString(), 'error', 5000)
-      }
-      notify.show(error.message.toString(), 'error', 5000)
-      this.setState({ showLoad: false, hidden: "block", verifyEmail: false, validEmail: null })
-    });
+    }).catch(error => notify.show(error.response.data.message.toString(), 'error', 5000))
+
   }
 
   handleUserNameChange = (event) => {

@@ -17,19 +17,12 @@ export default class Statistic extends React.Component {
   }
 
   initMap = () => {
-    return new Map()
-      .set("Бизнес-книги", 0)
-      .set("Классическая литература", 0)
-      .set("Детская литература", 0)
-      .set("Детектив", 0)
-      .set("Фэнтези", 0)
-      .set("Фантастика", 0)
-      .set("Приключения", 0)
-      .set("Ужас, мистика", 0)
-      .set("Роман", 0)
-      .set("Психология", 0)
-      .set("Наука", 0)
-      .set("Компьютерная литература", 0)
+    let map = new Map()
+    const genres = this.props.genres
+    genres.forEach(element => {
+      map.set(element, 0)
+    });
+    return map;
   }
 
   countEachGenre = (books) => {
@@ -86,6 +79,7 @@ export default class Statistic extends React.Component {
 
   render() {
     const data = this.dataForPie()
+    console.log(this.props.genres)
     return (
       <div className={this.props.className} style={{marginTop:"10px",marginBottom:"10px"}}>
         {this.displayTitle(data)}

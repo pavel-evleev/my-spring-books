@@ -71,13 +71,16 @@ class User extends React.Component {
     this.props.addToCollection(this.props.authorizedUser.id, bookId)
   }
 
-  
-
   handleToggleBookLike = (bookId) => {
     this.props.toggleLikeBook({
       "userId": this.props.authorizedUser.id,
       "bookId": bookId
     })
+  }
+
+  genresOfBooksInCollection = () => {
+      const books = this.props.openedUser.books
+      return books.map(b=>b.genre.name)
   }
 
   viewDelete = () => {
@@ -151,7 +154,7 @@ class User extends React.Component {
                   </IconButton></div> : ''}
             </div>
             <div className="user-info">Collection books:{userView.books.length}</div>
-            <Statistic className="view-statistics" books={userView.books}/>
+            <Statistic className="view-statistics" books={userView.books} genres={this.genresOfBooksInCollection()} />
           </div>
         </Paper>
         <div className="user-books">
@@ -185,7 +188,7 @@ const mapDispatchToProps = (dispatch) =>
     addToCollection: ActionCreators.addToCollection,
     toggleLikeBook: ActionCreators.toggleLikeBook,
     changeAvatar: ActionCreators.changeAvatar,
-   
+
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

@@ -80,6 +80,10 @@ client.interceptors.response.use(function (response) {
 /*
  * API endpoint to fetch all user books.
  */
+export const herokuAwake = () =>{
+  return client.get('/v1/users/heroku/awake')
+}
+
 export const fetchBooks = () => {
   return client.get(`/v1/books`)
 }
