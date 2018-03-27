@@ -200,7 +200,7 @@ img {
                 justify-content: space-between;
                 padding: 10px 0 0 10px;
                 color: cornflowerblue;
-                 :last-child {
+                :last-child {
                     color: #555;
                     font-size: 13px;
                     padding-right: 10px;
@@ -321,12 +321,10 @@ body {
     font-size: 16px;
     color: black;
     height: 34px;
+    text-align: -webkit-center;
 }
 
 .bookMiniCard-img {
-    // width: 150px;
-    // height: 185px;
-    // background-color: blue;
     overflow: hidden;
     margin: 15px auto;
     .castomImg {
@@ -349,9 +347,9 @@ body {
 }
 
 .page {
-    display: grid; // grid-row-gap: 15px;
+    display: grid;
     grid-template-columns: repeat(20, 1fr);
-    grid-template-rows: repeat(11, 72px); // grid-template-areas: ". u" ". u" "n u" "b u";
+    grid-template-rows: repeat(11, 72px);
     .book-wrapper {
         max-width: 830px;
     }
@@ -373,19 +371,24 @@ body {
 
 .list-item-radius {
     border-radius: 15px !important;
+    :nth-child(2) {
+        display: block;
+        margin: auto 0;
+    }
 }
 
 .sm-img {
     display: flex;
     flex-basis: 50px;
     justify-content: center;
+    align-items: center;
 }
 
 .view-books {
     grid-row: 2/3;
     grid-column: 2/span 13;
     width: 100%;
-    margin: 0px auto; // box-shadow: 0px 0px 5px 1px rgba(128, 128, 128, 0.4);
+    margin: 0px auto;
     .view-toolbar {
         margin-top: 0;
     }
@@ -399,7 +402,7 @@ body {
 .user {
     grid-row: 1/ spa;
     grid-column: 16/span 20;
-    max-height: 40 0px; // margin: 5px 0 0;
+    max-height: 40 0px;
     .user-container {
         display: flex;
         flex-direction: column;
@@ -429,8 +432,8 @@ body {
             overflow: hidden;
             margin: 10px auto;
             img {
-                width: 200px; // height: 200px;
-                object-fit: cover; // border-radius: 120px;
+                width: 200px;
+                object-fit: cover;
             }
             div.ava {
                 width: 200px;
@@ -573,11 +576,9 @@ body {
 }
 
 // end spinner
-
 /*
  * Author: http://stuffandnonsense.co.uk/blog/about/hardboiled_css3_media_queries/
  */
-
 
 /* Smartphones (portrait and landscape) ----------- */
 
@@ -604,7 +605,7 @@ body {
             display: none;
         }
         .user-container {
-            display: grid; // flex-direction: column;
+            display: grid;
             grid-template-columns: repeat(12, 1fr);
             margin: auto;
             flex: none;
@@ -645,8 +646,8 @@ body {
                     top: 0px;
                 }
                 img {
-                    width: 50px; // height: 200px;
-                    object-fit: cover; // border-radius: 120px;
+                    width: 50px;
+                    object-fit: cover;
                 }
                 div.ava {
                     width: 50px;
@@ -688,6 +689,11 @@ body {
                 }
             }
         }
+        .list-item-radius {
+            :nth-child(2) {
+                max-width: 130px !important;
+            }
+        }
     }
     .add-b-grid {
         display: initial;
@@ -710,13 +716,11 @@ body {
     }
 }
 
-
 /* Smartphones (landscape) ----------- */
 
 @media only screen and (min-width: 321px) {
     /* Styles */
 }
-
 
 /* Smartphones (portrait) ----------- */
 
@@ -785,8 +789,8 @@ body {
                     overflow: hidden;
                     margin: 10px auto;
                     img {
-                        width: 120px; // height: 200px;
-                        object-fit: cover; // border-radius: 120px;
+                        width: 120px;
+                        object-fit: cover;
                     }
                     div.ava {
                         width: 120px;
@@ -823,6 +827,11 @@ body {
                 }
             }
         }
+        .list-item-radius {
+            :nth-child(2) {
+                max-width: 99px !important;
+            }
+        }
     }
     .add-b-grid {
         display: initial;
@@ -839,7 +848,6 @@ body {
         grid-template-areas: "p p p p p . i i i i i i" "p p p p p . i i i i i i" "d d d d d d d d d d d d" "c c c c c c c c c c c c";
     }
 }
-
 
 /* iPads (portrait and landscape) ----------- */
 
@@ -882,8 +890,8 @@ body {
                 overflow: hidden;
                 margin: 10px auto;
                 img {
-                    width: 150px; // height: 200px;
-                    object-fit: cover; // border-radius: 120px;
+                    width: 150px;
+                    object-fit: cover;
                 }
                 div.ava {
                     width: 150px;
@@ -926,13 +934,11 @@ body {
     }
 }
 
-
 /* iPads (landscape) ----------- */
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
     /* Styles */
 }
-
 
 /* iPads (portrait) ----------- */
 
@@ -947,6 +953,9 @@ body {
         width: 700px;
         .book-wrapper {
             width: 476px !important;
+            .list-item-radius{
+                width: 96% !important;
+            }
         }
     }
     .user {
@@ -973,8 +982,8 @@ body {
                 overflow: hidden;
                 margin: 10px auto;
                 img {
-                    width: 150px; // height: 200px;
-                    object-fit: cover; // border-radius: 120px;
+                    width: 150px;
+                    object-fit: cover;
                 }
                 div.ava {
                     width: 150px;
@@ -1007,7 +1016,6 @@ body {
         }
     }
 }
-
 
 /* Desktops and laptops ----------- */
 
@@ -1053,8 +1061,8 @@ body {
                 overflow: hidden;
                 margin: 10px auto;
                 img {
-                    width: 200px; // height: 200px;
-                    object-fit: cover; // border-radius: 120px;
+                    width: 200px;
+                    object-fit: cover;
                 }
                 div.ava {
                     width: 200px;
@@ -1081,13 +1089,11 @@ body {
     }
 }
 
-
 /* Large screens ----------- */
 
 @media only screen and (min-width: 1824px) {
     /* Styles */
 }
-
 
 /* iPhone 4 ----------- */
 

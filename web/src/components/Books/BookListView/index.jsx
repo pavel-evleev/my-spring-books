@@ -36,7 +36,7 @@ export default class Books extends React.Component {
             : <img src={require("../../../img/book.png")} alt="book" width="40" height="40" />}
         </div>
         <span style={{ maxWidth: "530px" }}>{book.name}</span>
-        <div style={{ marginLeft: "auto", marginRight: "10px" }}>
+        <div style={{ marginLeft: "auto", marginRight: "10px", marginTop:"auto", marginBottom:"auto" }}>
           <ActionButton added={this.props.added} liked={this.props.liked}
           buttonAction={this.props.buttonAction}
           toggleLikeBook={this.handleLikeBook} 
